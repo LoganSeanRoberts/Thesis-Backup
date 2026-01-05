@@ -1,0 +1,55 @@
+\chapter{Calculating Form Factors}\label{cha:form_factors}
+In this chapter I will provide the mathematical bases for turning the results of our correlator fits into continuous form factors results.  The chapter outline is as follows:
+\begin{itemize}
+    \item \textbf{Constructing Scalar, Vector, And Tensor Form Factors}. Here I will likely present the key form factor equations \ref{eq:scalar_FF}, \ref{eq:vector_FF}, and \ref{eq:tensor_FF}.  I will define the appropriate variables, and note that certain terms will be discussed in the following sections. 
+\end{itemize}
+\begin{equation}\label{Eq:fitnormalisation}
+  \bra{L}J_{\mathrm{latt}}\ket{\brachat{H}}=2Z_{\mathrm{disc}}\sqrt{M_{H}E_{L}}J^{\mathrm{nn}}_{00}.
+\end{equation}
+\begin{align}\label{eq:scalar_FF}
+  \bra{L}S_{\mathrm{latt}}\ket{H}&=\frac{M_{H}^2-M_{L}^2}{m_h-m_l}f_0(q^2),\\
+\label{eq:vector_FF}
+  Z_V\bra{L}V^{\mu}_{\mathrm{latt}}\ket{\hat{H}}&=f_+(q^2)\Big(p_{H}^{\mu}+p_{L}^{\mu}-\frac{M_{H}^2-M_{L}^2}{q^2}q^{\mu}\Big)+f_0(q^2)\frac{M_{H}^2-M_{K}^2}{q^2}q^{\mu},\\
+\label{eq:tensor_FF}
+  Z_T(\mu)\bra{L}T^{k0}_{\mathrm{latt}}\ket{\hat{H}}&=\frac{2iM_{H}p_L^k}{M_H+M_L}f_T(q^2,\mu).
+\end{align}
+\begin{itemize}
+    \item \textbf{Renormalization terms}.  Here I will go into detail on the renormalization terms that are present in the above equations.  These terms include $Z_\text{disc}$, $Z_V$, and $Z_T$.
+\end{itemize}
+\begin{equation}\label{eq:Zdisc}
+    Z_\text{disc} = \sqrt{\text{cosh}(m_{tree})\left(1 - \frac{1+\epsilon_{tree}}{2}\text{sinh}^2(m_{tree})\right)}
+\end{equation}
+\begin{equation}\label{Eq:Zv}
+    Z_V=\frac{(m_h-m_l)\bra{L}S\ket{H}}{(M_{H}-M_{L})\bra{L}V^{0}\ket{\hat{H}}}\Bigg\rvert_{q^2=q^2_{\mathrm{max}}}.
+\end{equation}
+\begin{itemize}
+    \item \textbf{The modified $z$ expansion}.  Here I intend to introduce the motivations for using the modified $z$ expansion in our form factor work.  To deal with the pole mass term at $q^2_{\text{max}} = (M_H - M_L)^2$ we map $q^2$ to the complex $z$ plane in equation \ref{eq:zofq}.  Using the Bourreley-Caprini-Lellouch parameterization we can write our form factor equations as expanded polynomials of $z$, as in equations \ref{eq:scaler_FFofz}, \ref{eq:vector_FFofz}, and \ref{eq:tensor_FFofz}  It would be worth mentioning the impact of choice of $t_0 = 0$, and the enforcement of $f_+(q^2=0) = f_0(q^2=0)$.  A discussion of chiral perturbation theory and the form it takes in the chiral logarithm term is warranted.
+\end{itemize}
+\begin{equation}\label{eq:zofq}
+  z(q^2,t_0)=\frac{\sqrt{t_+-q^2}-\sqrt{t_+-t_0}}{\sqrt{t_+-q^2}+\sqrt{t_+-t_0}}.
+\end{equation}
+  \begin{align}\label{eq:scaler_FFofz}
+    f_0(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H_{0}^{*}}}}\sum_{n=0}^{N-1}a_n^0z^n\\
+    \label{eq:vector_FFofz}f_+(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H^{*}}}}\sum_{n=0}^{N-1}a_n^+\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big)\\
+     \label{eq:tensor_FFofz}f_T(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H^{*}}}}\sum_{n=0}^{N-1}a_n^T\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big).
+\end{align}
+\begin{itemize}
+    \item \textbf{The Heavy HISQ approach}.  Now in this section I intend to discuss the needs for and the means by which we extrapolate to the physical b-quark mass.
+    \item \textbf{Varying the heavy quark mass and HQET}. Here, among other topics, I can describe how the $D_{(s)}\rightarrow\pi (K)$ form factor calculations are a byproduct of Heavy-HISQ.
+\end{itemize}
+
+
+\section{Lattice Form Factors}\label{sec:constructing_form_factors}
+With a satisfactory set of correlator fit results, we can work towards calculating lattice form factor results.  We emphasize the term \textit{lattice} here because the form factors directly derived from our correlator fits will still contain ensemble-specific lattice artifacts, namely non-zero lattice spacing and nonphysical quark masses.  Furthermore, these lattice form factors will be a discrete, non-continuous set of form factor values, rather than some function describing a continuous curve.  In section \ref{sec:extrapolate_to_phys_cont} we detail how we calculate physical continuum form factors from these discrete form factors.  For now however, let's examine the outputs of our correlator fitting.
+
+The results of our correlator fitting includes a set two-point function heavy meson masses $M_H$, light meson energies $E_L$,  and both heavy and light meson amplitudes $A_{H,L}$. The results then also include a set of three-point function current insertions with amplitude $J$.  These masses, energies, and amplitudes correspond to different combinations of lattice spacings, quark masses, daughter meson momenta.  Though these quantities have higher order ($n \neq 0$) and oscillating states, it is only the ground states ($n = 0$ and non oscillating) that we need to carry forward into our lattice form factor calculations.
+
+\subsection{Equations of lattice form factors}\label{sec:equations_of _lattice_form_factors}
+
+
+\subsection{Renormalization Terms}\label{sec:renorm_terms}
+
+\section{Extrapolating to physical continuum form factors}\label{sec:extrapolate_to_phys_cont}
+
+
+

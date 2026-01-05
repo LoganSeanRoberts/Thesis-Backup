@@ -1,0 +1,64 @@
+\chapter{Lattice Quantum Chromodynamics}\label{cha:Lattice_QCD}
+In this chapter, I intend to move more towards my original work by putting the previously discussed QCD on the lattice, ending on a full description of the HISQ formulism, followed by material specific to the gluon field ensembles I've used in my research.  The section structure will likely go as follows.
+
+\begin{itemize}
+    \item \textbf{The motivation for Lattice QCD}.  This section would present perturbation theory, and why a non-perturbative theory like Lattice QCD is needed.
+    \item \textbf{The basics of Lattice QCD}.  This section ought to describe a range of Lattice QCD topics: the path integral, the gluon action, quarks on the lattice.  Quarks on the lattice specifically warrants extensive writing.
+    \item \textbf{Highly Improved Staggered Quarks}. Here I will get into some nitty-gritty Lattice QCD.  Topics would include the naive quark action and the doubling problem, Symanzik improvement at tree level and at one loop, the Naik $\epsilon$ term in the HISQ action, staggered quarks, and twisted boundary conditions.  I might then end this section with the inclusion of the data table of the various HISQ ensembles I use in this work, such as the following.  
+\end{itemize}
+
+\section{Correlation functions}\label{sec:correlation_functions}
+\subsection{Spin-taste notation}
+The construction of two and three point correlators from HISQ quark bilinears in this work are as follows:
+    \begin{equation}\label{eq:correlator_spin-taste}
+    \begin{split}
+        H_{(s)} &= \bar{\psi}_h(\gamma_5 \otimes\xi_5)\psi_{l(s)},\\
+        H'_{(s)} &= \bar{\psi}_h(\gamma_5 \otimes\xi_5\xi_1)\psi_{l(s)},\\
+        H''_{(s)} &= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_5\xi_0)\psi_{l(s)},\\
+        H'''_{(s)} &= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_2\xi_3)\psi_{l(s)},\\
+        \pi(K) &= \bar{\psi}_l(\gamma_5\otimes\xi_5)\psi_{l(s)},\\
+        S_{(s)} &= \bar{\psi}_h(I_4\otimes I_4)\psi_{l(s)},\\
+        V^0_{(s)} &= \bar{\psi}_h(\gamma_0 \otimes\xi_0)\psi_{l(s)},\\
+        V^1_{(s)} &= \bar{\psi}_h(\gamma_1 \otimes\xi_1)\psi_{l(s)},\\
+        T^{01}_{(s)} &= \bar{\psi}_h(\gamma_1\gamma_0 \otimes \xi_1\xi_0)\psi_{l(s)}.
+    \end{split}
+    \end{equation}
+For the purposes of constructing three-point functions, we wish to arrange these correlators such that the 3 point interaction conserves the quantum numbers of the mesons involved.  Thusly we construct our $H\rightarrow\pi$ three point functions as in equation \ref{eq:spin-taste_3pt_function_construction}.  Our constructions of $H_s\rightarrow K$ three point functions are done similarly.
+\begin{equation}\label{eq:spin-taste_3pt_function_construction}
+    \begin{split}
+        \text{Scalar:}&\quad \pi-S-H\\
+        \text{Temporal Vector:}&\quad \pi-V^0-H'\\
+        \text{Spatial Vector:}&\quad \pi-V^1-H'' \\
+        \text{Tensor:}&\quad \pi-T^{01}-H''' \\
+    \end{split}
+\end{equation}
+
+
+
+
+\begin{table*}
+  \caption{Gluon field ensembles used in this work.}
+  \begin{scriptsize}
+  \begin{center} 
+    \begin{tabular}{l c c c c c c c c c c c c c}
+      \hline
+      Set & $\beta$ & $w_0/a$ & $a$ (fm) & $N_x^3\times N_t$  &$n_{\mathrm{cfg}}\times n_{\mathrm{src}}$ &    $am_{l}^{\mathrm{sea/val}}$ & $am_{s}^{\mathrm{sea}}$ & $am_c^{\mathrm{sea}}$& $am_{s}^{\mathrm{val}}$ & $am_c^{\mathrm{val}}$ & $Z_T(m_b)$\\
+  \hline
+  \hline
+    1 - f5   &  6.3    &  1.9006(20)  & 0.09 & $32^3\times 96$  & $500 \times 16$  &   0.0074       &   0.037        &  0.440&  0.0376  &  0.449 & 1.0029(43)\\
+    \hline
+    2 - fphys   &  6.3  & 1.9518(7)   & 0.088 & $64^3\times 96$    & $500 \times 8$&  0.00120       &  0.0363         &  0.432&   0.036  &  0.433 & 1.0029(43)\\
+      \hline
+        3 - sf5   & 6.72    &  2.896(6)  & 0.059 & $48^3\times 144$    & $500 \times 8$&  0.0048       &  0.024         &  0.286& 0.0234 &  0.274 & 1.0342(43)\\
+    \hline
+    4- sfphys   &  6.72 & 3.0170(23)   & 0.06 & $96^3\times 192$    & $100 \times 4$&  0.0008       &  0.022         &  0.260&   0.0219  &  0.2585 & 1.0342(43)\\
+      \hline
+    5 - uf5   &  7.0    &   3.892(12) & 0.044 & $64^3\times 192$    & $375 \times 4$&  0.00316       &  0.0158         &  0.188& 0.0165 &  0.194 & 1.0476(42) \\
+    \hline
+    \hline
+    \end{tabular}
+
+  \end{center}
+    \end{scriptsize}
+  \label{tab:ensembles}
+\end{table*}
