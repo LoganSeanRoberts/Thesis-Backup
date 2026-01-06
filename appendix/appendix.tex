@@ -2,52 +2,164 @@
 \chapter*{Appendices}% If \appendix doesn't insert a \chapter
 \addcontentsline{toc}{chapter}{Appendices}% Print Appendix in ToC
 \renewcommand{\thesection}{\Alph{section}}% Adjust section printing (from here onward)
-\setcounter{table}{5}
-\setcounter{figure}{5}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\renewcommand\thefigure{\thesection\arabic{figure}}
+\renewcommand\thetable{\thesection\arabic{table}}
 
-% \section{Goals and planning}
-% \label{sec:goals}
-% My listed goals for last year are more or less similar to those of this year.  This is to say, quite unoriginality, research takes a long time.  Unexpected road blocks are frequent, and delays in research have been very common.  A more reasonable set of expectations of what I can accomplish in my final year is given below.
-% \begin{itemize}
-%     \item Finalize correlator fitting.
-%     \item Complete z-expansion fitting and calculate form factors.
-%     \item Finish to technical write up in paper akin to Will's $B\rightarrow K$ paper.
-%     \item Write Ph.D. Thesis
-% \end{itemize}
-% \vspace{1cm}
-% 	{\center
-% 	\newganttchartelement{voidbar}{
-%     voidbar/.style={
-%         draw=black,
-%         top color=black!25,
-%         bottom color=black!23
-%     }}
-%     \begin{ganttchart}[x unit=0.265cm,
-%         y unit title=0.7cm,
-%         y unit chart=0.5cm, vgrid, title label font=\footnotesize,
-%         canvas/.style={draw=black, dotted}, bar/.style={fill=black!50} ]{1}{44}
-%         \gantttitle{Month}{44}\\
-%         \gantttitlelist{"May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"}{4} \\
-%         \ganttbar{Fp troubleshooting}{1}{4}     \\
-%         \ganttbar{z-expansion scripting}{1}{11}              \\
-%         \ganttbar{Finalize Corr. Fitting}{4}{11}\\
-%         \ganttbar{Begin Thesis Draft}{5}{44} \\
-%         \ganttbar{Holiday}{12}{13}\\
-%         \ganttbar{z stability testing}{14}{28} \\
-%         \ganttbar{Technical Write Up} {14}{44} \\
-        
+\section{Correlator fit priors}
+\begin{table}
+  \caption{Priors for set 1, f5 ensemble non oscillating ground state three point amplitudes.}
+  \begin{center} 
+    \begin{tabular}{c c c c c c c}
+    \hline
+    \hline
+    Current & $\theta = 0.0$ & $\theta = 0.4281$ & $\theta = 1.282$ & $\theta = 2.1410$ & $\theta = 2.570$ \\
+    \hline
+    \hline
+    $S$ & 2.6(2.6) & 2.4(2.4) & 1.5(1.5) & 1.0(1.0) & 0.8(0.8)\\
+    $V^0$ & 1.0(1.0) & 0.9(0.9) & 0.6(0.6) & 0.5(0.5) & 0.4(0.4)\\
+    $V^1$ & - & 0.15(0.15) & 0.22(0.22) & 0.2(0.2) & 0.2(0.2)\\
+    $T$ & - & 0.1(0.1) & 0.15(0.15) & 0.12(0.12) & 0.13(0.13)\\
+    \hline
+    $S_s$ & 1.8(1.8) & 1.75(1.75) & 1.35(1.35) & 1.0(1.0) & 0.85(0.85)\\
+    $V_s^0$ & 0.8(0.8) & 0.75(0.75) & 0.6(0.6) & 0.5(0.5) & 0.5(0.5)\\
+    $V_s^1$ & - & 0.1(0.1) & 0.2(0.2) & 0.22(0.22) & 0.3(0.3)\\
+    $T_s$ & - & 0.07(0.07) & 0.12(0.12) & 0.14(0.14) & 0.15(0.15) \\
+    \hline
+    \hline
+    \end{tabular}
+    \end{center}
+  \label{tab:3pt_f5_priors}
+\end{table}
+
+\begin{table}
+  \caption{Priors for set 2, fphys ensemble non oscillating ground state three point amplitudes.}
+  \begin{center} 
+    \begin{tabular}{c c c c c c c c}
+    \hline
+    \hline
+    Current & $\theta = 0.0$ & $\theta = 0.58$ & $\theta = 0.87$ & $\theta = 1.13$ & $\theta = 3.000$ & $\theta = 5.311$\\
+    \hline
+    \hline
+    $S$ & 4.75(4.75) & 3.75(3.75) & 3.25(3.25) & 2.75(2.75) & 1.50(1.50) & 0.5(0.5)\\
+    $V^0$ & 3.0(3.0) & 2.5(2.5) & 2.0(2.0) & 1.5(1.5) & 0.75(0.75) & 0.25(0.25)\\
+    $V^1$ & - & 0.2(0.2) & 0.25(0.25) & 0.3(0.3) & 0.25(0.25) & 0.15(0.15)\\
+    $T$ & - & 0.15(0.15) & 0.18(0.18) & 0.15(0.15) & 0.15(0.15) & 0.1(0.1)\\
+    \hline
+    $S_s$ & 1.90(1.90) & 1.75(1.75) & 1.75(1.75) & 1.75(1.75) & 1.25(1.25) & 0.5(0.5)\\
+    $V_s^0$ & 1.0(1.0) & 0.9(0.9) & 0.85(0.85) & 0.8(0.8) & 0.6(0.6) & 0.3(0.3)\\
+    $V_s^1$ & - & 0.1(0.1) & 0.12(0.12) & 0.15(0.15) & 0.2(0.2) & 0.15(0.15)\\
+    $T_s$ & - & 0.05(0.05) & 0.08(0.08) & 0.1(0.1) & 0.15(0.15) & 0.1(0.1)\\
+    \hline
+    \hline
+    \end{tabular}
+    \end{center}
+  \label{tab:3pt_fphys_priors}
+\end{table}
+
+\begin{table}
+  \caption{Priors for set 3, sf5 ensemble non oscillating ground state three point amplitudes.}
+  \begin{center} 
+    \begin{tabular}{c c c c c c c c}
+    \hline
+    \hline
+    Current & $\theta = 0.0$ & $\theta = 1.261$ & $\theta = 2.108$ & $\theta = 2.666$ & $\theta = 5.059$ \\
+    \hline
+    \hline
+    $S$ & 2.5(2.5) & 1.75(1.75) & 1.25(1.25) & 1.0(1.0) & 1.0(5.0)\\
+    $V^0$ & 2.0(2.0) & 1.0(1.0) & 0.65(0.65) & 0.6(0.6) & 1.0(4.0)\\
+    $V^1$ & - & 0.3(0.3) & 0.25(0.25) & 0.25(0.25) & 1.0(4.0)\\
+    $T$ & - & 0.2(0.2) & 0.2(0.2) & 0.2(0.2) & 0.2(3.0)\\
+    \hline
+    $S_s$ & 2.0(2.0) & 1.5(1.5) & 1.2(1.2) & 1.0(1.0) & 1.0(1.0)\\
+    $V_s^0$ & 1.0(1.0) & 0.75(0.75) & 0.6(0.6) & 0.6(0.6) & 0.75(0.75)\\
+    $V_s^1$ & - & 0.25(0.25) & 0.3(0.3) & 0.3(0.3) & 0.25(0.50)\\
+    $T_s$ & - & 0.2(0.2) & 0.2(0.2) & 0.2(0.2) & 0.2(0.2)\\
+    \hline
+    \hline
+    \end{tabular}
+    \end{center}
+  \label{tab:3pt_sf5_priors}
+\end{table}
+
+\begin{table}
+  \caption{Priors for set 4, sfphys ensemble non oscillating ground state three point amplitudes.}
+  \begin{center} 
+    \begin{tabular}{c c c c c c c c}
+    \hline
+    \hline
+    Current & $\theta = 0.0$ & $\theta = 2.522$ & $\theta = 4.216$ & $\theta = 7.94$ & $\theta = 10.118$ \\
+    \hline
+    \hline
+    $S$ & 4.75(4.75) & 1.75(1.75) & 1.5(1.5) & 1.0(1.5) & 1.0(3.0)\\
+    $V^0$ & 4.0(4.0) & 1.25(1.25) & 1.0(1.0) & 0.5(1.0) & 0.5(2.0)\\
+    $V^1$ & - & 0.35(0.35) & 0.35(0.35) & 0.3(0.3) & 0.3(1.0)\\
+    $T$ & - & 0.2(0.2) & 0.25(0.25) & 0.2(0.2) & 0.2(1.0)\\
+    \hline
+    $S_s$ & 2.0(2.0) & 1.5(1.5) & 1.25(1.25) & 1.0(1.0) & 1.0(1.0)\\
+    $V_s^0$ & 1.25(1.25) & 0.9(0.9) & 0.75(0.75) & 0.5(0.5) & 0.5(1.0)\\
+    $V_s^1$ & - & 0.25(0.25) & 0.3(0.3) & 0.25(0.25) & 0.2(0.4)\\
+    $T_s$ & - & 0.15(0.15) & 0.2(0.2) & 0.2(0.2) & 0.2(0.3)\\
+    \hline
+    \hline
+    \end{tabular}
+    \end{center}
+  \label{tab:3pt_sfphys_priors}
+\end{table}
+
+\begin{table}
+  \caption{Priors for set 5, uf5 ensemble non oscillating ground state three point amplitudes.}
+  \begin{center} 
+    \begin{tabular}{c c c c c c c c}
+    \hline
+    \hline
+    Current & $\theta = 0.0$ & $\theta = 0.706$ & $\theta = 1.529$ & $\theta = 2.235$ & $\theta = 4.705$ \\
+    \hline
+    \hline
+    $S$ & 2.75(2.75) & 2.25(2.25) & 1.5(1.5) & 1.0(1.0) & 1.0(1.0)\\
+    $V^0$ & 2.0(2.0) & 1.5(1.5) & 1.0(1.0) & 0.75(0.75) & 1.0(2.0)\\
+    $V^1$ & - & 0.25(0.25) & 0.3(0.3) & 0.3(0.3) & 0.3(1.0)\\
+    $T$ & - & 0.2(0.2) & 0.20(0.2) & 0.20(0.2) & 0.2(0.5)\\
+    \hline
+    $S_s$ & 2.0(2.0) & 1.75(1.75) & 1.5(1.5) & 1.0(1.0) & 1.0(1.0)\\
+    $V_s^0$ & 1.25(1.25) & 1.0(1.0) & 0.75(0.75) & 0.6(0.6) & 0.5(1.0)\\
+    $V_s^1$ & - & 0.2(0.2) & 0.3(0.3) & 0.3(0.3) & 0.3(1.0)\\
+    $T_s$ & - & 0.15(0.15) & 0.20(0.2) & 0.20(0.2) & 0.2(0.5)\\
+    \hline
+    \hline
+    \end{tabular}
+    \end{center}
+  \label{tab:3pt_uf5_priors}
+\end{table}
+
+\begin{table}
+  \caption{Priors across all ensembles for all oscillating and or non-ground state fit parameters $J_{ij}^{kl} \neq J_{00}^{oo}$, for $J\in \{S,V^0,V^1,T\}$.  The notation $J_{\neq0}$ indicates the values used to assign priors to all higher order exponential states $J_{ij\neq00}^{kl}$. The notation $J_{\mathrm{osc}}$ indicates the values used to assign priors to all lowest lying oscillating states $J_{00}^{kl\neq nn}$.  The factor $\delta_\mathrm{ens}$ multiplies the previously set uncertainty on all states $J_{00}^{on}$, and $J_{10}^{kl}$ for all $k,l \in \{n,o\}$.}
+  \begin{center} 
+  \begin{small}
+    \begin{tabular}{l c c c c c c c c c}
+    \hline
+    \hline
+    Ensemble & $P[S_{\neq 0}]$ & $P[S_{\mathrm{osc}}]$ & $P[V^0_{\neq 0}]$ & $P[V^0_{\mathrm{osc}}]$ & $P[V^1_{\neq 0}]$ & $P[V^1_{\mathrm{osc}}]$ & $P[T_{\neq 0}]$ & $P[T_{\mathrm{osc}}]$ & $\delta_\mathrm{ens}$\\
+    \hline
+    \hline
+    1 - f5 & 0.0(0.5) & 0.0(1.75) & 0.0(0.7) & 0.0(3.5) & 0.0(0.1) & 0.0(0.22) & 0.0(0.07) & 0.0(0.12) & 1.8 \\
+    2 - fphys & 0.0(1.43) & 0.0(4.4) & 0.0(1.0) & 0.0(10.0) & 0.0(0.21) & 0.0(0.06) & 0.0(0.08) & 0.0(0.12) & 2.2 \\
+    3 - sf5 & 0.0(0.32) & 0.0(1.4) & 0.0(0.46) & 0.0(3.0) & 0.0(0.10) & 0.0(0.23) & 0.0(0.05) & 0.0(0.25) & 4.0 \\
+    4 - sfphys & 0.0(0.45) & 0.0(3.0) & 0.0(0.55) & 0.0(5.0) & 0.0(0.04) & 0.0(0.5) & 0.0(0.04) & 0.0(0.07) & 5.5 \\
+    5 - uf5 & 0.0(0.3) & 0.0(0.6) & 0.0(0.32) & 0.0(3.0) & 0.0(0.04) & 0.0(0.08) & 0.0(0.04) & 0.0(0.07) & 5.0 \\
+    \hline
+    \hline
+    \end{tabular}
+    \end{small}
+    \end{center}
+  \label{tab:3pt_pesky_priors}
+\end{table}
 
 
-%         %\ganttbar{BUSSTEPP}{17}{18}    \\
-        
-%         %\ganttbar{F. F. Research}{19}{24} \\
-%         %\ganttbar{F. F. Calculation}{21}{30} \\
-%         %\ganttbar{F. F. Analysis}{26}{30} \\
-        
-%         \ganttbar{Holiday}{32}{33} \\
-        
-%         %\ganttbar{Pheno Write Up} {40}{44}        
-        
-%     \end{ganttchart}
 
-% 	}
+    % 1 - f5 & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
+    % 2 - fphys & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
+    % 3 - fs5 & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
+    % 4 - sfphys & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
+    % 5 - uf5 & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
