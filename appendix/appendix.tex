@@ -9,7 +9,7 @@
 
 \section{Correlator fit priors}
 \begin{table}
-  \caption{Priors for set 1, f5 ensemble non oscillating ground state three point amplitudes.}
+  \caption{Priors for set 1, f5 ensemble ground state three point amplitudes.}
   \begin{center} 
     \begin{tabular}{c c c c c c c}
     \hline
@@ -34,7 +34,7 @@
 \end{table}
 
 \begin{table}
-  \caption{Priors for set 2, fphys ensemble non oscillating ground state three point amplitudes.}
+  \caption{Priors for set 2, fphys ensemble ground state three point amplitudes.}
   \begin{center} 
     \begin{tabular}{c c c c c c c c}
     \hline
@@ -59,7 +59,7 @@
 \end{table}
 
 \begin{table}
-  \caption{Priors for set 3, sf5 ensemble non oscillating ground state three point amplitudes.}
+  \caption{Priors for set 3, sf5 ensemble ground state three point amplitudes.}
   \begin{center} 
     \begin{tabular}{c c c c c c c c}
     \hline
@@ -84,7 +84,7 @@
 \end{table}
 
 \begin{table}
-  \caption{Priors for set 4, sfphys ensemble non oscillating ground state three point amplitudes.}
+  \caption{Priors for set 4, sfphys ensemble ground state three point amplitudes.}
   \begin{center} 
     \begin{tabular}{c c c c c c c c}
     \hline
@@ -109,7 +109,7 @@
 \end{table}
 
 \begin{table}
-  \caption{Priors for set 5, uf5 ensemble non oscillating ground state three point amplitudes.}
+  \caption{Priors for set 5, uf5 ensemble ground state three point amplitudes.}
   \begin{center} 
     \begin{tabular}{c c c c c c c c}
     \hline
@@ -134,32 +134,63 @@
 \end{table}
 
 \begin{table}
-  \caption{Priors across all ensembles for all oscillating and or non-ground state fit parameters $J_{ij}^{kl} \neq J_{00}^{oo}$, for $J\in \{S,V^0,V^1,T\}$.  The notation $J_{\neq0}$ indicates the values used to assign priors to all higher order exponential states $J_{ij\neq00}^{kl}$. The notation $J_{\mathrm{osc}}$ indicates the values used to assign priors to all lowest lying oscillating states $J_{00}^{kl\neq nn}$.  The factor $\delta_\mathrm{ens}$ multiplies the previously set uncertainty on all states $J_{00}^{on}$, and $J_{10}^{kl}$ for all $k,l \in \{n,o\}$.}
+  \caption{$H\rightarrow\pi$ priors across all ensembles for all oscillating and or non-ground state fit parameters $J_{ij}^{kl} \neq J_{00}^{oo}$, for $J\in \{S,V^0,V^1,T\}$.  The notation $J_{\neq0}$ indicates the values used to assign priors to all higher order exponential states $J_{ij\neq00}^{kl}$. The notation $J_{\mathrm{osc}}$ indicates the values used to assign priors to all lowest lying oscillating states $J_{00}^{kl\neq nn}$.}
   \begin{center} 
   \begin{small}
-    \begin{tabular}{l c c c c c c c c c}
+    \begin{tabular}{l c c c c c c c c}
     \hline
     \hline
-    Ensemble & $P[S_{\neq 0}]$ & $P[S_{\mathrm{osc}}]$ & $P[V^0_{\neq 0}]$ & $P[V^0_{\mathrm{osc}}]$ & $P[V^1_{\neq 0}]$ & $P[V^1_{\mathrm{osc}}]$ & $P[T_{\neq 0}]$ & $P[T_{\mathrm{osc}}]$ & $\delta_\mathrm{ens}$\\
+    Ensemble & $P[S_{\neq 0}]$ & $P[S_{\mathrm{osc}}]$ & $P[V^0_{\neq 0}]$ & $P[V^0_{\mathrm{osc}}]$ & $P[V^1_{\neq 0}]$ & $P[V^1_{\mathrm{osc}}]$ & $P[T_{\neq 0}]$ & $P[T_{\mathrm{osc}}]$\\
     \hline
     \hline
-    1 - f5 & 0.0(0.5) & 0.0(1.75) & 0.0(0.7) & 0.0(3.5) & 0.0(0.1) & 0.0(0.22) & 0.0(0.07) & 0.0(0.12) & 1.8 \\
-    2 - fphys & 0.0(1.43) & 0.0(4.4) & 0.0(1.0) & 0.0(10.0) & 0.0(0.21) & 0.0(0.06) & 0.0(0.08) & 0.0(0.12) & 2.2 \\
-    3 - sf5 & 0.0(0.32) & 0.0(1.4) & 0.0(0.46) & 0.0(3.0) & 0.0(0.10) & 0.0(0.23) & 0.0(0.05) & 0.0(0.25) & 4.0 \\
-    4 - sfphys & 0.0(0.45) & 0.0(3.0) & 0.0(0.55) & 0.0(5.0) & 0.0(0.04) & 0.0(0.5) & 0.0(0.04) & 0.0(0.07) & 5.5 \\
-    5 - uf5 & 0.0(0.3) & 0.0(0.6) & 0.0(0.32) & 0.0(3.0) & 0.0(0.04) & 0.0(0.08) & 0.0(0.04) & 0.0(0.07) & 5.0 \\
+    1 - f5 & 0.0(0.5) & 0.0(1.75) & 0.0(0.7) & 0.0(3.5) & 0.0(0.1) & 0.0(0.22) & 0.0(0.07) & 0.0(0.12)\\
+    2 - fphys & 0.0(1.43) & 0.0(4.4) & 0.0(1.0) & 0.0(10.0) & 0.0(0.21) & 0.0(0.06) & 0.0(0.08) & 0.0(0.12)\\
+    3 - sf5 & 0.0(0.32) & 0.0(1.4) & 0.0(0.46) & 0.0(3.0) & 0.0(0.10) & 0.0(0.23) & 0.0(0.05) & 0.0(0.25)\\
+    4 - sfphys & 0.0(0.45) & 0.0(3.0) & 0.0(0.55) & 0.0(5.0) & 0.0(0.04) & 0.0(0.5) & 0.0(0.04) & 0.0(0.07)\\
+    5 - uf5 & 0.0(0.3) & 0.0(0.6) & 0.0(0.32) & 0.0(3.0) & 0.0(0.04) & 0.0(0.08) & 0.0(0.04) & 0.0(0.07)\\
     \hline
     \hline
     \end{tabular}
     \end{small}
     \end{center}
-  \label{tab:3pt_pesky_priors}
+  \label{tab:3pt_pesky_priors_Hpi}
 \end{table}
 
 
+    \begin{table}
+  \caption{$H_s\rightarrow K$ priors across all ensembles for all oscillating and or non-ground state fit parameters $J_{ij}^{kl} \neq J_{00}^{oo}$, for $J\in \{S,V^0,V^1,T\}$.  The notation $J_{\neq0}$ indicates the values used to assign priors to all higher order exponential states $J_{ij\neq00}^{kl}$. The notation $J_{\mathrm{osc}}$ indicates the values used to assign priors to all lowest lying oscillating states $J_{00}^{kl\neq nn}$.}
+  \begin{center} 
+  \begin{small}
+    \begin{tabular}{l c c c c c c c c}
+    \hline
+    \hline
+    Ensemble & $P[S_{\neq 0}]$ & $P[S_{\mathrm{osc}}]$ & $P[V^0_{\neq 0}]$ & $P[V^0_{\mathrm{osc}}]$ & $P[V^1_{\neq 0}]$ & $P[V^1_{\mathrm{osc}}]$ & $P[T_{\neq 0}]$ & $P[T_{\mathrm{osc}}]$\\
+    \hline
+    \hline
+    1 - f5 & 0.0(0.43) & 0.0(1.1) & 0.0(0.75) & 0.0(2.0) & 0.0(0.12) & 0.0(1.0) & 0.0(0.8) & 0.0(1.0)\\
+    2 - fphys & 0.0(0.42) & 0.0(1.52) & 0.0(1.0) & 0.0(3.3) & 0.0(0.11) & 0.0(0.2) & 0.0(0.06) & 0.0(0.22)\\
+    3 - fs5 & 0.0(0.24) & 0.0(0.55) & 0.0(0.26) & 0.0(0.86) & 0.0(0.1) & 0.0(0.25) & 0.0(0.01) & 0.0(0.3)\\
+    4 - sfphys & 0.0(0.2) & 0.0(0.4) & 0.0(0.25) & 0.0(2.0) & 0.0(0.07) & 0.0(0.14) & 0.0(0.08) & 0.0(0.16)\\
+    5 - uf5 & 0.0(0.16) & 0.0(0.4) & 0.0(0.25) & 0.0(0.20) & 0.0(0.07) & 0.0(0.21) & 0.0(0.06) & 0.0(0.15)\\
+    \hline
+    \hline
+    \end{tabular}
+    \end{small}
+    \end{center}
+  \label{tab:3pt_pesky_priors_HsK}
+\end{table}
 
-    % 1 - f5 & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
-    % 2 - fphys & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
-    % 3 - fs5 & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
-    % 4 - sfphys & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
-    % 5 - uf5 & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 0.0() & 1.8 \\
+\begin{table}
+    \centering
+    \caption{Special prior uncertainty scaling term $\delta_\mathrm{ens}$ for each ensemble.  Scaling term applies to select non-ground state three point amplitudes $J_{00}^{on}$ and $J_{10}^{kl}$ for all $k,l \in \{n,o\}$.}
+    \begin{tabular}{l c}
+    \hline
+    $\delta_\mathrm{f5}$ &  1.8\\
+    $\delta_\mathrm{fphys}$ &  2.2\\
+    $\delta_\mathrm{sf5}$ &  4.0\\
+    $\delta_\mathrm{sfphys}$ &  5.5\\
+    $\delta_\mathrm{uf5}$ &  5.0\\
+    \hline
+    \end{tabular}
+    \label{tab:delta_prior_widener}
+\end{table}
