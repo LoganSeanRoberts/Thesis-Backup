@@ -85,9 +85,7 @@ For a two-point correlator $C_2(t)$, we can plot its effective mass $aM_{\text{e
 \end{equation}
 Figure \ref{fig:aMeff_sample} shows sample effective mass plots for $H\rightarrow \pi$.  From this figure we can see that the effective mass function follow a trend where, after $t_{\text{min}}$, the higher order states decay quickly.  Then, the data stabilizes with relatively small uncertainty and minimal central value fluctuations.  This is the signal for the ground state rest mass.  Then, the uncertainty and the size of central value fluctuations grows towards the middle of the lattice length.
 
-
-
-This consistent behavior (a steady region of relatively noiseless ground state energy/rest mass signal) in the effective mass plot permits the use of an automated prior determination method.  WE utilize a simple \verb|Python| function which takes a rolling average over sets of 4 adjacent effective mass values (that is to say: at 4 consecutive lattice time slices $t/a$) and finds where this rolling average changes the least.  The central value of the rest mass's prior is then assigned to be equal to change-minimized, rolling averaged $aM_{\text{eff}}(t)$.  Figure \ref{fig:effective_mass_plots}
+This consistent behavior (a steady region of relatively noiseless ground state energy/rest mass signal) in the effective mass plot permits the use of an automated prior determination method.  We utilize a simple custom \verb|Python| function which takes a rolling average over sets of 4 adjacent effective mass values (that is to say: at 4 consecutive lattice time slices $t/a$) and finds where this rolling average changes the least.  The central value of the rest mass's prior is then assigned to be equal to change-minimized, rolling averaged $aM_{\text{eff}}(t)$.  Figure \ref{fig:effective_mass_plots} gives a visual example on how this minimum change in the rolling average is related to the effective mass of a two-point correlation function.  
 
 \begin{figure}
     \centering
@@ -96,13 +94,40 @@ This consistent behavior (a steady region of relatively noiseless ground state e
     \label{fig:effective_mass_plots}
 \end{figure}
 
-We then assign it a conservative uncertainty (which has practically been in the range of $5\%-10\%$\footnote{In many cases, we observe that a rest mass's prior uncertainty of $5\%$ is several orders of magnitude larger than its corresponding posterior uncertainty in test fits.}, such that in test fits, the prior uncertainty 10:1 ratio rule of thumb discussed in section \ref{sec:prior_determination_methodology}.  In practice, this method is incredibly effective at producing priors that accommodate the corresponding fit posteriors.  [UNFINISHED SECTION - MASS SCALING TERM?]
+Using this method we can observe effective mass plots and assign fractional uncertainties to our priors for ground state meson rest masses.  Table \ref{tab:meson_mass_priors} gives the complete list of the fractional uncertainness we use in our correlator fits, which mostly range between $0.05-0.10$.  Across all cases, even those where the the assigned fractional uncertainty is as small as $0.02$ and large as $0.65$, we confirm that the standard deviations of meson mass fit posteriors are at least ten times smaller than the standard deviations of their matching fit prior.  In many cases, the prior to posterior standard deviation ratio is much greater: on the order 100:1 or greater.  This is an assuring sign that the priors we have chosen are not constricting to the fit.  It is important to note that, after spotting such large prior to posterior ratios in test fitting, we do not then adjust priors to move closer to the ratio 10:1.  Even in cases where such a change would increase the $\log(\mathrm{GBF})$ of a fit, we would be violating the justification for using priors in the first place.  We wish to maintain physics and or data backed reasons for prior choices, otherwise the priors lose their \textit{a priori} nature.
+
+
+\begin{table}[]
+    \centering
+    \caption{Fractional uncertainties given to priors for ground state meson masses $\Delta(M)$ and amplitudes $\Delta(A)$.  Heavy meson amplitude fractional uncertainties apply only to lightest heavy-quark option on each ensemble $m_0$.  The ratio $R(\nicefrac{A_3}{A_0})$ is used in equation \ref{eq:Hmeson_amp_scaling} }
+    \begin{tabular}{c c c c c c c c c c}
+    \hline
+    Ensemble & $\Delta(M_\pi)$  & $\Delta(M_K)$ & $\Delta(M_H)$ & $\Delta(M_{H_s})$ & $\Delta(A_\pi)$  & $\Delta(A_K)$ & $\Delta(A_H)$ & $\Delta(A_{H_s})$ &  $R(\nicefrac{A_3}{A_0})$\\
+    \hline
+    f5 & 0.05 & 0.02 & 0.05 & 0.05 & 0.05 &  0.03 & 0.11 & 0.11 & 2.0\\
+    fphys & 0.10 & 0.02 & 0.05 & 0.05 & 0.05 & 0.03 & 0.22 & 0.22 & 2.0\\
+    sf5 & 0.10 & 0.05 & 0.05 & 0.05 & 0.10 & 0.08 & 0.10 & 0.10 & 4.0\\
+    sfphys & 0.60 & 0.05 & 0.10 & 0.10 & 0.30 & 0.15 & 0.65 & 0.65 & 2.0\\
+    uf5 & 0.25 & 0.10 & 0.05 & 0.05 & 0.20 & 0.15 & 0.20 & 0.20 & 4.0\\
+    \hline
+    \end{tabular}
+    \label{tab:meson_mass_priors}
+\end{table}
+
+
  
 %Table \ref{tab:aMeff_values} shows the prior and posterior estimates for the same masses displayed in figure \ref{fig:aMeff_sample}.  From this table, we can see that the fit posteriors for these masses (zero-twist energies) have significantly smaller percent errors than the prior percent errors.  For this reason, I consistently use this automated method to determine priors for meson masses.
 
 %The above method works for both the mother and daughter mesons in this study.  
 
-From these ground state, zero-twist, non-oscillating meson energies, we can determine priors for their ground state, zero-twist, \textit{oscillating} counterparts.  The ground state daughter mesons have angular momentum and parity quantum numbers of $J^P = 0^-$.  The lowest lying, non-ground state is the same as the ground state but with opposite parity: $J^P = 0^+$.  With the HISQ action \cite{HISQ:2006rc}, this opposite parity manifests as oscillating propagators on the lattice, and therefore it is referred to as the "lowest lying oscillating" state.  Unfortunately, these cannot be calculated with the same method as before.  Instead, we rely on the known mass splitting between the non-oscillating state and lowest oscillating state given by the Particle Data Group in \cite{Workman:2022ynf}. For Example, the ground state pion has a rest mass of about 140 GeV, while the opposite parity state has a rest has a mass of roughly 500 GeV.  So, we set an estimate for the lowest energy oscillating mass by adding some fixed mass value to the ground state mass.  We then follow the same procedure for the kaon.  Appropriately, we assign a broader prior width to this rougher estimate ($20\%$ for example).  In multiple test fits, the posterior errors on these oscillating energies do roughly appear to be about one order of magnitude larger than those of the ground state energies (rest masses).  
+
+\subsection{Zero momentum oscillating mass states}
+% As discussed in section \textbf{INSERT REF TO PARITY - OSCILALTION FOR HISQ}, the quantum number states with positive parity, $J^P = (0^+)$ for example, manifest as HISQ-derived correlation functions with oscillatory behavior.    
+Having established the methodology for determining priors on our ground state, zero-twist, non-oscillating meson energies (masses), we can determine priors for their ground state, zero-twist, \textit{oscillating} counterparts.  The ground state mesons have angular momentum and parity quantum numbers of $J^P = 0^-$.  The meson states with quantum numbers $J^P = 0^+$ also appear in our lattice simulations and correlation functions.  As discussed in section \textbf{INSERT REF TO PARITY - OSCILALTION FOR HISQ}, our use of the HISQ action \cite{HISQ:2006rc} leads to opposite parity states manifesting as oscillating propagators on the lattice.  We therefor call the lowest energy meson state with quantum numbers $J^P = 0^+$ the \textit{lowest lying oscillating} state of that meson. These are the states which have energies and amplitudes $E_0^{\mathcal{M},o}$ and $A_0^{\mathcal{M},o}$ in equation \ref{eq:2ptcorrfit}.
+
+Unfortunately, priors for these lowest lying oscillating states cannot be determined using the same methodology as before; we can not visually determine a lowest lying oscillating state's contribution to an effective mass plot. Instead, we can rely on the known energy difference, or splitting, between the non-oscillating state and lowest lying oscillating state given by the Particle Data Group in \cite{ParticleDataGroup:2024cfk}. ---
+
+For Example, the ground state pion has a rest mass of about 140 GeV, while the opposite parity state has a rest has a mass of roughly 500 GeV.  So, we set an estimate for the lowest energy oscillating mass by adding some fixed mass value to the ground state mass.  We then follow the same procedure for the kaon.  Appropriately, we assign a broader prior width to this rougher estimate ($20\%$ for example).  In multiple test fits, the posterior errors on these oscillating energies do roughly appear to be about one order of magnitude larger than those of the ground state energies (rest masses).  
 
 
 \subsection{Non-zero-twist meson energies: the dispersion relation}\label{sec:dispertion_relation}
@@ -154,6 +179,10 @@ NEED TO DOUBLE CHECK HOW THIS ACTUALLY WORKS
 
 In testing, we found that in the minority of cases, some algorithmically determined amplitude priors are given uncertainties considerably larger than their central values.  In other words, this automated method may assign an amplitude prior of $0.2 \pm 0.4$, wherein the uncertainty is twice the size of the magnitude of the central value.  Our two-point correlators are generated such that their ground state amplitudes are always positive [CITATION NEEDED], and so we want priors that discourage negative central values for ground state amplitudes.  In such cases, we override the algorithmically derived prior with a more conservative, negative central value discouraging prior that is manually determined from effective amplitude plots.  This manual override prior is broad enough to encompass the reasonable\footnote{Reasonable here denotes the plateau range in effective amplitude plots that occurs after the excited state signal has decayed, and before the signal noise becomes to great nearer the middle of the lattice length.} effective amplitude ranges of all mass-twist combinations for all mother and daughter mesons on a single ensemble. 
 
+
+\begin{equation}\label{eq:Hmeson_amp_scaling}
+\Delta(A_{m_i}) = \Delta(A_{m_0}) \left[\frac{(R-1)(\frac{m_i}{m_0}-1)}{(\frac{m_3}{m_0}-1)} + 1  \right]    
+\end{equation} 
 
 \subsection{Exited and non-zero twist meson amplitudes}
 
