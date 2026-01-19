@@ -71,18 +71,13 @@ In the following subsections, I discuss the priors on meson amplitudes and energ
 %For each set two-point correlators that correspond to a $B_{(s)}$ of mass $am_b$, there are four correlator subsets for the four spin-taste copies 
 
 \subsection{Meson rest masses}\label{sec:meson_rest_masses}
-The first set of priors we can discuss are the rest masses of the mother and daughter mesons.  By construction, the heavy mother mesons in this work are in the rest frame of the lattice, and so their energies are equivalent to their masses.  The lighter daughter mesons however are simulated at varying momenta following the twisted boundary methodology from \cite{Bedaque_2004, Guadagnoli_2006}.  This methodology relates some twist angle $\theta$ to a meson's three-momentum (in lattice units) $|a\overrightarrow{p}|$:
-\begin{equation}
-    \theta = |a\overrightarrow{p}| \times \frac{N_x}{\sqrt{3}\pi},
-\end{equation}
-where $N_x$ is the lattice unit length in the 
-
-In this formulation, a daughter meson of \textit{zero-twist} corresponds to a $q^2_{\text{max}}$ current insertion; the daughter meson remains at rest in the lattice frame and its energy equals its rest mass.
+The first set of priors we can discuss are the priors for the rest masses of the heavy and light mesons.  By construction, the heavy mother mesons in this work are in the rest frame of the lattice, and so their energies are equivalent to their masses.  The lighter daughter mesons however are simulated at varying momenta, whose priors we discuss in \ref{sec:dispertion_relation}.  In this formulation, a daughter meson of zero 3-momentum corresponds to a $q^2_{\text{max}}$ current insertion; the daughter meson remains at rest in the lattice frame and its energy equals its rest mass.
 
 For a two-point correlator $C_2(t)$, we can plot its effective mass $aM_{\text{eff}}(t)$ via equation \ref{eq:2ptam}.  For a well behaved\footnote{Which is to say, the higher order exponential states rapidly decay.} two-point correlator, it is possible to extract an estimate for its rest mass from its effective mass plot.  
 \begin{equation} \label{eq:2ptam}
         aM_{\text{eff}}(t) = \frac{1}{2}\cosh^{-1}\left(\frac{C_2(t-2)+C_2(t+2)}{2C_2(t)}\right). 
 \end{equation}
+
 Figure \ref{fig:aMeff_sample} shows sample effective mass plots for $H\rightarrow \pi$.  From this figure we can see that the effective mass function follow a trend where, after $t_{\text{min}}$, the higher order states decay quickly.  Then, the data stabilizes with relatively small uncertainty and minimal central value fluctuations.  This is the signal for the ground state rest mass.  Then, the uncertainty and the size of central value fluctuations grows towards the middle of the lattice length.
 
 This consistent behavior (a steady region of relatively noiseless ground state energy/rest mass signal) in the effective mass plot permits the use of an automated prior determination method.  We utilize a simple custom \verb|Python| function which takes a rolling average over sets of 4 adjacent effective mass values (that is to say: at 4 consecutive lattice time slices $t/a$) and finds where this rolling average changes the least.  The central value of the rest mass's prior is then assigned to be equal to change-minimized, rolling averaged $aM_{\text{eff}}(t)$.  Figure \ref{fig:effective_mass_plots} gives a visual example on how this minimum change in the rolling average is related to the effective mass of a two-point correlation function.  
@@ -136,22 +131,36 @@ Thankfully, determining the priors for the masses of the lowest lying oscillatin
 For all these oscillating meson states, we check that the standard deviations of the fit posteriors are not overly constrained by the standard deviations of their matching priors. Across all ensembles and in both $H\rightarrow\pi$ and $H_s\rightarrow K$ we find this to be the case.
 
 \subsection{Non-zero-momentum meson energies: the dispersion relation}\label{sec:dispertion_relation}
+Having established our methodology for assigning priors to zero momentum meson energies, we can now move on to discuss how to assign priors for non-zero-momentum meson energies.  Across all ensembles we place the lattice frame in the rest frame of the heavy meson, and so we need only consider pions and kaons in this regard.  
 
+As discussed in section \ref{sec:twisted_boundary_conditions}, we impart momentum to the light mesons via twisted boundary conditions.  We can describe a meson's 3-momentum $\vec{p}$ in terms of a twist angle $\theta$, where
+\begin{equation}\label{eq:twist_angle}
+    \theta = |a\vec{p}| \times \frac{N_x}{\sqrt{3}\pi},
+\end{equation}
+and $N_x$ is the spacial length of the lattice in lattice units.  Equation \ref{eq:2ptam} provides a template for how we \textit{could} determine the priors for these light meson energies.  In fact the equation is valid for any meson effective energy $aE_\mathrm{eff}$ of any momentum in our cur context, so in this context we can rewrite \ref{eq:2ptMeff} as
+\begin{equation} \label{eq:2ptaE}
+        aE_{\text{eff}}(t) = \frac{1}{2}\cosh^{-1}\left(\frac{C_2(t-2)+C_2(t+2)}{2C_2(t)}\right). 
+\end{equation}
+Figure \ref{fig:pion_effective_energies} shows the range of pion effective energies of varying twists on the ultrafine 5 ensembles. 
 \begin{figure}
     \centering
     \includegraphics[width=0.85\linewidth]{chapter4/pdfs/aE_uf5_Hpi.pdf}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{The full range of pion effective energies of varying twists on the ultrafine 5 ensemble.  Light meson correlators $C^\pi_2$ of twist $\theta$ are used in equation \ref{eq:2ptaE} to calculate effective energies $aE_\mathrm{eff}(t)$.  The meson's twist is related to its lattice momentum via equation \ref{eq:twist_angle}.}
+    \label{fig:pion_effective_energies}
 \end{figure}
 
-
-From a set of pion and kaon zero twist energy (rest mass) priors, we can use the dispersion relation to determine the priors for non-zero twist pion and kaon energies.  On the lattice, we modify the traditional, continuum limit dispersion relation with a term that accounts for discretization effects.  With the HISQ action \cite{HISQ:2006rc}, the lowest order discretization effects are of the order $(a\overrightarrow{p})^2$, where $a$ is the lattice constant and $\overrightarrow{p}$ is the meson's 3-momentum.  Following from \cite{Will_technical} and \cite{Chakraborty_2021}, we can then write the ground state ($n=0$), non-zero twist energy priors $P[aE^{\pi,K}_{0,\overrightarrow{p}}]$  as
+For assigning non-zero-twist meson energies however, we can employ some \textit{a priori} physics knowledge to move beyond simply observing effective energy plots.  We can instead employ an energy dispersion relation which we expect the the non-zero-twist mesons to follow, which at the continuum and in natural units is $E = \sqrt{M^2 + p^2}$.  On the lattice, we modify the traditional, continuum limit dispersion relation with a term that accounts for discretization effects.  With the HISQ action \cite{HISQ:2006rc}, the lowest order discretization effects we expect in this dispersion relation are of the order $(a\vec{p})^2$.  Using the dispersion relation we can assign the priors of non-zero-twist meson energies $P[aE^\mathcal{M}_{\vec{p}}]$ as
 \begin{equation}\label{eq:dispersion_energy}
-   P[aE^{\pi,K}_{0,\overrightarrow{p}}] = \sqrt{P[aE^{\pi,K}_{0,\overrightarrow{0}}]^2 + (a\overrightarrow{p})^2}
-   \times \left[ 1 + P[\epsilon_{\pi,K}] \left( \frac{a\overrightarrow{p}}{\pi} \right)^2     \right],
+   P[aE^\mathcal{M}_{\vec{p}}] = \sqrt{P[aE^\mathcal{M}_{\vec{0}}]^2 + (a\overrightarrow{p})^2}
+   \times \left[ 1 + P[\epsilon^\mathcal{M}] \left( \frac{a\vec{p}}{\pi} \right)^2     \right],
 \end{equation}
+where $P[aE^\mathcal{M}_{\vec{0}}]$ is the prior of the meson's energy at zero-twist (it's rest mass).  Here we also introduce the discretization parameters $\epsilon^\mathcal{M}$, which scales the relative size of discretization effects on the dispersion relation.  A given $\epsilon^\mathcal{M}$ is specific to the light meson being fit (pion or kaon in our case) on a given ensemble.  For two light mesons and five ensembles, we introduce ten new parameters into our correlator fitting routine, which therefor need priors as well.  Following the findings from comparable HISQ-action fits \cite{Bouchard_2013, Will_towardsB, Chakraborty_2021, Will_technical}, the priors for $\epsilon^{\mathcal{M}}$ were set as $P[\epsilon^\mathcal{M}] = 0\pm1$ throughout much of this project's timeline.  In various test fits for this work, the posteriors for $\epsilon^{\pi}$, $\epsilon^{K}$ fell within the bounds of these priors.  
 
-Here, the parameters $\epsilon_{\pi,K}$ scale the relative size of discretization effects on the dispersion relation.  Different discretization parameters are introduced for either \BtoPi\space or \BstoK\space to account for any daughter meson mass dependency.  These discretization parameters are also given priors in the fitting procedure.  Following the findings from comparable HISQ-action fits \cite{Bouchard_2013, Will_towardsB, Chakraborty_2021, Will_technical}, the priors for $\epsilon_{\pi,K}$ are set as $P[\epsilon_{\pi,K}] = 0\pm1$.  In various test fits for this work, the posteriors for $\epsilon_{\pi,K}$ fall within the bounds of these priors.
+In later stages of this project however we noticed that, on select ensembles, the fit posteriors for this discretization parameter consistently differed from its prior by one or several standard deviations.  This prompted us to apply the standard $\log(\mathrm{GBF})$ testing routine discussed in \ref{sec:prior_determination_methodology} to the prior uncertainties.  We however cut halted the $\log(\mathrm{GBF})$ testing when it would have preferred prior uncertainties smaller $\pm1.0$.  This was the case for most most $P[\epsilon^\mathcal{M}]$ uncertainties, and so the majority of dispersion parameters priors remain as $P[\epsilon^\mathcal{M}] = 0\pm1$.  The most distinct deviation from this norm is manifests in the fine physical (fphys) ensemble for both the pion and the kaon.  The $\log(\mathrm{GBF})$ preferred uncertainties for $P[\epsilon^{\pi}]$, $P[\epsilon^{K}]$ are $\pm 36.0$ and $\pm50.0$ respectively.  While these uncertainties are relatively large, in test fitting we find that the fphys ensemble fit posteriors for $P[\epsilon^{\pi}]$, $P[\epsilon^{K}]$ have large, greater than one fractional uncertainties, $6(13)$ and $3.0(9.8)$ for example.  Furthermore, such large uncertainties for $P[\epsilon^{\pi}]$, $P[\epsilon^{K}]$ on the fphys ensemble mean that the priors for high twist light meson energies $P[aE^\mathcal{M}_{\vec{p}}]$ on that ensemble also have relatively large fractional uncertainties: $0.75-1.0$ for example, following from equation \ref{eq:dispersion_energy}.  
+
+The conclusion we come to from these observations is that, on the fphys ensemble, some combination of momentum related discretization effects greatly reduces our ability to set narrower priors for high twist pion and kaon energies.  Thankfully, the signal from these high twist meson energies is strong enough that in test fitting, despite their broad priors, the posteriors of these energies have fractional uncertainties that range from $0.01-0.04$.  
+
+We introduce the additional notation here to indicate that we are discussing the parameters related to the ground state, psuedoscalar pion or kaon.  
 
 We can use this same dispersion relation method to set priors for non-zero twist energies of the lowest lying oscillating (order $n=0$) daughter meson states.  In these cases we use a a separate prior for the parameter $\epsilon_\text{osc}$ whose use and prior value is identical to $\epsilon_{\pi,K}$ in equation \ref{eq:dispersion_energy}: $P[\epsilon_\text{osc}] = P[\epsilon_{\pi,K}] = 0 \pm 1$. The discretization parameter $\epsilon_\text{osc}$ is only used for the generation of non-zero twist, oscillating \textit{kaon} energy priors via the dispersion relation.  This is because there is no oscillating pion state with zero twist off of which to base the dispersion relation [CITATION NEEDED].  For this reason, non-zero twist oscillating pion energies are given priors constructed as: [WRONG, CHECK FUNCTIONS SCRIPT WHEN AVAILABLE]
 \begin{equation}\label{eq:pion_prior_oscillating_energy}
@@ -195,7 +204,7 @@ In testing, we found that in the minority of cases, some algorithmically determi
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.75\linewidth]{chapter4/pdfs/CustomAmps.pdf}
+    \includegraphics[width=0.7\linewidth]{chapter4/pdfs/CustomAmps.pdf}
     \caption{Sample pion effective amplitude plots on the f5 and uf5 ensembles.  The effective amplitude $aM\mathrm{eff}(t)$, which is calculated from equation \ref{eq:2ptMeff} and its respective two point correlation function $C^\pi_2$, is shown in blue. The rolling average of the effective mass R.Avg$(t)$ is shown in dashed green. Where the change in this rolling average is minimized $\Delta_\mathrm{min}$ of R.Avg$(t)$ is shown in dotted red. Consecutive red bands show regions of $\pm5\%$, out to $\pm30\%$, of $\Delta_\mathrm{min}$ of R.Avg$(t)$.}
     \label{fig:placeholder}
 \end{figure}
@@ -249,18 +258,15 @@ With the desire to have twist-specific priors for three-point amplitudes, we sti
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{chapter4/pdfs/0tw.pdf}
-    \includegraphics[width=0.9\linewidth]{chapter4/pdfs/2tw.pdf}
+    \includegraphics[width=0.75\linewidth]{chapter4/pdfs/0tw.pdf}
+    \includegraphics[width=0.75\linewidth]{chapter4/pdfs/2tw.pdf}
     \caption{Caption}
     \label{fig:3pt_effective_amps}
 \end{figure}
 
-
 % Figure \ref{fig:3pt_amps_fine} gives a sample \BtoPi\space scalar current effective amplitudes plot, which covers all mass and twist combinations. From plots such as this it is straightforward to visually (manually) estimate $J_{00}^{nn}$ priors.  For this research, we choose to use one prior to apply to all mass, twist, and source-sink separation $T$ combinations for a single ground state three point amplitude. This choice necessitates priors with relatively large uncertainties in order to comfortably cover the effective amplitude space spanned by all variable combinations.  In particular, a $J_{00}^{nn}$ prior's broad uncertainty comes mostly from our choice of imposing that it applies all twist options.   
 
 % In theory, we \textit{could} use different priors to apply to different twist options (different momentum transfers, different $q^2$ in other words). From effective amplitude plots like figure \ref{fig:3pt_amps_fine} it might even appear reasonable to do so; it is possible to distinguish between five different effective amplitude plateaus for the five twist options.  However, its important to remind ourselves that the ultimate aim of this work is to calculate the form factors of \BstoPiK\space as a function of $q^2$.  A three point amplitude's twist dependence \textit{is} the basis of a form factors $q^2$ functionality\footnote{In another journal I am likely to detail the steps of this basis in more detail.}.  For this reason, we wish not to overly constrain the fitting of ground state three point amplitudes in relation to their momentum dependence.  A three point amplitude's momentum transfer dependence should be self evident from the fit results, rather than enforced \textit{a priori}.  With that said, we still ensure that these conservative prior uncertainties avoid violating the 10:1 prior to posterior rule of thumb before.  Table \ref{tab:3pt_priors} gives the current working values of these manually determined $J_{nn}^{00}$ priors.
-
-
 
 \subsection{Determining oscillating and excited state three-point amplitude priors}
 Unfortunately, determining the magnitudes of the oscillating and non-ground state three-point amplitudes cannot be simply achieved by observing effective amplitude plots.  Furthermore, for every one $J_{00}^{nn}$ state, there are \textit{many} more oscillating and higher order exponential states $J_{ij}^{kl}$ where $\{i,j\}\neq \{0,0\}$ and or $k,l \neq n$.  In fact, if $N_\text{exp} = 4$, for every one $J_{00}^{nn}$ state in a fit, there are 63 other states which contain oscillating components and or higher order exponentials.  This gives us 64 total fit parameters for every combination of current insertion, heavy quark mass, and daughter meson momentum each. Determining what the priors for these 63 non-ground states ought to be then poses an obvious challenge.  There is no algorithm or effective amplitude plot-based determination we can use;  we have no \textit{a priori} physics knowledge, other than knowing they can be positive or negative.  Thankfully, that sign indifference means we can assign a value of zero to the central value of all these non-ground states' priors.  
@@ -276,6 +282,22 @@ With no prior physics knowledge to set the uncertainties of $P[J_{\neq0}]$ and $
 
 In test fitting, even after GBF optimizing the priors for oscillating and higher order three point amplitudes, we found two consistent outlier cases where fit posteriors still differed from their respective priors by two or more standard deviations.  These outlier cases occurred irrespective of of mass, twist, or current component.  The first of these cases were the $J_{00}^{on}$ states.  The second of these cases were the states $J_{10}^{kl}$ for all $k,l \in \{n,o\}$.  This suggested that our initial non-ground state prior grouping method could be improved.  We therefore introduced an ensemble specific, but otherwise global, multiplicative factor $\delta_\mathrm{ens}$ which effectively multiplies or \textit{widens} the uncertainty on these special case.  We then underwent the same GBF optimization for this special prior widener for each ensemble $\delta_\mathrm{ens}$, yielding values that span roughly from two to five across the five ensembles, and can also be found in tables \ref{tab:3pt_pesky_priors_Hpi, tab:3pt_pesky_priors_HsK}. This entire process is somewhat "in the weeds" for standard correlator fitting prior selection.  And while implementing these $\delta_\mathrm{ens}$ terms does not appear to have any measurable impact on the ground state amplitudes we carry forward into our form factor calculations, it does nevertheless accomplish two things.  First, it does make our correlator fitting routine slightly more conservative, that is, the affected priors are wider and less constraining to the fit.  Second, the implemented change does meet the $\Delta \log(\mathrm{GBF}) > 3$ threshold wherein we can state the change is significant. 
 
+\begin{table}[]
+    \centering
+    \caption{Priors for dispersion relation parameters}
+    \begin{tabular}{c c c c c c c}
+        \hline
+        Ensemble & $P[\epsilon^{\pi,n}]$ & $P[\epsilon^{\pi,o}]$ & $P[\mathcal{A}^\pi]$ & $P[\epsilon^{K,n}]$ & $P[\epsilon^{K,o}]$ & $P[\mathcal{A}^K]$ \\
+        \hline
+         f5     & 0.0(1.0)  & 0.0(1.0) & 0.0(1.0) & 0.0(1.0)  & 0.0(1.0) & 0.0(1.0) \\
+         fphys  & 0.0(36.0) & 0.0(1.0) & 0.0(1.0) & 0.0(50.0) & 0.0(1.0) & 0.0(1.0) \\
+         sf5    & 0.0(1.0)  & 0.0(1.0) & 0.0(1.0) & 0.0(5.0)  & 0.0(1.0) & 0.0(1.0) \\
+         sfphys & 0.0(1.0)  & 0.0(1.0) & 0.0(1.0) & 0.0(3.0)  & 0.0(1.0) & 0.0(1.0) \\
+         uf5    & 0.0(1.0)  & 0.0(1.0) & 0.0(1.0) & 0.0(1.0)  & 0.0(1.0) & 0.0(1.0) \\
+         \hline
+    \end{tabular}
+    \label{tab:dispersion_params}
+\end{table}
 
 \section{Correlator matrices and fit partitioning}
 \subsection{The need for fit partitioning}
