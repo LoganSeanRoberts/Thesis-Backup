@@ -160,7 +160,13 @@ In later stages of this project however we noticed that, on select ensembles, th
 
 The conclusion we come to from these observations is that, on the fphys ensemble, some combination of momentum related discretization effects greatly reduces our ability to set narrower priors for high twist pion and kaon energies.  Thankfully, the signal from these high twist meson energies is strong enough that in test fitting, despite their broad priors, the posteriors of these energies have fractional uncertainties that range from $0.01-0.04$.  
 
-We introduce the additional notation here to indicate that we are discussing the parameters related to the ground state, psuedoscalar pion or kaon.  
+For the $H_s\rightarrow K$ decay exclusively, we also found for the sf5 and sfphys ensembles, $\log(\mathrm{GBF})$ testing preferred $P[\epsilon^{K}]$ uncertainness of $\pm5.0$ and $\pm3.0$ respectively.  In test fitting, the fit posteriors for $\epsilon^{K}$ were both consistent with their priors, but also with $0.0\pm1.0$.
+
+
+In addition to the psuedoscalar ground state pion and kaons, we can use the dispersion relation to assign priors for the non-zero-twist lowest lying oscillating pion and kaon energies as well.  In fact, we can use the same equation as before, equation \ref{eq:dispersion_energy}, with one minor change.  That change is to introduce additional notation (which been otherwise ignored up until this point) to differentiate between oscillating and non oscillating energies.  This change applies to energies: $aE^{\mathcal{M},n}_{\vec{p}}$, $aE^{\mathcal{M},o}_{\vec{p}}$, and the discretization parameter as well: $\epsilon^{\mathcal{M},n}$,  $\epsilon^{\mathcal{M},o}$.  
+
+\textbf{ASK WHY WE DONT DO ZERO MOMENTUM OSCILLATING. AT CONTINUUM SURE, BUT STAGGERED QUARKS ITS STIL THERE???}
+
 
 We can use this same dispersion relation method to set priors for non-zero twist energies of the lowest lying oscillating (order $n=0$) daughter meson states.  In these cases we use a a separate prior for the parameter $\epsilon_\text{osc}$ whose use and prior value is identical to $\epsilon_{\pi,K}$ in equation \ref{eq:dispersion_energy}: $P[\epsilon_\text{osc}] = P[\epsilon_{\pi,K}] = 0 \pm 1$. The discretization parameter $\epsilon_\text{osc}$ is only used for the generation of non-zero twist, oscillating \textit{kaon} energy priors via the dispersion relation.  This is because there is no oscillating pion state with zero twist off of which to base the dispersion relation [CITATION NEEDED].  For this reason, non-zero twist oscillating pion energies are given priors constructed as: [WRONG, CHECK FUNCTIONS SCRIPT WHEN AVAILABLE]
 \begin{equation}\label{eq:pion_prior_oscillating_energy}
