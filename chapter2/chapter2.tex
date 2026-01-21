@@ -1,15 +1,10 @@
 \chapter{The Standard Model of particle physics}\label{cha:Standard_Model}
-I'm not certain how in depth this chapter needs to be.  Of course, detailing the entirety of the standard model would be unnecessary.  Ideally I include only what is necessary for fully understanding my original PGR work: form factors for heavy to light meson decays. My proposed section structure for this chapter is as follows.
 \begin{itemize}
-    \item \textbf{The Standard Model basis}.  Includes description of Lorentz invariant gauge field theory, wherein vector bosons are the mediating actors between matter fields. Additionally, in this section quarks and leptons would be presented as spin half fermions: \textit{spinors}.  Further discussion would be had on gauge field theories: Abelian and non-Abelian.  QED can be discussed as example of an Abelian gauge theory, while QCD is discussed as a non-Abelian gauge theory.  The meson decays of interest to my work are naturally a product of the electroweak interaction, and so there ought to be a quite detailed section on that.  A brief discussion of the Higgs mechanism would naturally follow.
-    \item \textbf{A catalog of the Standard model}.  This section ought to combine the various bases discussed in the previous chapter to present the combined field representation of $SU(3)_c\times SU(2)_L\times U(1)_Y$.
-    \item \textbf{Weak Decays}.  Though the electroweak sector would be discussed in the previous sections, the various forms of weak decays are what constitute the foundation of my research, and so an expanded discussion of their nature is warranted.  This would include the CKM matrix, flavor changing charged/neutral currents.  More specific emphasis ought to be made on standard semileptonic decays.
-    \item \textbf{The path integral} Descretizing the path integral formalism is the basis on which much of our lattice QCD work is built, and so it warrants discussion.  I would introduce the Lehman-Symanzik-Zimmerman (LSZ) reduction formula, followed by an introduction to two and thee-point correlation functions.
+    \item \textbf{The Standard Model basis}.  Further discussion would be had on gauge field theories: Abelian and non-Abelian.  QED can be discussed as example of an Abelian gauge theory, while QCD is discussed as a non-Abelian gauge theory.  The meson decays of interest to my work are naturally a product of the electroweak interaction, and so there ought to be a quite detailed section on that.  A brief discussion of the Higgs mechanism would naturally follow. 
 \end{itemize}
 
-\begin{section}{Notes from Relativistic Quantum Fields}\label{sec:RQF}
-\textbf{WIP - collection of notes from RQF course, ought to be turned into comprehensive chapter}
-    \begin{subsection}{The Schrödinger and Klien Gordon Equations}\label{sec:Shrodinger_and_KG_equations}
+\section{Relativistic Quantum Fields}\label{sec:RQF}    
+    \subsection{The Schrödinger and Klien Gordon Equations}\label{sec:Shrodinger_and_KG_equations}
     We can begin our objective of establishing the Standard Model with the non-relativistic Schrödinger equation, where we can relate the total energy of a particle $E$, its mass $m$, its 3-momentum $\vec{p}$, and its potential energy as a function of space $V(\vec{x})$:
     \begin{equation}\label{eq:non-rel_Shrodinger}
         E = \frac{\vec{p}}{2m} + V(\vec{x}).
@@ -34,9 +29,9 @@ I'm not certain how in depth this chapter needs to be.  Of course, detailing the
     Arriving at this form of the Klein-Gordon equation presents an issue: this form as derived from equation \ref{eq:rel-energy-momentum_relation} yields negative energy solutions.  This can be seen most plainly by simply by taking the square root of both sides of equation \ref{eq:rel-energy-momentum_relation}: $E = \pm \sqrt{c^2\vec{p}^2 + m^2c^4}$.  This issue persists when we evaluate the probability density ... \textbf{WIP}
     
     This result remains problematic so long as we interpret $\phi(\vec{x}, t)$ as a field describing a single particle, rather than many.  This approach leads us nicely to a discussion of the Dirac equation and Dirac spinors.
-    \end{subsection}
+  
 
-    \begin{subsection}{The Dirac equation and Dirac spinors}\label{sec:Dirac}
+    \subsection{The Dirac equation and Dirac spinors}\label{sec:Dirac}
     Dirac sought to find an equation whose solution what also a solution to the Klein-Gordon equation, and was linear in $\partial_t \equiv \frac{\partial}{\partial t}$. This would ensure linearity in $\nabla$ should the equation be covariant under a Lorentz transformation.
 
     Let us begin with the general form of equation \ref{eq:Dirac_general_form}, where we have changed notation $\phi(\vec{x}, t) \rightarrow \psi(t,\vec{x})$ to denote our quantum field's possibility to describe multiple particles, and to match the standard Minkowski spacetime ordering of $(t, x_1, x_2, x_3) \equiv (t, \vec{x})$:
@@ -103,48 +98,47 @@ I'm not certain how in depth this chapter needs to be.  Of course, detailing the
         \label{eq:Dirac_prob_density2}
         \rho = j^0 = \bar{\psi}\gamma^0\psi = \psi^\dagger\psi \geq 0
     \end{align}
-    \end{subsection}
 
-    \begin{subsection}{Lorentz Transformations}\label{sec:Lorentz_Transformations}
-           We can continue developing our relativistic theory by exploring how these fields transform under Lorentz transformations, which we can write as some square matrix $\Lambda$.  Let us begin with a generic 4-vector $x^\mu = x(t, \vec{x})$, with a length $x^2 = t^2 - \vec{x}^2$.  This 4-vector is then invariant under the Lorentz transformation  
-           \begin{equation}\label{eq:vector_lorentz_transform}
-               x^\mu \rightarrow x'^{\mu} = \Lambda^\mu_\nu x^\nu.
-           \end{equation}
-           Furthermore, a general function $f(x)$ transforms under a Lorentz transformation as $f(x)\rightarrow (f(x))' \equiv f'(x')$, where both the function its argument change.  For a vector function $V^\mu$, it undergoes a Lorentz transformation as 
-           \begin{equation}\label{eq:vector-function_lorentz_transform}
-               V^\mu(x) \rightarrow V'^\mu(x') = \Lambda^\mu_\nu V^\nu (x).
-           \end{equation}
-           With these transformation properties established, we can move on to define how Dirac spinors transform under Lorentz transformations.  We can begin by constructing a suitable $4\times 4$ matrix $S(\Lambda)$ which transforms a Dirac spinor $\psi(x)$ as in equation \ref{eq:SLambda_def}. If we then impose that $S(\Lambda)$ satisfies the equation $\gamma^\mu S(\Lambda) = S(\Lambda)\Lambda^\mu_\rho\gamma^\rho$, we can then define how the matrix $S(\Lambda)$ acts on $\bar{\psi}$ as well.
-           \begin{align}\label{eq:SLambda_def}
-               \psi(x) &\rightarrow \psi'(x') = \psi'(\Lambda x) = S(\Lambda)\psi(x).\\
-               \bar{\psi}(x) &\rightarrow \bar{\psi}'(x') = \bar{\psi}(x)\gamma^0S^\dagger(\Lambda)\gamma^0
-           \end{align}
-           Incorporating all these Lorentz transformation properties together, we can see how the Dirac equation similarly transforms.  
-           \begin{equation}
-               \begin{split}
-                   \left(i\partial_\mu \gamma^\mu - m \right) \psi(x) &\rightarrow \left(i\partial'_\mu \gamma^\mu - m \right) \psi'(x)\\
-                   &= \left(i(\Lambda^{-1})^\nu_\mu\partial_\nu \gamma^\mu - m \right) S(\Lambda)\psi(x)\\
-                   &= S(\Lambda)\left(i\partial_\nu \gamma^\nu - m \right)\psi(x)
-               \end{split}
-           \end{equation}
-           This conclusions then clearly shows that $\psi(x)$ transforms linearly under Lorentz transformations.  Therefor so long as $\psi(x)$ is a solution to the Dirac equation, $\psi'(x')$ is also a solution to the Dirac equation. Importantly, $S^\dagger(\Lambda) = \gamma^0 S^{-1}(\Lambda)\gamma^0$. \textbf{WIP FINISH POINT ABOUT $S^{-1} \neq S^\dagger$}.  We can now construct bilinear products $\bar{\psi}\Gamma\psi$ where $\Gamma$ is a $4\times4$ matrix.  $\bar{\psi}\Gamma\psi$ can then be decomposed into a set of bilinear, each has definite transformation properties under Lorentz transformation. First we can define one scalar and four vector bilinears as 
-           \begin{align*}
-               \bar{\psi}\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)S(\Lambda)\psi =  \bar{\psi}\psi \quad \text{(Scalar)},\\
-               \bar{\psi}\gamma^\mu\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^\mu S(\Lambda)\psi =  \Lambda^\mu_\nu(\bar{\psi}\gamma^\nu\psi) \quad \text{(Vector)}.
-           \end{align*}
-           Furthermore if we define the tensor $\Sigma^{\mu\nu} = \frac{1}{4}\left[\gamma^\mu,\gamma^\nu\right]$, we can then define six tensor bilinears as 
-           \begin{equation*}
-               \bar\psi\Sigma^{\mu\nu}\psi \rightarrow \bar{\psi}S^{-1}(\Lambda)\Sigma^{\mu\nu}S(\Lambda)\psi = \Lambda^\mu_\rho\Lambda^\nu_\sigma(\bar{\psi}\Sigma^{\rho\sigma}\psi) \quad \text{(Tensor)}.
-           \end{equation*}
-       Finally, we can construct 5 more bilinears, one pseudo-scalar and 4 axial-vector, if we first define an auxiliary fifth gamma matrix $\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$.  This matrix has the properties $(\gamma^5)^2 = I_4$, $\{\gamma^5, \gamma^\mu\}=0$, $(\gamma^5)^\dagger = \gamma^5$.  We can therefor write
-       \begin{align*}
-           \bar{\psi}\gamma^5\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^5S(\Lambda)\psi =  \mathrm{det}(\Lambda)\bar{\psi}\gamma^5\psi \quad \text{(Pseudo-scalar)},\\
-            \bar{\psi}\gamma^5\gamma^\mu\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^5\gamma^\mu S(\Lambda)\psi =  \mathrm{det}(\Lambda)\Lambda^\mu_\nu(\bar{\psi}\gamma^5\gamma^\nu\psi) \quad \text{(Axial-vector)}.
-       \end{align*}
-       In summary we now have a set of sixteen linearly independent matrices $I_4$ (1 scalar), $\gamma^5$ (1 pseudo-scalar), $\gamma^\mu$ (4 vectors), $\gamma^5\gamma^\mu$ (4 axial-vectors), $\Sigma^{\mu\nu}$ (6 tensors).  Any bilinear $\bar{\psi}\Gamma\psi$ can be written as the sum of terms with definite transformation properties.
-    \end{subsection}
+    \subsection{Lorentz Transformations}\label{sec:Lorentz_Transformations}
+    We can continue developing our relativistic theory by exploring how these fields transform under Lorentz transformations, which we can write as some square matrix $\Lambda$.  Let us begin with a generic 4-vector $x^\mu = x(t, \vec{x})$, with a length $x^2 = t^2 - \vec{x}^2$.  This 4-vector is then invariant under the Lorentz transformation  
+   \begin{equation}\label{eq:vector_lorentz_transform}
+       x^\mu \rightarrow x'^{\mu} = \Lambda^\mu_\nu x^\nu.
+   \end{equation}
+   Furthermore, a general function $f(x)$ transforms under a Lorentz transformation as $f(x)\rightarrow (f(x))' \equiv f'(x')$, where both the function its argument change.  For a vector function $V^\mu$, it undergoes a Lorentz transformation as 
+   \begin{equation}\label{eq:vector-function_lorentz_transform}
+       V^\mu(x) \rightarrow V'^\mu(x') = \Lambda^\mu_\nu V^\nu (x).
+   \end{equation}
+   With these transformation properties established, we can move on to define how Dirac spinors transform under Lorentz transformations.  We can begin by constructing a suitable $4\times 4$ matrix $S(\Lambda)$ which transforms a Dirac spinor $\psi(x)$ as in equation \ref{eq:SLambda_def}. If we then impose that $S(\Lambda)$ satisfies the equation $\gamma^\mu S(\Lambda) = S(\Lambda)\Lambda^\mu_\rho\gamma^\rho$, we can then define how the matrix $S(\Lambda)$ acts on $\bar{\psi}$ as well.
+   \begin{align}\label{eq:SLambda_def}
+       \psi(x) &\rightarrow \psi'(x') = \psi'(\Lambda x) = S(\Lambda)\psi(x).\\
+       \bar{\psi}(x) &\rightarrow \bar{\psi}'(x') = \bar{\psi}(x)\gamma^0S^\dagger(\Lambda)\gamma^0
+   \end{align}
+   Incorporating all these Lorentz transformation properties together, we can see how the Dirac equation similarly transforms.  
+   \begin{equation}
+       \begin{split}
+           \left(i\partial_\mu \gamma^\mu - m \right) \psi(x) &\rightarrow \left(i\partial'_\mu \gamma^\mu - m \right) \psi'(x)\\
+           &= \left(i(\Lambda^{-1})^\nu_\mu\partial_\nu \gamma^\mu - m \right) S(\Lambda)\psi(x)\\
+           &= S(\Lambda)\left(i\partial_\nu \gamma^\nu - m \right)\psi(x)
+       \end{split}
+   \end{equation}
+   This conclusions then clearly shows that $\psi(x)$ transforms linearly under Lorentz transformations.  Therefor so long as $\psi(x)$ is a solution to the Dirac equation, $\psi'(x')$ is also a solution to the Dirac equation. Importantly, $S^\dagger(\Lambda) = \gamma^0 S^{-1}(\Lambda)\gamma^0$. \textbf{WIP FINISH POINT ABOUT $S^{-1} \neq S^\dagger$}.  We can now construct bilinear products $\bar{\psi}\Gamma\psi$ where $\Gamma$ is a $4\times4$ matrix.  $\bar{\psi}\Gamma\psi$ can then be decomposed into a set of bilinear, each has definite transformation properties under Lorentz transformation. First we can define one scalar and four vector bilinears as 
+   \begin{align*}
+       \bar{\psi}\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)S(\Lambda)\psi =  \bar{\psi}\psi \quad \text{(Scalar)},\\
+       \bar{\psi}\gamma^\mu\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^\mu S(\Lambda)\psi =  \Lambda^\mu_\nu(\bar{\psi}\gamma^\nu\psi) \quad \text{(Vector)}.
+   \end{align*}
+   Furthermore if we define the tensor $\Sigma^{\mu\nu} = \frac{1}{4}\left[\gamma^\mu,\gamma^\nu\right]$, we can then define six tensor bilinears as 
+   \begin{equation*}
+       \bar\psi\Sigma^{\mu\nu}\psi \rightarrow \bar{\psi}S^{-1}(\Lambda)\Sigma^{\mu\nu}S(\Lambda)\psi = \Lambda^\mu_\rho\Lambda^\nu_\sigma(\bar{\psi}\Sigma^{\rho\sigma}\psi) \quad \text{(Tensor)}.
+   \end{equation*}
+   Finally, we can construct 5 more bilinears, one pseudo-scalar and 4 axial-vector, if we first define an auxiliary fifth gamma matrix $\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$.  This matrix has the properties $(\gamma^5)^2 = I_4$, $\{\gamma^5, \gamma^\mu\}=0$, $(\gamma^5)^\dagger = \gamma^5$.  We can therefor write
+   \begin{align*}
+       \bar{\psi}\gamma^5\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^5S(\Lambda)\psi =  \mathrm{det}(\Lambda)\bar{\psi}\gamma^5\psi \quad \text{(Pseudo-scalar)},\\
+        \bar{\psi}\gamma^5\gamma^\mu\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^5\gamma^\mu S(\Lambda)\psi =  \mathrm{det}(\Lambda)\Lambda^\mu_\nu(\bar{\psi}\gamma^5\gamma^\nu\psi) \quad \text{(Axial-vector)}.
+   \end{align*}
+   In summary we now have a set of sixteen linearly independent matrices $I_4$ (1 scalar), $\gamma^5$ (1 pseudo-scalar), $\gamma^\mu$ (4 vectors), $\gamma^5\gamma^\mu$ (4 axial-vectors), $\Sigma^{\mu\nu}$ (6 tensors).  Any bilinear $\bar{\psi}\Gamma\psi$ can be written as the sum of terms with definite transformation properties.
 
-    \begin{subsection}{Field interactions}\label{sec:field_ineractions}
+
+    \subsection{Field interactions}\label{sec:field_ineractions}
     \textbf{Some amount of preamble...} Now let us begin to consider how particles interact. Supposed this interaction takes place at some time $t$ where $-\infty < t< \infty$.  For the multi-particle field  or state that captures this interaction $\phi(x)$, we can write that in the limit that $t\rightarrow \infty$ or $t\rightarrow -\infty$, $\phi(x) = \phi_\mathrm{out}(x)$ or $\phi(x) = \phi_\mathrm{in}(x)$ respectively. The states $\phi_\mathrm{in,out}$ are then the asymptotic limits of the Heisenberg operator $\phi$ (\textbf{wheres this come form?}), and both satisfy the Klein-Gordon equation $(\Box + m^2)\phi_\mathrm{in,out}(x) = 0$.
 
     For free fields, these operators can be described as plane waves:
@@ -161,11 +155,25 @@ I'm not certain how in depth this chapter needs to be.  Of course, detailing the
     \begin{equation}\label{eq:Sfi_trans_amp}
         \braket{f,\mathrm{out}|i,\mathrm{in}} = \bra{f,\mathrm{out}}S\ket{i,\mathrm{out}} = \bra{f,\mathrm{in}}S\ket{i,\mathrm{in}} \equiv S_{fi}.
     \end{equation}
-    \end{subsection}
-\end{section}
 
-\begin{section}{Standard Model fields}\label{sec:standard_model_fields}
-    \begin{subsection}{The CKM Matrix}
+    
+
+
+\section{Standard Model fields}\label{sec:standard_model_fields}
+    \subsection{Gauge field theories}\label{sec:gause_field_theories}
+    Discussion of Abelian vs non Abelian gauge theories
+    \subsubsection{Quantum Electrodynamics}\label{sec:QED}
+    \subsubsection{Quantum Chromodynamics}\label{sec:QCD}
+    \subsection{The Electroweak sector}\label{sec:electroweak}
+    \subsection{The Higgs sector}\label{sec:Higgs}
+    \subsection{A catalog of the Standard Model}\label{sec:catalog_of_standard_model}
+    This section ought to combine the various bases discussed in the previous chapter to present the combined field representation of $SU(3)_c\times SU(2)_L\times U(1)_Y$.
+    
+
+\section{Weak decays}\label{sec:weak_decays}
+Though the electroweak sector would be discussed in the previous sections, the various forms of weak decays are what constitute the foundation of my research, and so an expanded discussion of their nature is warranted.  This would include the CKM matrix, flavor changing charged/neutral currents.  More specific emphasis ought to be made on standard semileptonic decays.
+\subsection{Flavor changing charged currents}
+\subsection{The CKM Matrix}\label{sec:CKM_matrix}
     The CKM matrix $V_\mathrm{CKM}$, with elements $V_{ij}$, put simply, parametrizes the relative strength of flavor changing weak interactions of free quarks.  In other words, it represents the probability of an up or down-type quark to decay into an opposite-type quark of a certain generation.  
     \begin{equation}\label{eq:CKM_matrix}
         V_{\mathrm{CKM}} \equiv 
@@ -187,10 +195,12 @@ I'm not certain how in depth this chapter needs to be.  Of course, detailing the
         \quad \phi_2 = \arg\left(\frac{V_{td}V^*_{tb}}{ V_{ud}V^*_{ub}}\right),
          \quad \phi_3 = \arg\left(\frac{V_{ud}V^*_{ub}}{ V_{cd}V^*_{cb}}\right)
     \end{equation}
-    \textbf{insert unitary triangle image}
-    \end{subsection}
-
-    \begin{subsection}{}
-        
-    \end{subsection}
-\end{section}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{chapter2/pdfs/belle_rhoeta_large.pdf}
+        \caption{The CKM matrix represented by as the Unitary Triangle, whose angles are defined in equation \ref{eq:CKM_angles}.  Image created by the CKMfitter group \cite{Charles_2005}.}
+        \label{fig:CKM_unitary_triangle}
+    \end{figure}
+\subsection{Flavor changing neutral currents}
+\section{The path integral}\label{sec:path_integrals}
+Descretizing the path integral formalism is the basis on which much of our lattice QCD work is built, and so it warrants discussion.  I would introduce the Lehman-Symanzik-Zimmerman (LSZ) reduction formula, followed by an introduction to two and thee-point correlation functions.
