@@ -1,6 +1,6 @@
 \chapter{Lattice Quantum Chromodynamics}\label{cha:Lattice_QCD}
 
-\section{The motivation fot Lattice QCD}\label{sec:motivation_for_LQCD}
+\section{The motivation fort Lattice QCD}\label{sec:motivation_for_LQCD}
 This section would present perturbation theory, and why a non-perturbative theory like Lattice QCD is needed
 \section{The fundamentals of Lattice QCD}\label{sec:fundementals_of_LQCD}
 This section ought to describe a range of Lattice QCD topics: the path integral, the gluon action, quarks on the lattice.  Quarks on the lattice specifically warrants extensive writing.
@@ -17,9 +17,19 @@ References to opposite parity states -> oscillating, need matching isospin I+0 t
 \subsection{Twisted boundary conditions}\label{sec:twisted_boundary_conditions}
 Citations \cite{Bedaque_2004, DEDIVITIIS2004408, Guadagnoli_2006}
 
-\section{Correlation functions}\label{sec:correlation_functions}
-\subsection{Spin-taste notation}
+\section{Correlation functions on the lattice}\label{sec:correlation_functions_lattice}
 
+
+\begin{itemize}
+    \item MILC code takes spin taste combination and implements as lattice site dependent phase to quark propogators
+    \item Operator/Current $J(x_t)$ annihilates goldstone meson $\bar{h}l$ at $x_t$
+    \item Current $J^\dagger(x_0)$ creates goldstone meson $\bar{h}l$ at $x_0$
+    \item Two point function is then $\braket{J(x_t)J^\dagger(x_0)}$
+    \item Wick contraction of this is equivalent to propagating $\bar{h}$ from $x_0$ to $x_t$, and propagating $l$ from $x_0$ to $x_t$.
+    \item Out pops $\gamma_5 \otimes \xi_5$ requires no phase added to staggered quarks
+    \item
+\end{itemize}
+\subsection{Spin-taste notation}
 
 The construction of two and three point correlators from HISQ quark bilinears in this work are as follows:
     \begin{equation}\label{eq:correlator_spin-taste}
@@ -29,7 +39,7 @@ The construction of two and three point correlators from HISQ quark bilinears in
         H''_{(s)} &= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_5\xi_0)\psi_{l(s)},\\
         H'''_{(s)} &= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_2\xi_3)\psi_{l(s)},\\
         \pi(K) &= \bar{\psi}_l(\gamma_5\otimes\xi_5)\psi_{l(s)},\\
-        S_{(s)} &= \bar{\psi}_h(I_4\otimes I_4)\psi_{l(s)},\\
+        S_{(s)} &= \bar{\psi}_h(I_4\otimes I_4)\psi_{l(s)} = \bar{\psi}_h\psi_{l(s)},\\
         V^0_{(s)} &= \bar{\psi}_h(\gamma_0 \otimes\xi_0)\psi_{l(s)},\\
         V^1_{(s)} &= \bar{\psi}_h(\gamma_1 \otimes\xi_1)\psi_{l(s)},\\
         T^{10}_{(s)} &= \bar{\psi}_h(\gamma_1\gamma_0 \otimes \xi_1\xi_0)\psi_{l(s)}.
@@ -54,7 +64,7 @@ For the purposes of constructing three-point functions, we wish to arrange these
   \begin{center} 
     \begin{tabular}{l c c c c c c c c c c c c c}
       \hline
-      Set & $\beta$ & $w_0/a$ & $a$ (fm) & $N_x^3\times N_t$  &$n_{\mathrm{cfg}}\times n_{\mathrm{src}}$ &    $am_{l}^{\mathrm{sea/val}}$ & $am_{s}^{\mathrm{sea}}$ & $am_c^{\mathrm{sea}}$& $am_{s}^{\mathrm{val}}$ & $am_c^{\mathrm{val}}$ & $Z_T(m_b)$\\
+      Set & $\beta$ & $w_0/a$ & $a$ (fm) & $N_x^3\times N_t$  &$N_{\mathrm{cfg}}\times N_{\mathrm{src}}$ &    $am_{l}^{\mathrm{sea/val}}$ & $am_{s}^{\mathrm{sea}}$ & $am_c^{\mathrm{sea}}$& $am_{s}^{\mathrm{val}}$ & $am_c^{\mathrm{val}}$ & $Z_T(m_b)$\\
   \hline
   \hline
     1 - f5   &  6.3    &  1.9006(20)  & 0.09 & $32^3\times 96$  & $500 \times 16$  &   0.0074       &   0.037        &  0.440&  0.0376  &  0.449 & 1.0029(43)\\
