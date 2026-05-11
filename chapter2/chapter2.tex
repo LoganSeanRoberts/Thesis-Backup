@@ -1,206 +1,577 @@
 \chapter{The Standard Model of particle physics}\label{cha:Standard_Model}
-\begin{itemize}
-    \item \textbf{The Standard Model basis}.  Further discussion would be had on gauge field theories: Abelian and non-Abelian.  QED can be discussed as example of an Abelian gauge theory, while QCD is discussed as a non-Abelian gauge theory.  The meson decays of interest to my work are naturally a product of the electroweak interaction, and so there ought to be a quite detailed section on that.  A brief discussion of the Higgs mechanism would naturally follow. 
-\end{itemize}
+In this chapter we provide a brief summary of Standard Model physics, beginning with the Standard Model Lagrangian.  We move on to discuss fermions and gauge field theories, with a focus on the electroweak sector.  We then take a closer look at the weak interaction in the context of meson decays and their form factors, and finish with a discussion of path integrals and correlation functions.  Much of the Standard Model content in chapter this chapter is drawn from \cite{peskin1995qft, weinberg1995qft1, schwartz2014qft}.
+% \begin{itemize}
+%     \item \textbf{The Standard Model basis}.  Further discussion would be had on gauge field theories: Abelian and non-Abelian.  QED can be discussed as example of an Abelian gauge theory, while QCD is discussed as a non-Abelian gauge theory.  The meson decays of interest to my work are naturally a product of the electroweak interaction, and so there ought to be a quite detailed section on that.  A brief discussion of the Higgs mechanism would naturally follow. 
+% \end{itemize}
 
-\section{Relativistic Quantum Fields}\label{sec:RQF}    
-    \subsection{The Schrödinger and Klien Gordon Equations}\label{sec:Shrodinger_and_KG_equations}
-    We can begin our objective of establishing the Standard Model with the non-relativistic Schrödinger equation, where we can relate the total energy of a particle $E$, its mass $m$, its 3-momentum $\vec{p}$, and its potential energy as a function of space $V(\vec{x})$:
-    \begin{equation}\label{eq:non-rel_Shrodinger}
-        E = \frac{\vec{p}}{2m} + V(\vec{x}).
-    \end{equation}
-    To bridge the gap from quantum particle physics to relativistic quantum fields, we can use the relativistic energy-momentum relation: 
-    \begin{equation}\label{eq:rel-energy-momentum_relation}
-        E^2 = \vec{p}^2c^2 + m^2c^4.
-    \end{equation}
-    If we now shift our thinking from the quantities of energy and momentum to their operator equivalents acting on a field $\phi(\vec{x}, t)$, we can write
-    \begin{align}\label{eq:Hamiltonian}
-        E &\rightarrow \hat{H}\phi(\vec{x},t) = i\hbar\frac{\partial}{\partial t}\phi(\vec{x},t),\\
-        \label{eq:Laplacian}p &\rightarrow \hat{p}\phi(\vec{x},t) = -i\hbar \nabla \phi(\vec{x},t),
-    \end{align}
-    where $\hat{H}$ is the Hamiltonian operator, $\hat{p}$ is the momentum operator, $\nabla$ is the Laplacian operator which represents a derivative in all spatial directions, and $\hbar$ is the reduced Planck's constant. Combining equations \ref{eq:rel-energy-momentum_relation} \ref{eq:Hamiltonian}, and \ref{eq:Laplacian} we can write arrive at the Klein-Gordon equation:
-    \begin{equation}\label{eq:KGE}
-        \left(\frac{1}{c^2} \frac{\partial^2}{\partial t^2} - \nabla^2 + \frac{m^2c^2}{\hbar^2}\right)\phi(\vec{x}, t) = 0.
-    \end{equation}
-    In natural units ($c = \hbar = 1$), we can write equation \ref{eq:KGE} as
-    \begin{equation}\label{eq:KGE-short}
-        (\Box + m^2)\phi(\vec{x}, t) = 0,\quad \Box \equiv \partial^\mu\partial_\mu = \frac{\partial^2}{\partial t^2} - \nabla^2.
-    \end{equation}
-    Arriving at this form of the Klein-Gordon equation presents an issue: this form as derived from equation \ref{eq:rel-energy-momentum_relation} yields negative energy solutions.  This can be seen most plainly by simply by taking the square root of both sides of equation \ref{eq:rel-energy-momentum_relation}: $E = \pm \sqrt{c^2\vec{p}^2 + m^2c^4}$.  This issue persists when we evaluate the probability density ... \textbf{WIP}
+% % \section{Relativistic Quantum Fields}\label{sec:RQF}    
+%     \subsection{The Schrödinger and Klien Gordon Equations}\label{sec:Shrodinger_and_KG_equations}
+%     We can begin our objective of establishing the Standard Model with the non-relativistic Schrödinger equation, where we can relate the total energy of a particle $E$, its mass $m$, its 3-momentum $\vec{p}$, and its potential energy as a function of space $V(\vec{x})$:
+%     \begin{equation}\label{eq:non-rel_Shrodinger}
+%         E = \frac{\vec{p}}{2m} + V(\vec{x}).
+%     \end{equation}
+%     To bridge the gap from quantum particle physics to relativistic quantum fields, we can use the relativistic energy-momentum relation: 
+%     \begin{equation}\label{eq:rel-energy-momentum_relation}
+%         E^2 = \vec{p}^2c^2 + m^2c^4.
+%     \end{equation}
+%     If we now shift our thinking from the quantities of energy and momentum to their operator equivalents acting on a field $\phi(\vec{x}, t)$, we can write
+%     \begin{align}\label{eq:Hamiltonian}
+%         E &\rightarrow \hat{H}\phi(\vec{x},t) = i\hbar\frac{\partial}{\partial t}\phi(\vec{x},t),\\
+%         \label{eq:Laplacian}p &\rightarrow \hat{p}\phi(\vec{x},t) = -i\hbar \nabla \phi(\vec{x},t),
+%     \end{align}
+%     where $\hat{H}$ is the Hamiltonian operator, $\hat{p}$ is the momentum operator, $\nabla$ is the Laplacian operator which represents a derivative in all spatial directions, and $\hbar$ is the reduced Planck's constant. Combining equations \ref{eq:rel-energy-momentum_relation} \ref{eq:Hamiltonian}, and \ref{eq:Laplacian} we can write arrive at the Klein-Gordon equation:
+%     \begin{equation}\label{eq:KGE}
+%         \left(\frac{1}{c^2} \frac{\partial^2}{\partial t^2} - \nabla^2 + \frac{m^2c^2}{\hbar^2}\right)\phi(\vec{x}, t) = 0.
+%     \end{equation}
+%     In natural units ($c = \hbar = 1$), we can write equation \ref{eq:KGE} as
+%     \begin{equation}\label{eq:KGE-short}
+%         (\Box + m^2)\phi(\vec{x}, t) = 0,\quad \Box \equiv \partial^\mu\partial_\mu = \frac{\partial^2}{\partial t^2} - \nabla^2.
+%     \end{equation}
+%     Arriving at this form of the Klein-Gordon equation presents an issue: this form as derived from equation \ref{eq:rel-energy-momentum_relation} yields negative energy solutions.  This can be seen most plainly by simply by taking the square root of both sides of equation \ref{eq:rel-energy-momentum_relation}: $E = \pm \sqrt{c^2\vec{p}^2 + m^2c^4}$.  This issue persists when we evaluate the probability density ... \textbf{WIP}
     
-    This result remains problematic so long as we interpret $\phi(\vec{x}, t)$ as a field describing a single particle, rather than many.  This approach leads us nicely to a discussion of the Dirac equation and Dirac spinors.
+%     This result remains problematic so long as we interpret $\phi(\vec{x}, t)$ as a field describing a single particle, rather than many.  This approach leads us nicely to a discussion of the Dirac equation and Dirac spinors.
   
 
-    \subsection{The Dirac equation and Dirac spinors}\label{sec:Dirac}
-    Dirac sought to find an equation whose solution what also a solution to the Klein-Gordon equation, and was linear in $\partial_t \equiv \frac{\partial}{\partial t}$. This would ensure linearity in $\nabla$ should the equation be covariant under a Lorentz transformation.
+%     \subsection{The Dirac equation and Dirac spinors}\label{sec:Dirac}
+%     Dirac sought to find an equation whose solution what also a solution to the Klein-Gordon equation, and was linear in $\partial_t \equiv \frac{\partial}{\partial t}$. This would ensure linearity in $\nabla$ should the equation be covariant under a Lorentz transformation.
 
-    Let us begin with the general form of equation \ref{eq:Dirac_general_form}, where we have changed notation $\phi(\vec{x}, t) \rightarrow \psi(t,\vec{x})$ to denote our quantum field's possibility to describe multiple particles, and to match the standard Minkowski spacetime ordering of $(t, x_1, x_2, x_3) \equiv (t, \vec{x})$:
-    \begin{equation}\label{eq:Dirac_general_form}
-        i\partial_t \psi(t, \vec{x}) = (-i\alpha\nabla + \beta m)\psi(t, \vec{x}),
-    \end{equation}
-    where $\alpha, \beta$ are some unknown terms which satisfy the linearity constraints mentioned above.  Adopting the Einstein summation convention, if we square equation \ref{eq:Dirac_general_form} we get the following:
-    \begin{equation}\label{eq:Dirac_step1}
+%     Let us begin with the general form of equation \ref{eq:Dirac_general_form}, where we have changed notation $\phi(\vec{x}, t) \rightarrow \psi(t,\vec{x})$ to denote our quantum field's possibility to describe multiple particles, and to match the standard Minkowski spacetime ordering of $(t, x_1, x_2, x_3) \equiv (t, \vec{x})$:
+%     \begin{equation}\label{eq:Dirac_general_form}
+%         i\partial_t \psi(t, \vec{x}) = (-i\alpha\nabla + \beta m)\psi(t, \vec{x}),
+%     \end{equation}
+%     where $\alpha, \beta$ are some unknown terms which satisfy the linearity constraints mentioned above.  Adopting the Einstein summation convention, if we square equation \ref{eq:Dirac_general_form} we get the following:
+%     \begin{equation}\label{eq:Dirac_step1}
+%     \begin{split}
+%         -\partial_t^2 \psi(t, \vec{x}) &= (-i\alpha\nabla + \beta m)\psi(t, \vec{x})\\
+%         &=\left( -\alpha^i\alpha^j\partial_i\partial_j - -i(\beta\alpha^i+\alpha^i\beta)m\partial_i + \beta^2m^2 \right)\psi(t, \vec{x}).
+%     \end{split}
+%     \end{equation}
+%     As $\partial_i\partial_j$ is a symmetric tensor, we can write
+%     \begin{equation}\label{eq:Dirac_step2}
+%         \begin{split}
+%             \alpha^i\alpha^j\partial_i\partial_j &= \frac{1}{2} \left(\{\alpha^i, \alpha^j\} +[\alpha^i, \alpha^j]\right)\partial_i\partial_j\\
+%             &=\frac{1}{2} \{\alpha^i, \alpha^j\}\partial_i\partial_j
+%         \end{split}
+%     \end{equation}
+%     where square and curly brackets denote the commutator and anti-commutator relations respectively.   The Klein-Gordon equation requires the right hand side of equation \ref{eq:Dirac_step1} to equal $\left(-\nabla^2 + m^2 \right)\psi(t, \vec{x})$, and therefor $\alpha$ and $\beta$ must satisfy the following conditions:
+%     \begin{enumerate}
+%         \item $\{\alpha^i, \alpha^j\} = 2\delta^{ij}$,
+%         \item $\beta\alpha^i+\alpha^i\beta = \{\alpha^i, \beta\} = 0$ ,
+%         \item $\beta^2 = 1$.
+%     \end{enumerate}
+
+%     If $\alpha$ and $\beta$ are simple numbers, we cannot meet the above conditions and therefor solve the general form of equation \ref{eq:Dirac_general_form} or the Klein-Gordon equation.  We will have better luck if we take $\psi(t, \vec{x})$ to be a column vector and take $\alpha, \beta$ to be $n\times n$ matrices.  Under this assumption, the above conditions also impose the restraint that for both $n\times n$ matrices $\alpha^i$ and $\beta$, their traces $Tr(\alpha_i,\beta) = 0$, their eigenvalues $\lambda_{a^i, \beta} = \pm1$, and $n$ must be even. A set of simple $2\times 2$ matrices are unfortunately not sufficient under these conditions. Instead, as a starting point, let us consider a set of three complex, hermitian, unitary, traceless matrices $\sigma$, where
+%     \begin{equation}\label{eq:pauli_matrices}
+%         \sigma_i = \begin{pmatrix}0 & 1 \\ 1 & 0\end{pmatrix}, \quad \sigma_j = \begin{pmatrix}0 & -i \\ i & 0\end{pmatrix}, \quad \sigma_k = \begin{pmatrix}1 & 0 \\ 0 & -i\end{pmatrix}.
+%     \end{equation}
+%     These matrices are the Pauli matrices, which along with the $2\times 2$ identity matrix $I_2$ allow us to write definitions for $\alpha$ and $\beta$ that satisfy all the above conditions and restraints:
+%     \begin{equation}\label{eq:def_alpha-beta}
+%         \alpha = \begin{pmatrix} 0 & \sigma \\ \sigma & 0\end{pmatrix}, \quad \beta = \begin{pmatrix} I_2 & 0 \\ 0 & -I_2\end{pmatrix}.
+%     \end{equation}
+    
+%     Defining $\alpha$ and $\beta$ in this way gets us to a root of the Klein-Gordon equation, but these are not obviously make equation \ref{eq:Dirac_general_form} Lorentz invariant.  To do so, we can introduce the definition of the Gamma matrices, or Dirac matrices, where $\gamma^0 = \beta$, and $\vec{\gamma} = \beta\vec{\alpha}$.  In this notation we can represent the collection of $\alpha_{i,j,k}$ as $\vec{\alpha} = (\alpha_i,\alpha_j, \alpha_j) \equiv (\alpha_1,\alpha_2, \alpha_3)$.  We therefore have the general gamma matrix $\gamma^\mu = (\gamma^0, \vec{\gamma})$.For completeness we can show the full forms of the gamma matrices like in equation \ref{eq:gamma_matrices}
+%     \begin{equation}\label{eq:gamma_matrices}
+%     \begin{split}
+%         \gamma^0 = \begin{pmatrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & -1 & 0 \\ 0 & 0 & 0 & -1\end{pmatrix}&, 
+%         \quad \gamma^1 = \begin{pmatrix}0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & -1 & 0 & 0 \\ -1 & 0 & 0 & 0\end{pmatrix}, \\
+%         \quad \gamma^2 = \begin{pmatrix}0 & 0 & 0 & i \\ 0 & 0 & i & 0 \\ 0 & -i & 0 & 0 \\ -i & 0 & 0 & 0\end{pmatrix}&, 
+%         \quad \gamma^3 = \begin{pmatrix}0 & 0 & 1 & 0 \\ 0 & 0 & 0 & -1 \\ -1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0\end{pmatrix}.
+%     \end{split}
+%     \end{equation}
+%     Here $\gamma^0$ is \textit{time-like} in the Lorentz sense, and is Hermitian: $(\gamma^0)^\dagger = \gamma^0$. Meanwhile for $i=1,2,3$, $\gamma^i$ is \textit{space-like} and anti-Hermitian: $(\gamma^i)^\dagger = -\gamma^i$.  With these matrices we can rewrite equation \ref{eq:Dirac_step2} instead as
+%     \begin{equation}\label{eq:Dirac_step3}
+%         \{\gamma^\mu, \gamma^\nu\} = \gamma^\mu\gamma^\nu - \gamma^\nu\gamma^\mu = 2g^{\mu\nu}I_4,
+%     \end{equation}
+%     where $g^{\mu\nu}$ is the Minkowski spacetime metric, and $I_4$ is the identity matrix of size $4\times4$.  Finally by multiplying $\gamma^0$ through equation \ref{eq:Dirac_general_form} we can arrive at the Dirac equation, which in covariant form is (in natural units):
+%     \begin{equation}\label{eq:Dirac}
+%         \left(i\gamma^\mu\partial_\mu - mI_4 \right) \psi(t,\vec{x}) = 0.
+%     \end{equation}
+%     We can simplify the Dirac equation further by adopting the Feynman slash notation where for some $a_\mu$ we define $\slashed{a} = \gamma^\mu a_\mu$.  If we than also generalize across all spacetime dimensions we can write the Dirac equation simple as
+%     \begin{equation}\label{eq:Dirac_simple}
+%         (i\slashed{\partial}-m)\psi = 0
+%     \end{equation}
+
+%     At this point we can acknowledge $\psi$ (or really $\psi(t,\vec{x})$) as a column vector, which has more than one degree of freedom.  We can interpret this field which describes many particles $\psi$ as a wave function, and in this instance the wave function for spin-$\frac{1}{2}$ fermions, or \textit{Dirac Spinors}.  At this point we are still presented with the problem of interpreting negative energy solutions which we can see in the Dirac Hamiltonian: $H_\mathrm{Dirac} \equiv i\frac{\partial}{\partial t} = -i\alpha\nabla + \beta m$, where  $\alpha$ and $\beta$ are traceless, and have eigenvalues that sum to zero.  
+
+%     To overcome this, we can define the adjoint representation of such a Dirac field as $\overline{\psi} = \psi^\dagger\gamma^0$.  With this construction we can then show that for \textbf{WIP prob density?} 
+%     \begin{align}\label{eq:Dirac_prob_density1}
+%         \partial_\mu(\overline{\psi}\gamma^\mu\psi) = \partial_\mu j^\mu = 0 \\
+%         \label{eq:Dirac_prob_density2}
+%         \rho = j^0 = \overline{\psi}\gamma^0\psi = \psi^\dagger\psi \geq 0
+%     \end{align}
+
+%     \subsection{Lorentz Transformations}\label{sec:Lorentz_Transformations}
+%     We can continue developing our relativistic theory by exploring how these fields transform under Lorentz transformations, which we can write as some square matrix $\Lambda$.  Let us begin with a generic 4-vector $x^\mu = x(t, \vec{x})$, with a length $x^2 = t^2 - \vec{x}^2$.  This 4-vector is then invariant under the Lorentz transformation  
+%    \begin{equation}\label{eq:vector_lorentz_transform}
+%        x^\mu \rightarrow x'^{\mu} = \Lambda^\mu_\nu x^\nu.
+%    \end{equation}
+%    Furthermore, a general function $f(x)$ transforms under a Lorentz transformation as $f(x)\rightarrow (f(x))' \equiv f'(x')$, where both the function its argument change.  For a vector function $V^\mu$, it undergoes a Lorentz transformation as 
+%    \begin{equation}\label{eq:vector-function_lorentz_transform}
+%        V^\mu(x) \rightarrow V'^\mu(x') = \Lambda^\mu_\nu V^\nu (x).
+%    \end{equation}
+%    With these transformation properties established, we can move on to define how Dirac spinors transform under Lorentz transformations.  We can begin by constructing a suitable $4\times 4$ matrix $S(\Lambda)$ which transforms a Dirac spinor $\psi(x)$ as in equation \ref{eq:SLambda_def}. If we then impose that $S(\Lambda)$ satisfies the equation $\gamma^\mu S(\Lambda) = S(\Lambda)\Lambda^\mu_\rho\gamma^\rho$, we can then define how the matrix $S(\Lambda)$ acts on $\overline{\psi}$ as well.
+%    \begin{align}\label{eq:SLambda_def}
+%        \psi(x) &\rightarrow \psi'(x') = \psi'(\Lambda x) = S(\Lambda)\psi(x).\\
+%        \overline{\psi}(x) &\rightarrow \overline{\psi}'(x') = \overline{\psi}(x)\gamma^0S^\dagger(\Lambda)\gamma^0
+%    \end{align}
+%    Incorporating all these Lorentz transformation properties together, we can see how the Dirac equation similarly transforms.  
+%    \begin{equation}
+%        \begin{split}
+%            \left(i\partial_\mu \gamma^\mu - m \right) \psi(x) &\rightarrow \left(i\partial'_\mu \gamma^\mu - m \right) \psi'(x)\\
+%            &= \left(i(\Lambda^{-1})^\nu_\mu\partial_\nu \gamma^\mu - m \right) S(\Lambda)\psi(x)\\
+%            &= S(\Lambda)\left(i\partial_\nu \gamma^\nu - m \right)\psi(x)
+%        \end{split}
+%    \end{equation}
+%    This conclusions then clearly shows that $\psi(x)$ transforms linearly under Lorentz transformations.  Therefor so long as $\psi(x)$ is a solution to the Dirac equation, $\psi'(x')$ is also a solution to the Dirac equation. Importantly, $S^\dagger(\Lambda) = \gamma^0 S^{-1}(\Lambda)\gamma^0$. \textbf{WIP FINISH POINT ABOUT $S^{-1} \neq S^\dagger$}.  We can now construct bilinear products $\overline{\psi}\Gamma\psi$ where $\Gamma$ is a $4\times4$ matrix.  $\overline{\psi}\Gamma\psi$ can then be decomposed into a set of bilinear, each has definite transformation properties under Lorentz transformation. First we can define one scalar and four vector bilinears as 
+%    \begin{align*}
+%        \overline{\psi}\psi &\rightarrow \overline{\psi}S^{-1}(\Lambda)S(\Lambda)\psi =  \overline{\psi}\psi \quad \text{(Scalar)},\\
+%        \overline{\psi}\gamma^\mu\psi &\rightarrow \overline{\psi}S^{-1}(\Lambda)\gamma^\mu S(\Lambda)\psi =  \Lambda^\mu_\nu(\overline{\psi}\gamma^\nu\psi) \quad \text{(Vector)}.
+%    \end{align*}
+%    Furthermore if we define the tensor $\Sigma^{\mu\nu} = \frac{1}{4}\left[\gamma^\mu,\gamma^\nu\right]$, we can then define six tensor bilinears as 
+%    \begin{equation*}
+%        \overline\psi\Sigma^{\mu\nu}\psi \rightarrow \overline{\psi}S^{-1}(\Lambda)\Sigma^{\mu\nu}S(\Lambda)\psi = \Lambda^\mu_\rho\Lambda^\nu_\sigma(\overline{\psi}\Sigma^{\rho\sigma}\psi) \quad \text{(Tensor)}.
+%    \end{equation*}
+%    Finally, we can construct 5 more bilinears, one pseudo-scalar and 4 axial-vector, if we first define an auxiliary fifth gamma matrix $\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$.  This matrix has the properties $(\gamma^5)^2 = I_4$, $\{\gamma^5, \gamma^\mu\}=0$, $(\gamma^5)^\dagger = \gamma^5$.  We can therefor write
+%    \begin{align*}
+%        \overline{\psi}\gamma^5\psi &\rightarrow \overline{\psi}S^{-1}(\Lambda)\gamma^5S(\Lambda)\psi =  \mathrm{det}(\Lambda)\overline{\psi}\gamma^5\psi \quad \text{(Pseudo-scalar)},\\
+%         \overline{\psi}\gamma^5\gamma^\mu\psi &\rightarrow \overline{\psi}S^{-1}(\Lambda)\gamma^5\gamma^\mu S(\Lambda)\psi =  \mathrm{det}(\Lambda)\Lambda^\mu_\nu(\overline{\psi}\gamma^5\gamma^\nu\psi) \quad \text{(Axial-vector)}.
+%    \end{align*}
+%    In summary we now have a set of sixteen linearly independent matrices $I_4$ (1 scalar), $\gamma^5$ (1 pseudo-scalar), $\gamma^\mu$ (4 vectors), $\gamma^5\gamma^\mu$ (4 axial-vectors), $\Sigma^{\mu\nu}$ (6 tensors).  Any bilinear $\overline{\psi}\Gamma\psi$ can be written as the sum of terms with definite transformation properties.
+
+
+%     \subsection{Field interactions}\label{sec:field_ineractions}
+%     \textbf{Some amount of preamble...} Now let us begin to consider how particles interact. Supposed this interaction takes place at some time $t$ where $-\infty < t< \infty$.  For the multi-particle field  or state that captures this interaction $\phi(x)$, we can write that in the limit that $t\rightarrow \infty$ or $t\rightarrow -\infty$, $\phi(x) = \phi_\mathrm{out}(x)$ or $\phi(x) = \phi_\mathrm{in}(x)$ respectively. The states $\phi_\mathrm{in,out}$ are then the asymptotic limits of the Heisenberg operator $\phi$ (\textbf{wheres this come form?}), and both satisfy the Klein-Gordon equation $(\Box + m^2)\phi_\mathrm{in,out}(x) = 0$.
+
+%     For free fields, these operators can be described as plane waves:
+%     \begin{equation}\label{eq:plane_wave_in_out}
+%         \phi_\mathrm{in,out}(x) = \int \frac{d^3k}{(16\pi^3 E(k)} \left( e^{i\hat{k}\cdot\hat{x}} a^\dagger_\mathrm{in,out}(k)+ e^{-i\hat{k}\cdot\hat{x}}a_\mathrm{in,out}(k)\right),
+%     \end{equation}
+%     where $a^\dagger(k)$ and $a(k)$ are creation and annihilation operators respectively.  These operators have the properties $\ket{{k}} = a^\dagger({k)}\ket{0}$, $\bra{{k}}\ket{{k'}} = \bra{0}a(k)a^\dagger(k')\ket{0} = 16\pi^3E(k)\delta^3(k-k')$.  With these in hand we can introduce the unitary matrix operator $S$ which relates our $\phi_\mathrm{in}$ and $\phi_\mathrm{out}$ states:
+%     \begin{align*}
+%         &\phi_\mathrm{in}(x) = S \phi_\mathrm{out}(x)S^\dagger\\
+%         \Rightarrow& \ket{\mathrm{in}} = S\ket{\mathrm{out}}, \ket{\mathrm{out}} = S^\dagger\ket{\mathrm{in}}\\
+%         \Rightarrow& a^\dagger_\mathrm{in} = Sa^\dagger_\mathrm{out}S^{-1}.
+%     \end{align*}
+%     The information of the interaction therefor is contained in the S matrix.  For an initial state $i$ and final state $f$, we can write the transition amplitude $S_{fi}$ as 
+%     \begin{equation}\label{eq:Sfi_trans_amp}
+%         \braket{f,\mathrm{out}|i,\mathrm{in}} = \bra{f,\mathrm{out}}S\ket{i,\mathrm{out}} = \bra{f,\mathrm{in}}S\ket{i,\mathrm{in}} \equiv S_{fi}.
+%     \end{equation}
+
+\section{The Standard Model in a nutshell}\label{sec:standard_model_fields}
+To begin our overview of the Standard Mode, let us examine a simplified version of the Standard Model Lagrangian, given by
+\begin{equation}\label{eq:SM_Lagr_trunc1}
+\begin{split}
+ \mathcal{L}_\mathrm{SM} = &-\frac{1}{4}F_{\mu\nu}F^{\mu\nu} \\ 
+        &+ i\overline{\psi}\slashed{D}\psi + \mathrm{h.c.} \\
+        &+ \overline{\psi}_iy_{ij}\psi_j\phi + \mathrm{h.c.} \\
+        &+|D_\mu\phi|^2 - V(\phi)
+\end{split}
+\end{equation}
+The first line in equation \ref{eq:SM_Lagr_trunc1} describes the fundamental forces of the universe, these being the strong force, the weak force, and electromagnetism.  These forces are mediated by particles with non-zero integer spin: the gauge bosons.  The second line then describes the interaction of those fundamental forces with one-half spin particles: the fermions.  The third line describes how particles acquire mass via interaction with the Higgs field, and the fourth line describes the nature of the Higgs field itself, whose scalar boson is the zero-spin Higgs boson.  We can therefore organize the particles in the Standard Model as fermions (matter particles), vector gauge bosons, and the scalar Higgs boson.  
+
+We can further breakdown fermions into quarks and leptons.  There are six flavors of quark ($u$, $d$, $s$, $c$, $b$, $t$), which we can organize into three generations.  Quarks have mass and interact with all three fundamental forces.  Similarly, there are six leptons, three charged and three neutral.  The charged leptons ($e$, $\mu$, $\tau$) have mass and experience the weak force and electromagnetism, while the neutral leptons ($\nu_e$, $\nu_\mu$, $\nu_\tau$) are massless and only experience the weak force. Like the quarks, we can similarly organize the leptons into three generations.  Meanwhile the gauge bosons of the Standard Model include the massless gluons $g$ which mediate the strong force, the $W^\pm$ and $Z^0$ bosons which mediate the weak force, and the photons $\gamma$ which mediate electromagnetism.
+
+% \begin{equation}\label{eq:SM_Lagr_trunc2}
+%     \mathcal{L}_\mathrm{SM} =  \mathcal{L}_\mathrm{QCD} + \mathcal{L}_\mathrm{EW} + \mathcal{L}_\mathrm{QED}
+% \end{equation}
+The representation of the Standard Model as the Lagrangian in equation \ref{eq:SM_Lagr_trunc1} neatly separates the theory into fields, particles, and the interaction between the two.  This tidy description however blends together the separate but related theories into which the Standard Model can be decomposed.  We can alternatively characterize the standard model Lagrangian as a union between the theories of Quantum Chromodynamics (QCD), the weak interaction, and Quantum Electrodynamics (QED). These theories originate from the fundamental symmetries of the Standard Model, whose combined field representation is given by the gauge group
+\begin{equation}
+    SU(3)_c\times SU(2)_L\times U(1)_Y.
+\end{equation}
+The gauge symmetry $SU(3)_c$ describes the color charge of QCD, whose gauge bosons are the gluons.  In this sense, the dynamics of QCD are encapsulated by this single gauge symmetry.  The same is not true for the weak interaction and QED, whose forces are carried by $W^\pm/Z^0$ bosons and photons respectively.  Above the electroweak energy scale (about $246$ GeV), these two separate interactions merge into a single electroweak interaction whose symmetries are described by $SU(2)_L\times U(1)_Y$.  In this unbroken symmetry group the term $SU(2)_L$ describes left handed chirality and $U(1)_Y$ describes hypercharge.  Below that energy scale those symmetries spontaneously break, which we call electroweak symmetry breaking (EWSB).  Out of EWSB we get the massive gauge bosons of the the weak force and the massive scalar Higgs boson of the Higgs interaction.  Also from EWSB we get the massless gauge boson (the photon) of QED, which follows a $U(1)$ symmetry.   In the rest of this chapter we more fully explore the intricacies of the Standard Model, with a focus on the components most relative to the interest of this work: Lattice QCD and the kinetic form factors of heavy meson decays.
+
+\section{Fermions}\label{sec:Fermions}
+The physics of Fermions in the Standard Model originates from the interaction between spacetime and local gauge symmetries.  We may describe fermion as spin-half fields which transform under the combined gauge group $SU(3)_c\times SU(2)_L\times U(1)_Y$.  We can model fermions $\psi$ as representation of the Lorentz group $SO(1,3)$, from which we get the Dirac spinor $\psi(x)$.  For this fermion to undergo a Lorentz transformation $\Lambda$ we get 
+\begin{equation}\label{eq:lorentz}
+    \psi(x) \rightarrow S[\Lambda]\psi(\Lambda^{-1}x).
+\end{equation}
+Here $S[\Lambda]$ is a $4\times4$ matrix which satisfies the equation
+\begin{equation}
+    S^{-1}(\Lambda)\gamma^\mu S(\Lambda) = \Lambda^\mu_\nu \gamma^\nu,
+\end{equation}
+where $\gamma^\mu$ are the Dirac gamma matrices.  Under the Minkowski spacetime metric $\eta=\mathrm{diag(-1,1,1,1)}$ the gamma matrices encode the Clifford algebra $\{\gamma^\mu,\gamma^\nu\} = 2\eta^{\mu\nu}$.  The dynamics of free fermions are characterized by the Lorentz invariant Dirac equation
+\begin{equation}\label{eq:dirac_eq}
+    (i\gamma^\mu\partial_\mu - m)\psi = 0.
+\end{equation}
+When such a fermion experiences some interaction, the partial derivative in equation \ref{eq:dirac_eq} becomes a covariant derivative $D_\mu$.  We can write $D_\mu$ as
+\begin{equation}
+    D_\mu = \partial_\mu + igA_\mu,
+\end{equation}
+where $g$ is the coupling strength of the interaction, and $A$ is the vector gauge field of the interaction.
+
+\section{Gauge field theories}\label{sec:gauge_field_theories}
+In the Standard model, we can say that gauge theories arise out of local symmetries, where gauge fields transform under some Lie group $G$.  The differences in a Lie algebra's structure determine if the corresponding gauge theory is Abelian or non-Abelian.  In Abelian theories like QED, the gauge field does not experience self-interaction.  This is not the case for non-Abelian theories like QCD, where  gauge fields experience self-interaction and gauge bosons likewise experience self-coupling.  We explore the properties of Standard Model gauge theories in more depth throughout the remainder of this section.
+
+\subsection{Quantum Electrodynamics}\label{sec:QED}
+Quantum electrodynamics is arguably the most simple of the gauge theories present in the Standard Model.  As discussed before, QED is experienced by (electrically) charged particles and is mediated by photons.  The charged particles we can write as Dirac fields $\psi(x)$, and the photon is a quantized excitation of the vector field $A$. We suppress any spacetime arguments $x$ when dealing with gauge fields for the purpose of reducing notation; it should be understood that all gauge fields have spacetime dependency.  Under a local gauge symmetry these two fields transform under QED as
+\begin{equation}\label{eq:QED_gauge_symmmetry}
     \begin{split}
-        -\partial_t^2 \psi(t, \vec{x}) &= (-i\alpha\nabla + \beta m)\psi(t, \vec{x})\\
-        &=\left( -\alpha^i\alpha^j\partial_i\partial_j - -i(\beta\alpha^i+\alpha^i\beta)m\partial_i + \beta^2m^2 \right)\psi(t, \vec{x}).
+        \psi(x) &\rightarrow e^{ie\alpha(x)}\psi(x),\\
+        A^\mu &\rightarrow  A^\mu - \partial^\mu \alpha,
     \end{split}
-    \end{equation}
-    As $\partial_i\partial_j$ is a symmetric tensor, we can write
-    \begin{equation}\label{eq:Dirac_step2}
-        \begin{split}
-            \alpha^i\alpha^j\partial_i\partial_j &= \frac{1}{2} \left(\{\alpha^i, \alpha^j\} +[\alpha^i, \alpha^j]\right)\partial_i\partial_j\\
-            &=\frac{1}{2} \{\alpha^i, \alpha^j\}\partial_i\partial_j
-        \end{split}
-    \end{equation}
-    where square and curly brackets denote the commutator and anti-commutator relations respectively.   The Klein-Gordon equation requires the right hand side of equation \ref{eq:Dirac_step1} to equal $\left(-\nabla^2 + m^2 \right)\psi(t, \vec{x})$, and therefor $\alpha$ and $\beta$ must satisfy the following conditions:
-    \begin{enumerate}
-        \item $\{\alpha^i, \alpha^j\} = 2\delta^{ij}$,
-        \item $\beta\alpha^i+\alpha^i\beta = \{\alpha^i, \beta\} = 0$ ,
-        \item $\beta^2 = 1$.
-    \end{enumerate}
+\end{equation}
+where $e$ is the gauge coupling constant and $\alpha(x)$ is some spacetime-dependent gauge parameter.  The vector field $A$ with components $A_\mu$ helps us define the field strength tensor $F_{\mu\nu}$ and the covariant derivative $D_\mu$ in QED, which are given by
+\begin{equation}
+\begin{split}
+    F_{\mu\nu} &= \partial_\mu A_\nu -  \partial_\nu A_\mu,\\
+    D_\mu &= \partial_\mu + ieA_\mu.
+\end{split}
+\end{equation}
+Putting these equations together, we may write the QED Lagrangian as
+\begin{equation}\label{eq:QED_Lagrangian}
+    \mathcal{L}_{\mathrm{QED}} = \overline{\psi}(i\slashed{D}-m)\psi-\frac{1}{4}F_{\mu\nu}F^{\mu\nu},
+\end{equation}
+where $\overline{\psi} \equiv \psi^\dagger\gamma^0$, and $\slashed{D}\equiv\gamma_\mu D^\mu$.  Considering equations \ref{eq:QED_gauge_symmmetry} and \ref{eq:QED_Lagrangian}, we can say that the $1\times1$ matrix $U=e^{ie\alpha}$ is unitary, and therefore QED is a $U(1)$ Abelian gauge theory.  
 
-    If $\alpha$ and $\beta$ are simple numbers, we cannot meet the above conditions and therefor solve the general form of equation \ref{eq:Dirac_general_form} or the Klein-Gordon equation.  We will have better luck if we take $\psi(t, \vec{x})$ to be a column vector and take $\alpha, \beta$ to be $n\times n$ matrices.  Under this assumption, the above conditions also impose the restraint that for both $n\times n$ matrices $\alpha^i$ and $\beta$, their traces $Tr(\alpha_i,\beta) = 0$, their eigenvalues $\lambda_{a^i, \beta} = \pm1$, and $n$ must be even. A set of simple $2\times 2$ matrices are unfortunately not sufficient under these conditions. Instead, as a starting point, let us consider a set of three complex, hermitian, unitary, traceless matrices $\sigma$, where
-    \begin{equation}\label{eq:pauli_matrices}
-        \sigma_i = \begin{pmatrix}0 & 1 \\ 1 & 0\end{pmatrix}, \quad \sigma_j = \begin{pmatrix}0 & -i \\ i & 0\end{pmatrix}, \quad \sigma_k = \begin{pmatrix}1 & 0 \\ 0 & -i\end{pmatrix}.
-    \end{equation}
-    These matrices are the Pauli matrices, which along with the $2\times 2$ identity matrix $I_2$ allow us to write definitions for $\alpha$ and $\beta$ that satisfy all the above conditions and restraints:
-    \begin{equation}\label{eq:def_alpha-beta}
-        \alpha = \begin{pmatrix} 0 & \sigma \\ \sigma & 0\end{pmatrix}, \quad \beta = \begin{pmatrix} I_2 & 0 \\ 0 & -I_2\end{pmatrix}.
-    \end{equation}
+\subsection{Quantum Chromodynamics}
+Let us now move on to discuss a non-Abelian gauge theory: QCD \cite{GELLMANN1964214, FRITZSCH1973365}.  QCD is a non-Abelian gauge theory whose gauge field transforms under the Lie group $G$.  The generators $T^a$ of QCD satisfy the relation $[T^a,T^b] = if^{abc}T^c$.  Under the global $G$ transformation the Dirac field $\psi(x)$ and the vector field $A$ transform as
+\begin{equation}
+\begin{split}
+     \psi(x) &\rightarrow U(x) \psi(x), \\
+     &\equiv e^{ig_s\alpha^a(x)T^a}\psi(x),\\
+     A_\mu &\rightarrow U A_\mu U^{−1} - \frac{i}{g_s} (\partial_\mu U)U^{−1}.
+\end{split}
+\end{equation}
+Here we have suppressed spinor indices, $g_s$ is the strong coupling constant, and $\alpha^a(x)$ are some real functions which parameterize the transformation.  %Here we also introduce the $n_r \times n_r$ matrix $T_r^a$, which acts on the vector $\psi$ of length $n_r$.
+%...
+%We aim to have $G$ be a local gauge theory where $\alpha^a \rightarrow \alpha^a(x)$.  For this to be the case, 
+%
+The associated covariant derivative $D_\mu$ and field strength tensor $F_{\mu\nu}^a$ of QCD are likewise given by 
+\begin{equation}\label{eq:QCD_partial}
+\begin{split}
+        D_\mu &= \partial_\mu + ig_sA^a_\mu T^a,\\
+        F^a_{\mu\nu} &= \partial_\mu A^a_\nu - \partial_\nu A^a_\mu - g_sf^{abc}A^b_\mu A^c_\nu.
+\end{split}
+\end{equation}
+Unlike QED, here we see the presence of a nonlinear term in the equation of the field strength tensor.  It is in this term that the self interacting, non-Abelian structure of QCD manifests.  We would recover an Abelian gauge theory if $f^{abc}=0$.  If we write the compact form of the field strength tensor $F_{\mu\nu} = \frac{i}{g_s}[D_\mu,D_\nu]$, we can see that $F_{\mu\nu}$ transforms covariantly under a global $G$ transformation, rather than remaining invariant:
+\begin{equation}\label{eq:Fmunu_transform}
+    F_{\mu\nu} \rightarrow UF_{\mu\nu}U^{-1}.
+\end{equation}
+While the field strength tensor is not Lorentz invariant,  we can obtain the required term in the QCD Lagrangian by defining the gauge invariant term
+\begin{equation}\label{eq:QCD_gauge_invariant}
+    -\frac{1}{4}F^a_{\mu\nu}F^{a\mu\nu} = \frac{1}{2g_s^2}tr[D_\mu, D_\nu][D^\mu, D^\nu].
+\end{equation}
+
+% Here we introduce the vector gauge field $A$ which transforms under $G$ as $A\rightarrow A'$. ... Symmetry argument... covariant derivative $D_\mu \psi \rightarrow U D_\mu \psi$.  This preserves the symmetry where $\overline{\psi}\slashed{D}\psi \rightarrow \overline{\psi}U^{-1}U\slashed{D}\psi$.  Taking this all into account, we can write that
+% \begin{equation}\label{eq:covariant_transformation}
+%     \underbrace{G(D_\mu)}_{CHECK\_NOTATION} = \partial_\mu + igA_\mu' = U(\partial_\mu + igA_\mu)U^{-1},
+% \end{equation}
+% where $\partial_\mu U^{-1} = U^{-1}\partial_\mu + \underbrace{(\partial_\mu U^{-1})}_{check\_this}$. Using equation \ref{eq:covariant_transformation} we can write for the transformed vector gauge field that 
+% \begin{equation}\label{eq:A'}
+%     \begin{split}
+%         A' &= UA_\mu U^{-1} - \frac{i}{g}U\partial_\mu U^{-1}\\
+%            &= UA_\mu U^{-1} + \frac{i}{g}(\partial_\mu U)U^{-1}
+%     \end{split}
+% \end{equation}
+% ... not involving a representation ... $A_\mu$ is an $n_r\times n_r$ matrix... expanding in terms of representation $A_\mu \equiv A^a_\mu T^a_\mu$...
+% \begin{equation}\label{eq:A'pt2}
+%     \begin{split}
+%         A^a_\mu T^a_\mu &= A^c_\mu T^c_r + ig(\alpha^b T^b_r A^c_\mu T^c_r - A^c_\mu T^c_r\alpha^d T^d_r) - \partial_\mu \alpha^e T^e_r\\
+%         &= A^a_\mu T^a_r + ig\alpha^b A^c_\mu[T^b_r, T^c_r] - \partial_\mu \alpha^a T^a_r
+%     \end{split}
+% \end{equation}
+% ...
+% \begin{equation}\label{eq:A'pt3}
+%     A'^a_\mu = A^a_\mu - gf^{bca}\alpha^b A^a_\mu - \partial_\mu \alpha^a
+% \end{equation}
+% ... look for gauge invariant combination ... with the covariance property $D_\mu \rightarrow U D_\mu U^{-1}$, and defining the field strength tensor $F_{\mu\nu}=F^a_{\mu\nu}T^a_r$, we find that $igF^a_{\mu\nu}T^a_r$ is equivalent to $[D_\mu, D_\nu] \rightarrow  U [D_\mu, D_\nu] U^{-1}$... If we expand the commutator relation we can write 
+% \begin{equation}\label{eq:QCD_commutator}
+%     .
+% \end{equation}
+% ... while this is not gauge invariant, 
+% ... We recover an Abelian gauge theory so long as $f^{abc}=0$, as is the case for QED.  This is not the case for QCD, and we shall see how $f^{abc}\neq0$  results in cubic and quartic terms in the QCD Lagrangian...  
+
+As an $SU(3)$ gauge theory, the $N^2 - 1=8$ gauge bosons of QCD (gluons) carry the QCD's color charge.  The three color charges are red, blue, and green ($r$, $b$, $g$), and the eight gluons act as a color octet: $r\overline{g}$, $r\overline{b}$, $g\overline{r}$, $g\overline{b}$, $b\overline{r}$, $b\overline{g}$, $\frac{1}{\sqrt{2}}(r\overline{r} - g\overline{g})$, and $\frac{1}{\sqrt{3}}(r\overline{r} + g\overline{g} - 2b\overline{b})$.  The $SU(3)$ structure of QED means that there is no ninth color singlet gluon.  Gluons therefore always couple to another gluon or one of the six flavors of quark,  which transform as color triplets.  We can say then that physical states in nature only exist as color neutral states, a phenomenon which is known as \textit{confinement}. We can relate the gauge field theory generators of QCD to the Gell-Mann matrices $\lambda^a$ as $T^a = \frac{1}{2}\lambda^a$, where $a\in\{1,...,8\}$. Doing so, we arrive at the QCD Lagrangian, given by
+% These gluons couple to quarks and to themselves.  Quarks transform in ... the three dimensional representation of QCD as an $SU(3)$... three colors ... The six quark flavors $u,c,t,d,s,b$ transform as color triplets.
+\begin{equation}\label{eq:QCD_Lagrangian}
+    \mathcal{L}_\mathrm{QCD} = -\frac{1}{4}G^a_{\mu\nu}G^{a\mu\nu} +
+    \sum_{q\in\{u,c,t,d,s,b\}} \overline{\psi}_q \left(i\slashed{\partial} - g_s \slashed{A}^a \frac{\lambda^a}{2} -m_q  \right) \psi_q.
+\end{equation}
+Here we differentiate from QED by now writing the field strength tensor as $G^a_{\mu\nu}$ to denote that gluons are the force carrying boson in QCD.  We also see the same slashed notation where for some vector $X$, $\slashed{X} \equiv \gamma_\mu x^\mu$.%.  Here also we have the strong coupling constant $g_s$, and the eight $3\times3$ Gell-Mann matrices $\lambda^a$...
+
+
+\subsection{The Electroweak sector}\label{sec:electroweak}
+While the lattice simulations to come are performed in pure QCD, the meson decays in which we are interested are fundamentally electroweak processes. As far as gauge theories go, the peculiarities of the electroweak sector \cite{SALAM1964168, PhysRevLett.19.1264} warrant some extra discussion.  
+
+While QCD's $SU(3)$ and QED's $U(1)$ symmetries remain unbroken after EWSB, the same cannot be said for the originally unbroken symmetries of the electroweak interaction.  The electroweak symmetry group $SU(2)_L\times U(1)_Y$ mixes Abelian and non-Abelian gauge theories which couple to fermions differently.  From the non-Abelian $SU(2)_L$ component we have three gauge fields $W^i_\mu$ for $i\in\{1,2,3\}$, and the generators $T^i = \frac{\sigma^i}{2}$, where $\sigma^i$ are the Pauli matrices. Meanwhile from the Abelian $U(1)_Y$ component we have one gauge field $B_\mu$, and its scalar generator $Y$: hypercharge.  The combined covariant derivative under these gauge theories is then given by 
+\begin{equation}\label{eq:EQ_covariant-derive}
+    D_\mu = \partial_\mu + igW^i_\mu T^i + ig^\prime Y B_\mu,   
+\end{equation}
+where $g$ and $g^\prime$ are the associated coupling constants of either gauge field.  The field strength tensors of these gauge fields are likewise given by
+\begin{equation}
+\begin{split}
+    W^i_{\mu\nu} &= \partial_\mu W^i_\nu - \partial_\nu W^i_\mu + g\epsilon^{ijk}W^j_\mu W^k_\nu, \\
+    B_{\mu\nu} &= \partial_\mu B_\nu - \partial_\nu B_\mu,
+\end{split}
+\end{equation}
+where $\epsilon^{ijk}$ is the structure constant of $SU(2)_L$.
+
+The key distinction which separates the electroweak interaction from QCD and QED is that $SU(2)_L$ is \textit{chiral}.  As such, left-handed fermions $\psi_L$ transform as doublets under $SU(2)_L$, while right-handed fermions $\psi_R$ are singlets under $SU(2)_L$.  For each fermion generation, We can define the left-handed quark and lepton doublets as
+\begin{equation}\label{doublets}
+    Q_L =\begin{pmatrix}  u_L\\d_L \end{pmatrix}\, , \quad
+    L_L =\begin{pmatrix} \nu_L \\ e_L  \end{pmatrix}.
+\end{equation}
+Meanwhile $u_R$, $d_R$, $e_R$, and $\nu_R$ are right handed singlets.  We note that $\nu_R$ does not interact with any gauge theory in the Standard Model, and so it is often not part of the minimal Standard Model field content.  Unlike QCD or QED, the gauge couplings in the electroweak interaction are not symmetric about $\psi_L$ and $\psi_R$, and so we can say that $SU(2)_L$ does not preserve parity symmetry.  
+
+After EWSB \cite{PhysRevLett.13.508, PhysRevLett.19.1264, salam1968weak}, these gauge fields mix together with the scalar Higgs field $\phi$.  In doing so, they form the physically observable charged gauge fields $W^\pm_\mu$ and neutral gauge fields $Z^0_\mu$, $A_\mu$.  Their equations are given by 
+\begin{equation}
+\begin{split}
+    W^\pm_\mu &= \frac{1}{\sqrt{2}}(W^1_\mu + iW_\mu^2),\\
+    Z^0_\mu &= \cos\theta_W W_μ^3 − \sin\theta_W B_\mu,\\
+    A_\mu &= \sin\theta_W W_μ^3 + \cos\theta_W Bμ,
+\end{split}
+\end{equation}
+where $\theta_W = \frac{g^\prime}{\sqrt{g^2+g^{\prime2}}}$ is the \textit{weak mixing angle}.  We can write the masses of the corresponding gauge bosons as
+\begin{equation}\label{eq:boson_masses}
+    M_{W^\pm} = \frac{vg}{2}, \quad M_{Z^0} = \frac{v\sqrt{g^2+g^{\prime2}}}{2} = \frac{M_{W^\pm}}{\cos\theta_W}, \quad M_\gamma = 0,
+\end{equation}
+where $\frac{v}{\sqrt{2}}$ is the vacuum expectation value of the Higgs potential. Here we may also acknowledge that $A_\mu$ is the very same Abelian gauge field we see in our discussion of QED (section \ref{sec:QED}), and as such its gauge boson is the photon $\gamma$.  After EWSB, it is accurate to say that the fields $W^\pm_\mu$ and $Z^0_\mu$ now characterize the weak interaction.  The corresponding Lagrangian of the weak interaction can be separated into distinct parts: charged currents (coupled to the $W^\pm$) which change quark flavor within flavor doublets, neutral currents (coupled to the $Z^0$) which have chiral structure and preserve flavor, and triple and quartic couplings from gauge boson self-interaction.  We take a closer look at charged and neutral currents in the context of meson decays in the following section.  
+
+The electroweak interaction is also the context in which quarks and charged leptons acquire mass in the Standard Model, this being in the form of Yukawa couplings \cite{PhysRevLett.19.1264, 10.1143/PTPS.1.1}.  If we remain in a mass eigenstate basis (ignoring flavor changing for now) we can write the Yukawa couplings for an up-type quark, down-type quark, and charged lepton as $y^u$, $y^d$, and $y^e$ respectively.  The couplings appear in the Yukawa portion of the Standard Model Lagrangian $\mathcal{L}_Y$ as
+\begin{equation}
+    \mathcal{L}_{Y} = −\overline{Q}_Ly^d\phi d_R- 
+    \overline{Q}_Ly^u\tilde{\phi}u_R-
+    \overline{L}_Ly^e\phi e_R+\mathrm{h.c.},
+\end{equation}
+where the Higgs field conjugate $\tilde{\phi} = i\sigma^2\phi^*$. In this mass eigenstate basis, the Yukawa couplings are scalars, which permit us to simply write those fermion masses as 
+\begin{equation}
+    m_u = \frac{vy^u}{\sqrt{2}}, \quad m_d = \frac{vy^d}{\sqrt{2}}, \quad m_e = \frac{vy^e}{\sqrt{2}}, \quad m_\nu = 0.
+\end{equation}
+By rotating into the weak eigenstate basis, we introduce flavor mixing into the Yukawa Lagrangian, and as such the Yukawa couplings now become complex $3\times3$ matrices $Y^u_{ij}$, $Y^d_{ij}$, and $Y^e_{ij}$, where the indices $i,j \in \{1,2,3\}$ label fermion generation.  In the weak eigenstate bases the Yukawa Lagrangian is instead given by
+\begin{equation}
+    \mathcal{L}_{Y} = −\overline{Q}_L^iY^d_{ij}\phi d_R^j- 
+    \overline{Q}_L^iY^u_{ij}\tilde{\phi}u_R^j-
+    \overline{L}_L^iY^e_{ij}\phi e_R^j+h.c.,
+\end{equation}
+where the flavor doublets and singlets pick up flavor indices as well.
+
+%The broken symmetries of the electroweak interaction also give us the Higgs field $H$
+
+
+
+% \begin{equation}\label{eq:Weak_Lagr}
+%     \mathcal{L}_{int} = 
+% \end{equation}
+
+
+
+
+% The projection of fermions into left or right-handedness is accomplished with the parity operator $P_{L,R} \equiv \frac{1}{2}(1\mp\gamma^5)$, where $\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$.  The parity operator has properties such that $\psi_{L,R}\equiv P_{L,R}\psi$, and $\overline{\psi_{L,R}}=(P_{L,R}\psi)^\dagger\gamma^0 = \overline{\psi}P_{R,L} = \overline{\psi}_{R,L}$.  With these properties we can write the fermionic portion of the weak Lagrangian as
+% \begin{equation}\label{eq:Fermionic_Weak}
+%     \mathcal{L}_{SU(2),\psi} = 
+% \end{equation}
+
+% ... Weak interaction couples to fermions, seek simple non-Abelian  Lie group $SU(2)$... Generators are Pauli matrices $\frac{\sigma^i}{2}$ which satisfy the lie algebra $[\frac{\sigma^{i}}{2},\frac{\sigma^j}{2}] = i\epsilon_{ijk}\frac{\sigma^k}{2}$... for three component $SU(2)$ gauge field $W^i_\mu$... Covariant derivative defined as
+% \begin{equation}\label{eq:EW_covariant_derivative}
+%     D_\mu = \partial_\mu i\frac{g}{2}W^i_\mu \sigma^i = 
+%     \partial_\mu i\frac{g}{2}\begin{pmatrix}
+%         W^3_\mu & \sqrt{2}W^+_\mu\\
+%         \sqrt{2}W^-_\mu & -W^3_\mu
+%     \end{pmatrix}.
+% \end{equation}
+% Here we define $W^\pm_\mu \equiv \frac{1}{\sqrt{2}}(W^1_\mu \mp i W^2_\mu)$... Can group fermions into $SU(2)$ doublets for every generation: quarks $q\equiv(u,d)^T$ and leptons $l\equiv (\nu,e)^T$... Can construct an electroweak Lagrangian which contain terms where the covariant derivative acts on these $SU(2)$ doublets, such as $\overline{l}i\slashed{D}l + \overline{q}i\slashed{D}q$.
+
+% ... This formalism requires that EW preserves parity.  However experiments \cite{PhysRev.105.1413} show this is not the case... A possible remedy to propose projection operators $P_{L,R} \equiv \frac{1}{2}(1 \mp \gamma^5)$. This operator acting on our Dirac fields give us $P_{L,R}\psi \equiv \psi_{L,R}$, where $\overline{\psi_{L}} \equiv (P_L \psi)^\dagger \gamma^0 = \overline{\psi}P_R = \overline{\psi}_R$.  This formulation allows us to write the Dirac Lagrangian as
+% \begin{equation}\label{eq:EW_Dirac_Lagrangian}
+%     \mathcal{L} = i (\overline{\psi}_L\slashed{\partial}\psi_L + \overline{\psi}_R\slashed{\partial}\psi_R) - 
+%     m(\overline{\psi}_L\psi_R + \overline{\psi}_R\psi_L).
+% \end{equation}
+% ... More more more needed
+% \subsubsection*{The Higgs sector}\label{sec:Higgs}
+% Higgs Citations \cite{PhysRevLett.13.508, PhysRevLett.13.321, PhysRevLett.13.585}
+
     
-    Defining $\alpha$ and $\beta$ in this way gets us to a root of the Klein-Gordon equation, but these are not obviously make equation \ref{eq:Dirac_general_form} Lorentz invariant.  To do so, we can introduce the definition of the Gamma matrices, or Dirac matrices, where $\gamma^0 = \beta$, and $\vec{\gamma} = \beta\vec{\alpha}$.  In this notation we can represent the collection of $\alpha_{i,j,k}$ as $\vec{\alpha} = (\alpha_i,\alpha_j, \alpha_j) \equiv (\alpha_1,\alpha_2, \alpha_3)$.  We therefore have the general gamma matrix $\gamma^\mu = (\gamma^0, \vec{\gamma})$.For completeness we can show the full forms of the gamma matrices like in equation \ref{eq:gamma_matrices}
-    \begin{equation}\label{eq:gamma_matrices}
-    \begin{split}
-        \gamma^0 = \begin{pmatrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & -1 & 0 \\ 0 & 0 & 0 & -1\end{pmatrix}&, 
-        \quad \gamma^1 = \begin{pmatrix}0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & -1 & 0 & 0 \\ -1 & 0 & 0 & 0\end{pmatrix}, \\
-        \quad \gamma^2 = \begin{pmatrix}0 & 0 & 0 & i \\ 0 & 0 & i & 0 \\ 0 & -i & 0 & 0 \\ -i & 0 & 0 & 0\end{pmatrix}&, 
-        \quad \gamma^3 = \begin{pmatrix}0 & 0 & 1 & 0 \\ 0 & 0 & 0 & -1 \\ -1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0\end{pmatrix}.
-    \end{split}
-    \end{equation}
-    Here $\gamma^0$ is \textit{time-like} in the Lorentz sense, and is Hermitian: $(\gamma^0)^\dagger = \gamma^0$. Meanwhile for $i=1,2,3$, $\gamma^i$ is \textit{space-like} and anti-Hermitian: $(\gamma^i)^\dagger = -\gamma^i$.  With these matrices we can rewrite equation \ref{eq:Dirac_step2} instead as
-    \begin{equation}\label{eq:Dirac_step3}
-        \{\gamma^\mu, \gamma^\nu\} = \gamma^\mu\gamma^\nu - \gamma^\nu\gamma^\mu = 2g^{\mu\nu}I_4,
-    \end{equation}
-    where $g^{\mu\nu}$ is the Minkowski spacetime metric, and $I_4$ is the identity matrix of size $4\times4$.  Finally by multiplying $\gamma^0$ through equation \ref{eq:Dirac_general_form} we can arrive at the Dirac equation, which in covariant form is (in natural units):
-    \begin{equation}\label{eq:Dirac}
-        \left(i\gamma^\mu\partial_\mu - mI_4 \right) \psi(t,\vec{x}) = 0.
-    \end{equation}
-    We can simplify the Dirac equation further by adopting the Feynman slash notation where for some $a_\mu$ we define $\slashed{a} = \gamma^\mu a_\mu$.  If we than also generalize across all spacetime dimensions we can write the Dirac equation simple as
-    \begin{equation}\label{eq:Dirac_simple}
-        (i\slashed{\partial}-m)\psi = 0
-    \end{equation}
 
-    At this point we can acknowledge $\psi$ (or really $\psi(t,\vec{x})$) as a column vector, which has more than one degree of freedom.  We can interpret this field which describes many particles $\psi$ as a wave function, and in this instance the wave function for spin-$\frac{1}{2}$ fermions, or \textit{Dirac Spinors}.  At this point we are still presented with the problem of interpreting negative energy solutions which we can see in the Dirac Hamiltonian: $H_\mathrm{Dirac} \equiv i\frac{\partial}{\partial t} = -i\alpha\nabla + \beta m$, where  $\alpha$ and $\beta$ are traceless, and have eigenvalues that sum to zero.  
+\section{Meson decays}\label{sec:weak_decays}
+In this section we more fully explore the physics of the weak interaction, with a focus on Meson decays.  We do so in the context of flavor changing charged and neutral currents, which ultimately lead us to the kinematic form factors we aim to calculate. 
 
-    To overcome this, we can define the adjoint representation of such a Dirac field as $\bar{\psi} = \psi^\dagger\gamma^0$.  With this construction we can then show that for \textbf{WIP prob density?} 
-    \begin{align}\label{eq:Dirac_prob_density1}
-        \partial_\mu(\bar{\psi}\gamma^\mu\psi) = \partial_\mu j^\mu = 0 \\
-        \label{eq:Dirac_prob_density2}
-        \rho = j^0 = \bar{\psi}\gamma^0\psi = \psi^\dagger\psi \geq 0
-    \end{align}
+\subsection{Flavor changing charged currents}\label{sec:FCCCs}
+At tree level, the Standard Model meson decays of interest to this work ($B\rightarrow\pi$, $D\rightarrow \pi$, $B_s \rightarrow K$, $D_s \rightarrow K$) all involve flavor changing weak decays via charged currents.  This is to say, some valence bottom/charm quark within a meson weakly decays, emitting a charged $W^{\pm}$ boson and changing flavor to an up/down quark. We call such an interaction a flavor changing charged current (FCCC).  Figure \ref{fig:Vub} shows the Feynman diagram of a semileptonic $B\rightarrow\pi$ meson decay, which contains a FCCC.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{chapter2/pdfs/Vub_diagram.pdf}
+    \caption{Diagram for the semileptonic $B^0\rightarrow\pi^-e^+\nu$ meson decay, the amplitude of which contains the CKM matrix element $V_{ub}$.}
+    \label{fig:Vub}
+\end{figure}
 
-    \subsection{Lorentz Transformations}\label{sec:Lorentz_Transformations}
-    We can continue developing our relativistic theory by exploring how these fields transform under Lorentz transformations, which we can write as some square matrix $\Lambda$.  Let us begin with a generic 4-vector $x^\mu = x(t, \vec{x})$, with a length $x^2 = t^2 - \vec{x}^2$.  This 4-vector is then invariant under the Lorentz transformation  
-   \begin{equation}\label{eq:vector_lorentz_transform}
-       x^\mu \rightarrow x'^{\mu} = \Lambda^\mu_\nu x^\nu.
-   \end{equation}
-   Furthermore, a general function $f(x)$ transforms under a Lorentz transformation as $f(x)\rightarrow (f(x))' \equiv f'(x')$, where both the function its argument change.  For a vector function $V^\mu$, it undergoes a Lorentz transformation as 
-   \begin{equation}\label{eq:vector-function_lorentz_transform}
-       V^\mu(x) \rightarrow V'^\mu(x') = \Lambda^\mu_\nu V^\nu (x).
-   \end{equation}
-   With these transformation properties established, we can move on to define how Dirac spinors transform under Lorentz transformations.  We can begin by constructing a suitable $4\times 4$ matrix $S(\Lambda)$ which transforms a Dirac spinor $\psi(x)$ as in equation \ref{eq:SLambda_def}. If we then impose that $S(\Lambda)$ satisfies the equation $\gamma^\mu S(\Lambda) = S(\Lambda)\Lambda^\mu_\rho\gamma^\rho$, we can then define how the matrix $S(\Lambda)$ acts on $\bar{\psi}$ as well.
-   \begin{align}\label{eq:SLambda_def}
-       \psi(x) &\rightarrow \psi'(x') = \psi'(\Lambda x) = S(\Lambda)\psi(x).\\
-       \bar{\psi}(x) &\rightarrow \bar{\psi}'(x') = \bar{\psi}(x)\gamma^0S^\dagger(\Lambda)\gamma^0
-   \end{align}
-   Incorporating all these Lorentz transformation properties together, we can see how the Dirac equation similarly transforms.  
-   \begin{equation}
-       \begin{split}
-           \left(i\partial_\mu \gamma^\mu - m \right) \psi(x) &\rightarrow \left(i\partial'_\mu \gamma^\mu - m \right) \psi'(x)\\
-           &= \left(i(\Lambda^{-1})^\nu_\mu\partial_\nu \gamma^\mu - m \right) S(\Lambda)\psi(x)\\
-           &= S(\Lambda)\left(i\partial_\nu \gamma^\nu - m \right)\psi(x)
-       \end{split}
-   \end{equation}
-   This conclusions then clearly shows that $\psi(x)$ transforms linearly under Lorentz transformations.  Therefor so long as $\psi(x)$ is a solution to the Dirac equation, $\psi'(x')$ is also a solution to the Dirac equation. Importantly, $S^\dagger(\Lambda) = \gamma^0 S^{-1}(\Lambda)\gamma^0$. \textbf{WIP FINISH POINT ABOUT $S^{-1} \neq S^\dagger$}.  We can now construct bilinear products $\bar{\psi}\Gamma\psi$ where $\Gamma$ is a $4\times4$ matrix.  $\bar{\psi}\Gamma\psi$ can then be decomposed into a set of bilinear, each has definite transformation properties under Lorentz transformation. First we can define one scalar and four vector bilinears as 
-   \begin{align*}
-       \bar{\psi}\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)S(\Lambda)\psi =  \bar{\psi}\psi \quad \text{(Scalar)},\\
-       \bar{\psi}\gamma^\mu\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^\mu S(\Lambda)\psi =  \Lambda^\mu_\nu(\bar{\psi}\gamma^\nu\psi) \quad \text{(Vector)}.
-   \end{align*}
-   Furthermore if we define the tensor $\Sigma^{\mu\nu} = \frac{1}{4}\left[\gamma^\mu,\gamma^\nu\right]$, we can then define six tensor bilinears as 
-   \begin{equation*}
-       \bar\psi\Sigma^{\mu\nu}\psi \rightarrow \bar{\psi}S^{-1}(\Lambda)\Sigma^{\mu\nu}S(\Lambda)\psi = \Lambda^\mu_\rho\Lambda^\nu_\sigma(\bar{\psi}\Sigma^{\rho\sigma}\psi) \quad \text{(Tensor)}.
-   \end{equation*}
-   Finally, we can construct 5 more bilinears, one pseudo-scalar and 4 axial-vector, if we first define an auxiliary fifth gamma matrix $\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$.  This matrix has the properties $(\gamma^5)^2 = I_4$, $\{\gamma^5, \gamma^\mu\}=0$, $(\gamma^5)^\dagger = \gamma^5$.  We can therefor write
-   \begin{align*}
-       \bar{\psi}\gamma^5\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^5S(\Lambda)\psi =  \mathrm{det}(\Lambda)\bar{\psi}\gamma^5\psi \quad \text{(Pseudo-scalar)},\\
-        \bar{\psi}\gamma^5\gamma^\mu\psi &\rightarrow \bar{\psi}S^{-1}(\Lambda)\gamma^5\gamma^\mu S(\Lambda)\psi =  \mathrm{det}(\Lambda)\Lambda^\mu_\nu(\bar{\psi}\gamma^5\gamma^\nu\psi) \quad \text{(Axial-vector)}.
-   \end{align*}
-   In summary we now have a set of sixteen linearly independent matrices $I_4$ (1 scalar), $\gamma^5$ (1 pseudo-scalar), $\gamma^\mu$ (4 vectors), $\gamma^5\gamma^\mu$ (4 axial-vectors), $\Sigma^{\mu\nu}$ (6 tensors).  Any bilinear $\bar{\psi}\Gamma\psi$ can be written as the sum of terms with definite transformation properties.
+In the weak eigenstate basis, we can write the Lagrangian of a FCCC as
+\begin{equation}\label{eq:fccc_v1}
+    \mathcal{L_\mathrm{FCCC}} = -\frac{g}{2}\overline{u}_L^i \gamma^\mu d_L^i W^+_\mu + \mathrm{h.c.},
+\end{equation}
+where $u_L^i$ and $d_L^i$ denote  up and down-type left-handed quark fields of generation $i$.  If we wish to rotate into a mass eigenstate basis, we arrive at a problem in the Yukawa sector.  The up and down-type quark mass matrices arise from the independent complex Yukawa matrices $Y^u$ and $Y^d$.  These matrices can be diagonalized by different unitary transformations, but not simultaneously.  In other words, weak interaction eigenstates are not aligned with their mass eigenstates.  We can parameterize this misalignment with the introduction of the Cabbibo-Kobayashi-Maskawa (CKM) matrix \cite{PhysRevLett.10.531, 10.1143/PTP.49.652}, a unitary $3\times3$ matrix with matrix elements $V_{ij}$.  Doing so, we can write the Lagrangian of a FCCC in the mass eigenstate basis as
+\begin{equation}\label{eq:fccc_v2}
+    \mathcal{L_\mathrm{FCCC}} = -\frac{g}{2}\overline{u}_L^i \gamma^\mu V_{ij}d_L^j W^+_\mu + \mathrm{h.c.},
+\end{equation}
+With this formulation, we can say that the $W^\pm$ bosons mediate transitions between different quark generations ($u\rightarrow d,s,b$ for example), with amplitudes weighted by the corresponding CKM matrix elements.
+% ...
+% \begin{equation}\label{eq:FCCC_Lagrangian}
+%     \mathcal{L}_\mathrm{FCCC} = \frac{|e|}{\sqrt{2}\sin\theta_W}
+%     \left(
+%     V_{ij}\overline{u_L}^i \slashed{W}^+d^j_L + 
+%     V^*_{ij}\overline{d_L}^i \slashed{W}^-u^j_L + 
+%     \overline{\nu_L}^i \slashed{W}^+e^i_L +
+%     \overline{e_L}^i \slashed{W}^-\nu^i_L
+%     \right)
+% \end{equation}
+% .. where $V_{ij}$ is an element of the 
+% ...
+% \begin{equation}\label{eq:EW_pt1}
+%     L_\mu^{ij} = \frac{1}{2}(\overline{\nu}^i\gamma_\mu e^j - \overline{\nu}^i\gamma_5\gamma_\mu e^j)
+% \end{equation}
+% \begin{equation}\label{eq:EW_pt2}
+%     J_\mu^{ij} = \frac{1}{2}(\overline{u}^i\gamma_\mu d^j - \overline{u}^i\gamma_5\gamma_\mu d^j)
+% \end{equation}
+% ... Here we can say that the flavor changing charged current $J^{ij}_\mu \equiv V^{ij}_\mu - A^{ij}_\mu$... With equations \ref{eq:EW_pt1} and \ref{eq:EW_pt2}, we can rewrite equation \ref{eq:FCCC_Lagrangian} as
+% \begin{equation}\label{eq:EW_new_Lagrangian}
+%     \mathcal{L}_\mathrm{FCCC} = \frac{|e|}{\sqrt{2}\sin\theta_W}
+%     \left(
+%     V_{ij}J^{ij}_\mu{W}^{+\mu} + 
+%     V^*_{ij}J^{ij\dagger}_\zeta{W}^{-\zeta} + 
+%     L_\rho^{ii} {W}^{+\rho} +
+%     L_\sigma^{ii\dagger} {W}^{-\sigma}
+%     \right)
+% \end{equation}
 
 
-    \subsection{Field interactions}\label{sec:field_ineractions}
-    \textbf{Some amount of preamble...} Now let us begin to consider how particles interact. Supposed this interaction takes place at some time $t$ where $-\infty < t< \infty$.  For the multi-particle field  or state that captures this interaction $\phi(x)$, we can write that in the limit that $t\rightarrow \infty$ or $t\rightarrow -\infty$, $\phi(x) = \phi_\mathrm{out}(x)$ or $\phi(x) = \phi_\mathrm{in}(x)$ respectively. The states $\phi_\mathrm{in,out}$ are then the asymptotic limits of the Heisenberg operator $\phi$ (\textbf{wheres this come form?}), and both satisfy the Klein-Gordon equation $(\Box + m^2)\phi_\mathrm{in,out}(x) = 0$.
-
-    For free fields, these operators can be described as plane waves:
-    \begin{equation}\label{eq:plane_wave_in_out}
-        \phi_\mathrm{in,out}(x) = \int \frac{d^3k}{(16\pi^3 E(k)} \left( e^{i\hat{k}\cdot\hat{x}} a^\dagger_\mathrm{in,out}(k)+ e^{-i\hat{k}\cdot\hat{x}}a_\mathrm{in,out}(k)\right),
-    \end{equation}
-    where $a^\dagger(k)$ and $a(k)$ are creation and annihilation operators respectively.  These operators have the properties $\ket{{k}} = a^\dagger({k)}\ket{0}$, $\bra{{k}}\ket{{k'}} = \bra{0}a(k)a^\dagger(k')\ket{0} = 16\pi^3E(k)\delta^3(k-k')$.  With these in hand we can introduce the unitary matrix operator $S$ which relates our $\phi_\mathrm{in}$ and $\phi_\mathrm{out}$ states:
-    \begin{align*}
-        &\phi_\mathrm{in}(x) = S \phi_\mathrm{out}(x)S^\dagger\\
-        \Rightarrow& \ket{\mathrm{in}} = S\ket{\mathrm{out}}, \ket{\mathrm{out}} = S^\dagger\ket{\mathrm{in}}\\
-        \Rightarrow& a^\dagger_\mathrm{in} = Sa^\dagger_\mathrm{out}S^{-1}.
-    \end{align*}
-    The information of the interaction therefor is contained in the S matrix.  For an initial state $i$ and final state $f$, we can write the transition amplitude $S_{fi}$ as 
-    \begin{equation}\label{eq:Sfi_trans_amp}
-        \braket{f,\mathrm{out}|i,\mathrm{in}} = \bra{f,\mathrm{out}}S\ket{i,\mathrm{out}} = \bra{f,\mathrm{in}}S\ket{i,\mathrm{in}} \equiv S_{fi}.
-    \end{equation}
-
-    
-
-
-\section{Standard Model fields}\label{sec:standard_model_fields}
-    \subsection{Gauge field theories}\label{sec:gause_field_theories}
-    Discussion of Abelian vs non Abelian gauge theories
-    \subsubsection{Quantum Electrodynamics}\label{sec:QED}
-    \subsubsection{Quantum Chromodynamics}\label{sec:QCD}
-    \subsection{The Electroweak sector}\label{sec:electroweak}
-    \subsection{The Higgs sector}\label{sec:Higgs}
-    \subsection{A catalog of the Standard Model}\label{sec:catalog_of_standard_model}
-    This section ought to combine the various bases discussed in the previous chapter to present the combined field representation of $SU(3)_c\times SU(2)_L\times U(1)_Y$.
-    
-
-\section{Weak decays}\label{sec:weak_decays}
-Though the electroweak sector would be discussed in the previous sections, the various forms of weak decays are what constitute the foundation of my research, and so an expanded discussion of their nature is warranted.  This would include the CKM matrix, flavor changing charged/neutral currents.  More specific emphasis ought to be made on standard semileptonic decays.
-\subsection{Flavor changing charged currents}
 \subsection{The CKM Matrix}\label{sec:CKM_matrix}
-    The CKM matrix $V_\mathrm{CKM}$, with elements $V_{ij}$, put simply, parametrizes the relative strength of flavor changing weak interactions of free quarks.  In other words, it represents the probability of an up or down-type quark to decay into an opposite-type quark of a certain generation.  
-    \begin{equation}\label{eq:CKM_matrix}
-        V_{\mathrm{CKM}} \equiv 
-        \begin{pmatrix}
-         V_{ud} & V_{us} & V_{ub} \\   
-         V_{cd} & V_{cs} & V_{cb} \\  
-         V_{td} & V_{ts} & V_{tb} 
-        \end{pmatrix}
-        =
-        \begin{pmatrix}
-            0.97367(32) & 0.22431(85) & 0.00382(20) \\
-            0.221(4)    & 0.975(6)    & 0.0411(12) \\
-            0.0086(2)   & 0.0415(9)   & 1.010(27)
-        \end{pmatrix}
-    \end{equation}
-    Considering the unitary nature of this matrix, we can construct a \textit{unitary triangle} whose angles $\phi_{1,2,3}$ are determined from the the elements of $V_{\mathrm{CKM}}$.  With this unitary constraint where $V_{ud}V^*_{ub} + V_{cd}V^*_{cb} + V_{td}V^*_{tb} = 0$, we can write
-    \begin{equation}\label{eq:CKM_angles}
-        \phi_1 = \arg\left(\frac{V_{cd}V^*_{cb}}{ V_{td}V^*_{tb}}\right),
-        \quad \phi_2 = \arg\left(\frac{V_{td}V^*_{tb}}{ V_{ud}V^*_{ub}}\right),
-         \quad \phi_3 = \arg\left(\frac{V_{ud}V^*_{ub}}{ V_{cd}V^*_{cb}}\right)
-    \end{equation}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.7\linewidth]{chapter2/pdfs/belle_rhoeta_large.pdf}
-        \caption{The CKM matrix represented by as the Unitary Triangle, whose angles are defined in equation \ref{eq:CKM_angles}.  Image created by the CKMfitter group \cite{Charles_2005}.}
-        \label{fig:CKM_unitary_triangle}
-    \end{figure}
+As we have seen, the CKM matrix $V_\mathrm{CKM}$ parametrizes the relative strength of flavor changing weak interactions of free quarks.  We can likewise say that a given CKM matrix element represents the probability for an up or down-type quark to decay into an opposite-type quark of a certain generation.  Thankfully, we can probe the values of the CKM matrix by studying leptonic and semileptonic meson decays, as $V_\mathrm{CKM}$ elements are present in the decay amplitudes.  The Particle Data Group (PDG) gives a current global average of the CKM matrix as \cite{ParticleDataGroup:2024cfk}
+\begin{equation}\label{eq:CKM_matrix}
+    V_{\mathrm{CKM}} \equiv 
+    \begin{pmatrix}
+     V_{ud} & V_{us} & V_{ub} \\   
+     V_{cd} & V_{cs} & V_{cb} \\  
+     V_{td} & V_{ts} & V_{tb} 
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        0.97367(32) & 0.22431(85) & 0.00382(20) \\
+        0.221(4)    & 0.975(6)    & 0.0411(12) \\
+        0.0086(2)   & 0.0415(9)   & 1.010(27)
+    \end{pmatrix}
+\end{equation}
+Considering the unitary nature of this matrix, we can construct a \textit{unitary triangle} whose angles $\phi_{1,2,3}$ are determined from the the elements of $V_{\mathrm{CKM}}$.  By imposing the unitary constraint where $V_{ud}V^*_{ub} + V_{cd}V^*_{cb} + V_{td}V^*_{tb} = 0$, we can write
+\begin{equation}\label{eq:CKM_angles}
+    \phi_1 = \arg\left(\frac{V_{cd}V^*_{cb}}{ V_{td}V^*_{tb}}\right),
+    \quad \phi_2 = \arg\left(\frac{V_{td}V^*_{tb}}{ V_{ud}V^*_{ub}}\right),
+     \quad \phi_3 = \arg\left(\frac{V_{ud}V^*_{ub}}{ V_{cd}V^*_{cb}}\right).
+\end{equation}
+Figure \ref{fig:CKM_unitary_triangle} provides a visual representation of these angles in the context of the experimental constraints imposed upon them.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{chapter2/pdfs/belle_rhoeta_large.pdf}
+    \caption{The CKM matrix represented by as the Unitary Triangle, whose angles are defined in equation \ref{eq:CKM_angles}.  Image created by the CKMfitter group \cite{Charles_2005}.}
+    \label{fig:CKM_unitary_triangle}
+\end{figure}
+
 \subsection{Flavor changing neutral currents}
+At the beginning of section \ref{sec:FCCCs}, we were careful with our language in specifying that tree level and Standard Model meson decays are characterized by FCCCs. If we push past tree level and consider meson decays at the level of one-loop interactions, we can encounter a Standard model-suppressed \cite{Glashow:1970gm} flavor changing neutral current (FCNC).  Meson decays like the one shown in \ref{fig:FCNC} contain FCNCs, wherein top quark loops facilitate the emission of a (neutrally charged) $Z^0$ or $\gamma$ boson.  In this example, the initial and final quark states involved in the decay are of the same type: either both up-type or both down-type.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{chapter2/pdfs/FCNC.pdf}
+    \caption{Sample $B^+\rightarrow\pi^+\ell^+\ell^-$ Feynman diagram, which contains a standard model-suppressed flavor changing neutral current.}
+    \label{fig:FCNC}
+\end{figure}
+
+In addition to one-loop level Standard Model physics,  FCNCs are also relevant to beyond Standard Model (BSM) physics.  The rare nature of FCNCs makes them highly sensitive to new physics, as even small contributions from BSM particles might significantly modify FCNC decay rates or angular distributions in collider experiments.
+
+\subsection{Kinematic Form Factors}
+The core aim of this work is to calculate the kinematic form factors of various heavy meson decays, the theory of which ties together the weak interaction, flavor changing currents, the CKM matrix, and semileptonic decays.  Let us begin by considering the semileptonic decay of from some meson $M_1$ to another meson $M_2$, and a lepton pair $\ell\nu$.  In such a decay, the valence quark $q_1$ in $M_1$ weakly decays into the valence quark $q_2$ in $M_2$ via a FCCC.  We can write the amplitude $\mathcal{A}$ of this meson decay as
+\begin{equation}\label{eq:Amp_step1}
+    \mathcal{A} = \left(\frac{ie}{\sqrt{2}\sin\theta_W}\right)^2 V_{q_1q_2}
+        \bra{M_2,\ell\nu}J_\mu^{q_1q_2}\left( \frac{g^{\mu\nu}}{p^2-M^2_W} \right)L_\nu^l\ket{M_1}.
+\end{equation}
+Here we define $p$ to be the four-momentum carried off by the $W$ boson, and we also introduce the hadronic current $J_\mu^{ij}$ and the leptonic current $L_\mu^{ij}$.  We define these currents as
+\begin{equation}\label{eq:currents}
+\begin{split}
+    J_\mu^{ij} &\equiv \frac{1}{2}(\overline{u}^i\gamma_\mu d^j - \overline{u}^i\gamma_5\gamma_\mu d^j), \\
+    L^{ij}_\mu &\equiv \frac{1}{2}(\overline{\nu}^i\gamma_\mu e^j - \overline{\nu}^i\gamma_5\gamma_\mu e^j).
+\end{split}
+\end{equation}
+Both these currents contain terms of the form $\overline{\psi}\gamma_\mu\psi$ and $\overline{\psi}\gamma_\mu\gamma_5\psi$, which we can refer to as a vector current $V_\mu^{ij}$ and an axial-vector current $A_\mu^{ij}$ respectively.  We can make a few approximations and substitutions to simplify equation \ref{eq:Amp_step1} into a more useful form.  First, we can introduce the Fermi constant $G_F = \frac{g^2\sqrt{2}}{8m_W^2}$, which links the strength of the weak interaction to the $W^\pm$ mass.  Furthermore, so long as the $W$ boson's four-momentum is much less than its mass, we can make the approximation $({p^2-M_W^2})^{-1}\approx -{M_W^{-2}}$.  With these steps we can now write the decay amplitude as
+\begin{equation}\label{eq:Amp_step2}
+\begin{split}
+    \mathcal{A} &= 2\sqrt{2} G_f V_{q_1q_2} \bra{M_2,\ell\nu}J_\mu^{q_1q_2}g^{\mu\nu}L_\nu^l\ket{M_1},\\
+      &= 2\sqrt{2} G_f V_{q_1q_2}\bra{\ell\nu}L^{\mu,l}\ket{\Omega}\bra{M_2}J_\mu^{q_1q_2}\ket{M_1},
+\end{split}
+\end{equation}
+where $\ket{\Omega}$ is the state of the vacuum. In the second line of equation \ref{eq:Amp_step2} we have factorized the leptonic and hadronic matrix elements, the latter of which is of particular interest to this work.  As we will  discuss in the following chapter, calculating $\bra{M_2}J_\mu^{q_1q_2}\ket{M_1}$ at low energies (where the strong coupling constant of QCD is large) requires a non-perturbative approach such as Lattice QCD.  
+
+Putting the actual calculation of the hadronic matrix element aside, we may parameterize the hadronic matrix element in terms of meson masses $m_M$, meson momentum $p_\mu^M$, current momentum $q^\mu$, and the scalar and vector form factors: $f_0(q^2)$ and $f_+(q^2)$.  In this context the current's momentum $q\equiv (p_{M_1} - p_{M_2})$, and the $q^2$ dependency is why we call them \textit{kinematic} form factors.  While the current $J_\mu^{q_1q_2}$ has both a vector and axial-vector component, only the vector component contributes to hadronic current in the case where $M_1$ and $M_2$ are pseudoscalar mesons.  QCD is a parity conserving interaction, and any axial-vector contribution would violate the parity invariance of QCD.  As such, the current insertion $J_\mu^{q_1q_2} \rightarrow V_\mu^{q_1q_2}$, and we can write that
+\begin{equation}
+    \bra{M_2}V_{\mu}^{q_1q_2}\ket{M_1}=f_+(q^2)\Big(p^{M_1}_{\mu}+p^{M_2}_{\mu}- \frac{m_{M_1}^2-m_{M_2}^2}{q^2}q^{\mu}\Big)+f_0(q^2)\frac{m_{M_1}^2-m_{M_2}^2}{q^2}q^{\mu}.
+\end{equation}
+We can similarly define hadronic matrix elements for scalar and tensor current insertions as well.  The hadronic matrix elements with a scalar current insertion, or \textit{scalar matrix element} for short, has no dependence on $f_+(q^2)$, which allows us to isolate $f_0(q^2)$ from $f_+(q^2)$.  The \textit{tensor matrix element} meanwhile is parameterized by a tensor from factor $f_T(q^2,\mu)$, which also has dependency on an energy scale $\mu$.  We more fully discuss these matrix elements in chapter \ref{cha:form_factors}.
+
+For a semileptonic meson decay mediated by a FCCC, it is possible to relate that meson's experimentally-determined differential decay rate $\frac{d\Gamma}{dq^2}$ to the corresponding  vector form factor and CKM matrix element.  While there are four meson decays of interest to this work ($B\rightarrow\pi$, $D\rightarrow \pi$, $B_s \rightarrow K$, $D_s \rightarrow K$), we can describe them all as heavy-to-light meson decays, where $B$, $B_s$, $D$, and $D_s$ are all \textit{heavy}, while the $\pi$ and $K$ are \textit{light}.  %What differentiates these meson decays is whether the spectator quark (the quark not involved in any weak decay) is an up/down quark or a strange quark, or whether the heavy quark in the initial meson state is a bottom quark or charm quark.  
+In any case, we can generalize all four meson decays as a heavy meson $H$ decaying to a light meson $L$, and therefore write the differential decay rate of $H\rightarrow L$ as
+\begin{equation}\label{eq:diffdecay}
+    \frac{d\Gamma}{dq^2}(H\rightarrow L) = \frac{G_F^2}{24\pi^3}|V_{q_1q_2}|^2\times|p_{L}|^3\times|f_+(q^2)|^2.
+\end{equation}
+Here, the momentum of the light meson $p_L$ is presented in the rest frame of the heavy meson.  In these case where $H\in\{B,B_s\}$, $V_{q_1q_2} = V_{ub}$.  Meanwhile if $H\in\{D,D_s\}$, then $V_{q_1q_2} = V_{cd}$.  Herein lies the physics which serves as the core motivation for this work: we can use lattice QCD as the theoretical framework in which we can calculate more accurate kinematic form factors.  These can be used alongside experimentally determined differential decay rates to solve for $V_{q_1q_2}$ in equation \ref{eq:diffdecay}, giving us more precise CKM matrix elements.  
+
+While more precise vector form factors lead to more precise determinations of CKM matrix elements, more precise tensor form factors lead to better constraints on Standard Model-suppressed and BSM physics.  We do not delve into the rich phenomenology of such physics in this work, but such considerations should find a place in future publications based on this work's line of lattice calculations (the status of which we cover in chapters \ref{cha:DBtopi} and \ref{cha:DsBstoK}).
+
 \section{The path integral and correlation functions}\label{sec:path_integrals_and_corrfuncs}
-Descretizing the path integral formalism is the basis on which much of our lattice QCD work is built, and so it warrants discussion.  I would introduce the Lehman-Symanzik-Zimmerman (LSZ) reduction formula, followed by an introduction to two and thee-point correlation functions.
+In the following chapter we explore how the methods of Lattice QCD discretize standard model physics, such that we can use numerical methods to make calculations and solve problems which cannot be achieved analytically.  The basis of those methods requires the discretization of path integrals and correlation functions.  In this section we aim to briefly cover these topics in the context of the physical continuum, which is to say, not in any discretized lattice theory. 
+
+We may begin this discussion by considering the time-ordered product of $n$ scalar fields $\phi(x_n)$, which we can write as $T\{{\phi_H}(x_1)...\phi_H(x_n)\}$.  We add notation here to denote that the fields are defined in the Heisenberg picture, which is to say that the state vectors are fixed in time, and the field operators carry all time dependence.  By taking the expectation value of this time ordered product of fields, we obtain its Green's function, which we can alternatively refer to as an $n$-point \textit{correlation function}.  This function is given by
+\begin{equation}\label{eq:C_n-corrfunction}
+    C_n(x_1,...,x_n) = \bra{\Omega}T{\phi_H}(x_1)...\phi_H(x_n)\ket{\Omega},
+\end{equation}
+where $\ket\Omega$ is the vacuum in the interaction picture.  In the interaction picture, we decompose some interacting Hamiltonian $H$ into some non-interacting free theory piece $H_0$ and an interacting piece $H_\mathrm{int}$.  In this picture we can then write free theory vacuum as $H_0\ket{\Omega}=0$, and the energy of the vacuum state is given by $\bra{\Omega}H\ket{\Omega} = E_0$.
+%For some interacting Hamiltonian $H=H_0+H_\mathrm{int}$... $H_0\ket{0}=0$...
+Putting this together we can write the full Hamiltonian in the interaction picture $H_I$ as 
+\begin{equation}
+H_I(t) = e^{iH_0t}H_\mathrm{int}e^{-iH_0t}.
+\end{equation}
+Since $H_I$ represents only a weak perturbation, the vacuum state of the interacting theory should retain a non-zero projection onto the free theory vacuum, which gives us $\braket{\Omega|0}\neq 0$. As a result, the time evolution $T$ of the free theory vacuum can be modeled by the insertion of the states $e^{-iHT}\ket{0}$, which we define as
+\begin{equation}\label{eq:time-evolution}
+\begin{split}
+    e^{-iHT}\ket{0} &= \sum_n e^{-iE_nT}\ket{n} \braket{n|0} \\
+    &= e^{-iE_0T}\ket{\Omega}\braket{\Omega|0} + \sum_{n\neq0}e^{-iE_nT}\ket{n}\braket{n|0}
+\end{split}
+\end{equation}
+All we have effectively done here is separated the $n=0$ ground state from the $n\neq0$ states, which we can call \textit{excited} states, as $E_0 <E_n$ for all $n\neq0$.  This also means that taking the limit $T\rightarrow\infty(1-i\epsilon)$ suppresses the contributions from the excited states more rapidly than the ground state contribution. Physically, this reflects the assumption that the fields behave as (non-interacting) free fields in the asymptotic past (−T) and asymptotic future (+T) of the interaction.  
+
+If we implement this method of relating the interacting ground state to the vacuum of the free theory, we may write for out $n$-point correlation function that
+\begin{equation}\label{eq:C_n-inf-time}
+    \begin{split}
+         C_n(x_1,...,x_n) &= \bra{\Omega}T{\phi_H}(x_1)...\phi_H(x_n)\ket{\Omega},\\
+         &=\lim_{T\rightarrow\infty(1-i\epsilon)} \frac{\bra{0}T{\phi}(x_1)...\phi(x_n)e^{-i\int^T_{-T}dtH_I(t)}\ket{0}}{\bra{0}e^{-i\int^T_{-T}dtH_I(t)}\ket{0}}.
+    \end{split}
+\end{equation}
+The complete derivation of equation \ref{eq:C_n-inf-time} is provided by \cite{peskin1995qft}, but for our purposes the key takeaway is that this equation leads us nicely into discussing the path integral.  We can define the path integral as the integral over all potential field configurations.  As such we can equate  the $n$-point correlation function to the path integral:
+\begin{equation}\label{eq:path_integral}
+    C_n(x_1,...,x_n) = \frac{1}{{Z}}\int D\phi \ {\phi}(x_1)...\phi(x_n) e^{i\int d^4x \mathcal{L}[\phi]},
+\end{equation}
+where we have defined the partition function ${Z}$ as the path integral without any field insertions.  If we consider the path integral in the context of QCD, the strong coupling constant being large at low energies (the same energy scales of the semileptonic meson decays of interest to this work) is problematic. This large coupling prevents the perturbative expansion of the integral in equation \ref{eq:path_integral}, which is the analytical method by which we might normally calculate the path integral.  This once again leads us into the numerical methods of lattice QCD, which we discuss in chapter \ref{cha:Lattice_QCD}.
+
+Having explored the equations of an $n$-point correlation function, let us narrow our scope to only two and three-point correlation functions, which form the basis of our work going forward. Doing so requires us to make a Wick rotation \cite{PhysRev.96.1124}, where we transform from Minkowski spacetime to Euclidean spacetime, such that $(t\rightarrow-it)$.  This also implies that our infinite time limit $T\rightarrow-i\infty(1-i\epsilon)$.  With the Wick rotation, the $i=\sqrt{-1}$ terms which appear in the path integral (equation \ref{eq:path_integral}) instead become $-1$.
+
+Let us begin with the two-point correlation function $C_2(x_2,x_1)$. Consider that for a free Hamiltonian in the interaction picture we can write the interaction picture field as
+\begin{equation}\label{eq:phiI}
+    \phi_I = e^{H_0(t-t_0)}\phi(t_0,\vec{x})e^{-H_0(t-t_0)},
+\end{equation}
+where we have decomposed the spacetime coordinate $x_0\rightarrow (t_0,\vec{x})$.  With equations \ref{eq:C_n-inf-time} and \ref{eq:phiI}, we can impose that $t_2>t_1$ and derive a more useful equation for a two point correlation function:
+\begin{equation}\label{eq_C2_derivation}
+    \begin{split}
+        C_2(x_2,x_1) &=\lim_{T\rightarrow(1-i\epsilon)} \frac{\bra{0}\phi_I(x_2)\phi_I(x_1)e^{-i\int^T_{-T}dtH_I(t)}\ket{0}}{\bra{0}e^{-i\int^T_{-T}dtH_I(t)}\ket{0}},\\
+        &= \frac{\bra{0}\phi_I(x_2)\phi_I(x_1)\ket{0}}{\braket{0|0}},\\
+        &=\sum_n \bra{0}\phi_I(x_2)\ket{n} \bra{n}\phi_I(x_1)\ket{0},\\
+        &=\sum_n \bra{0}e^{H_0(t_2-t_0)}\phi(t_0,\vec{x}_2)e^{-H_0(t_2-t_0)}\ket{n}
+        \bra{n}e^{H_0(t_1-t_0)}\phi(t_0,\vec{x}_1)e^{-H_0(t_1-t_0)}\ket{0},\\
+        &=\sum_n e^{(E_n-E_0)(t_2-t_1)}\bra{0}\phi(t_0,\vec{x}_2)\ket{n}\bra{n}\phi(t_0,\vec{x}_1)\ket{0}.
+    \end{split}
+\end{equation}
+If we now make a few definitions, we can arrive at an equation for a two-correlation function which will prove to be incredibly useful.  First, we redefine $E_n$ as an energy relative to vacuum: $E_n\rightarrow E_n - E_0$.  Furthermore, in the context of correlation functions it is common to refer to any $\phi(x_n)$ as a \textit{current insertion}.  If we then define the new quantity $t=t_2-t_1$, we can finally write
+\begin{equation}\label{eq:_C2_final}
+    C_2(x_2,x_1) = \sum_n e^{-E_nt}\bra{0}\phi(\vec{x}_2)\ket{n}\bra{n}\phi(\vec{x}_1)\ket{0}.
+\end{equation}
+In this formulation, the two-point correlation function can be characterized as having two distinct parts.  The first of these is an exponential term with dependence on energy (relative to the vacuum) and the difference in time between current insertions.  The second of these are amplitude terms, which take the form of current insertion matrix elements.  In the following chapters of this thesis, it will be commonplace to describe correlation functions in terms of energy and amplitude terms.
+
+Expanding our scope now to three-point correlation functions $C_3(x_3,x_2,x_1)$, we can perform similar substitutions and redefinitions as before.  If we define the quantities $t=t_2-t_1$ and $T=t_3-t_1$, and keep the convention of defining energies relative to vacuum, we can write
+\begin{equation}\label{eq:_C3_final}
+    C_3(x_3,x_2,x_1) = \sum_{m,n} e^{E_m(T-t)}e^{-E_nt}\bra{0}\phi(\vec{x}
+    _3)\ket{m}\bra{m}\phi(\vec{x}_2)\ket{n}\bra{n}\phi(\vec{x}_1)\ket{0}.
+\end{equation}
+Together, equations \ref{eq:_C2_final} and \ref{eq:_C3_final} constitute the fit equations we will utilize to great effect in chapter \ref{cha:fitting_correlation_functions}.

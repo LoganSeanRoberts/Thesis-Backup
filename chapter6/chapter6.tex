@@ -1,6 +1,44 @@
 \chapter{$D \rightarrow \pi$ and $B \rightarrow \pi$ form factors}\label{cha:DBtopi}
 
-\section{Priors for correlator fitting}\label{sec:Hpi_corr_priors}
+\section{Correlator fit}\label{sec:Hpi_corrfuncs}
+In later stages of this project however we noticed that, on select ensembles, the fit posteriors for this discretization parameter consistently differed from its prior by one or several standard deviations.  This prompted us to apply the standard $\log(\mathrm{GBF})$ testing routine discussed in \ref{sec:prior_determination_methodology} to $P[\epsilon^M]$ uncertainties.  We however halted the $\log(\mathrm{GBF})$ testing when it would have preferred prior uncertainties smaller $\pm1.0$.  This was the case for most most $P[\epsilon^M]$ uncertainties, and so the majority of dispersion parameter priors remain as $P[\epsilon^M] = 0\pm1$.  The most distinct deviation from this norm appears in the fine physical (fphys) ensemble for both the pion and the kaon.  The $\log(\mathrm{GBF})$ preferred uncertainties for $P[\epsilon^{\pi}]$, $P[\epsilon^{K}]$ are $\pm 36.0$ and $\pm50.0$ respectively.  While these uncertainties are relatively large, in test fitting we find that the fphys ensemble fit posteriors for $P[\epsilon^{\pi}]$, $P[\epsilon^{K}]$ have large, greater than one fractional uncertainties, $6(13)$ and $3.0(9.8)$ for example.  Furthermore, such large uncertainties for $P[\epsilon^{\pi}]$, $P[\epsilon^{K}]$ on the fphys ensemble mean that the priors for high twist light meson energies $P[aE^M_{\vec{p}}]$ on that ensemble also have relatively large fractional uncertainties: $0.75-1.0$ for example: this is a consequence of equation \ref{eq:dispersion_energy}.  
+
+The conclusion we come to from these observations is that, on the fphys ensemble, some combination of momentum related discretization effects greatly reduces our ability to set justifiably narrow priors for high twist pion and kaon energies.  Thankfully, the signal from these high twist meson energies is strong enough that in test fitting, despite their broad priors, the posteriors of these energies have fractional uncertainties that range from $0.01-0.04$.  For the $H_s\rightarrow K$ decay exclusively, we also found for the sf5 and sfphys ensembles, $\log(\mathrm{GBF})$ testing preferred $P[\epsilon^{K}]$ uncertainness of $\pm5.0$ and $\pm3.0$ respectively.  In test fitting, the fit posteriors for $\epsilon^{K}$ were both consistent with their priors, and had central values within the range of $0.0\pm1.0$.
+
+\subsection{Results}\label{sec:Hpi_results}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{chapter6/pdfs/customHpi_Edisp_plots.pdf}
+    \includegraphics[width=0.8\linewidth]{chapter6/pdfs/customHpi_Ampdisp_plots.pdf}
+    \caption{Energy (top) and amplitude (bottom) dispersion relation plots for current set of $H\rightarrow\pi$ correlator fits.  Data shown are ground state, non-zero twist energy and amplitude fit posteriors divided by a function equal to the right hand side of either equation \ref{eq:dispersion_energy} (energy) or equation \ref{eq:dispersion_amplitude} (amplitude) without the discretization factor.  The shaded cyan corresponds to the area bound by the function $y=1\pm \left(\frac{a\vec{p}}{\pi}\right)^2$.}
+    \label{fig:Hpi_disp-plots}
+\end{figure}
+
+\begin{table*}
+\caption{Parameters and statistics related to the correlation functions generated from the gluon field ensembles used in this work.  Column 2 gives the number of correlator configurations $N_\mathrm{cfg}$ times the number of sources $N_\mathrm{src}$ for given ensemble.  Column 3 gives the range of heavy quark masses (in lattice units), where the lightest option is chosen to be tuned to the physical charm quark mass.  Column 4 gives the non-zero twist angles $\theta\neq0.0$, which relate to three-momentum via equation \ref{eq:twist_angle}; we note that all ensembles also have correlators with values of $\theta=0$ as well.  Finally, column 5 gives the range of source-sink separation values $T$.  This table is identical to table \ref{tab:HsK_Stats} in chapter \ref{cha:DsBstoK}, as these parameters and statistics apply to both the $H\rightarrow\pi$ and $H_s\rightarrow k$ meson decays}
+\begin{center} 
+\begin{tabular}{l c c c c}
+\hline
+      Set & $N_{\mathrm{cfg}}\times N_{\mathrm{src}}$ & $am_h$ & $\theta\neq0.0$ & $T$ \\
+\hline
+\hline
+    1 - f5   &$500 \times 16$  & 0.450, 0.55, 0.675, 0.8 &  0.4281, 1.282, 2.1410, 2.570 & 15, 18, 21, 24 \\
+\hline
+    2 - fphys   & $500 \times 8$& 0.433, 0.555, 0.678, 0.8 &  0.58, 0.87, 1.13, 3.000 & 15, 18, 21, 24 \\
+\hline
+        3 - sf5 & $500 \times 8$& 0.274, 0.5, 0.65, 0.8 &  1.261, 2.108, 2.666, 5.059 & 22, 25, 28, 31 \\
+\hline
+    4- sfphys &$100 \times 4$& 0.2585, 0.5, 0.65, 0.8 &  2.522, 4.216, 7.94, 10.118 & 22, 25, 28, 31 \\
+\hline
+    5 - uf5 & $375 \times 4$& 0.194, 0.4, 0.6, 0.8 & 0.706, 1.529, 2.235, 4.705 & 29, 34, 39, 44 \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\label{tab:Hpi_Stats}
+\end{table*}
+
+\subsection{Priors}\label{sec:Hpi_corr_priors}
 
 \begin{table}[]
     \centering
@@ -84,3 +122,16 @@
     \end{center}
   \label{tab:3pt_pesky_priors_Hpi}
 \end{table}
+
+
+\section{$z$-expansion fit}\label{sec:Hpi_zfit}
+
+\subsection{Priors}\label{sec:Hpi_zfit_priors}
+
+\subsection{Results}\label{sec:Hpi_zfit_results}
+
+\section{Status of form factors calculations}\label{sec:Hpi_FF_status}
+
+\subsection{$D\rightarrow\pi$}\label{sec:Dpi_status}
+
+\subsection{$B\rightarrow\pi$}\label{sec:Hpi_status}

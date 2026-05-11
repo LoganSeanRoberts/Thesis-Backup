@@ -1,55 +1,290 @@
 \chapter{Calculating Form Factors}\label{cha:form_factors}
-In this chapter I will provide the mathematical bases for turning the results of our correlator fits into continuous form factors results.  The chapter outline is as follows:
-\begin{itemize}
-    \item \textbf{Constructing Scalar, Vector, And Tensor Form Factors}. Here I will likely present the key form factor equations \ref{eq:scalar_FF}, \ref{eq:vector_FF}, and \ref{eq:tensor_FF}.  I will define the appropriate variables, and note that certain terms will be discussed in the following sections. 
-\end{itemize}
+In the previous chapter, we fully explored the topic of fitting two and three-point correlation functions.  Here we first discuss how we transform the results of fitting correlation functions into a discrete set of lattice form factor data.  We then go on to discuss how we utilize a modified $z$-expansion to fit that lattice form factor data to continuous fit forms, the final product being physical continuum form factors.  The form factor discussion in this chapter applies for a general heavy to light meson decay $H\rightarrow L$, where $H$ has either heavy-light or heavy-strange quark content, unless otherwise noted.  The current status of form factor calculations for either $D,B\rightarrow \pi$ or $D_s,B_s \rightarrow K$ are found in chapters \ref{cha:DBtopi} and \ref{cha:DsBstoK} respectively.
+
+% \begin{itemize}
+%     \item \textbf{Constructing Scalar, Vector, And Tensor Form Factors}. Here I will likely present the key form factor equations \ref{eq:scalar_FF}, \ref{eq:vector_FF}, and \ref{eq:tensor_FF}.  I will define the appropriate variables, and note that certain terms will be discussed in the following sections. 
+% \end{itemize}
+% \begin{equation}\label{Eq:fitnormalisation}
+%   \bra{L}J_{\mathrm{latt}}\ket{\brachat{H}}=2Z_{\mathrm{disc}}\sqrt{M_{H}E_{L}}J^{\mathrm{nn}}_{00}.
+% \end{equation}
+% \begin{align}\label{eq:scalar_FF}
+%   \bra{L}S_{\mathrm{latt}}\ket{H}&=\frac{M_{H}^2-M_{L}^2}{m_h-m_l}f_0(q^2),\\
+% \label{eq:vector_FF}
+%   Z_V\bra{L}V^{\mu}_{\mathrm{latt}}\ket{\hat{H}}&=f_+(q^2)\Big(p_{H}^{\mu}+p_{L}^{\mu}-\frac{M_{H}^2-M_{L}^2}{q^2}q^{\mu}\Big)+f_0(q^2)\frac{M_{H}^2-M_{K}^2}{q^2}q^{\mu},\\
+% \label{eq:tensor_FF}
+%   Z_T(\mu)\bra{L}T^{k0}_{\mathrm{latt}}\ket{\hat{H}}&=\frac{2iM_{H}p_L^k}{M_H+M_L}f_T(q^2,\mu).
+% \end{align}
+% \begin{itemize}
+%     \item \textbf{Renormalization terms}.  Here I will go into detail on the renormalization terms that are present in the above equations.  These terms include $Z_\text{disc}$, $Z_V$, and $Z_T$.
+% \end{itemize}
+% \begin{equation}\label{eq:Zdisc}
+%     Z_\text{disc} = \sqrt{\text{cosh}(m_{tree})\left(1 - \frac{1+\epsilon_{tree}}{2}\text{sinh}^2(m_{tree})\right)}
+% \end{equation}
+% \begin{equation}\label{Eq:Zv}
+%     Z_V=\frac{(m_h-m_l)\bra{L}S\ket{H}}{(M_{H}-M_{L})\bra{L}V^{0}\ket{\hat{H}}}\Bigg\rvert_{q^2=q^2_{\mathrm{max}}}.
+% \end{equation}
+% \begin{itemize}
+%     \item \textbf{The modified $z$ expansion}.  Here I intend to introduce the motivations for using the modified $z$ expansion in our form factor work.  To deal with the pole mass term at $q^2_{\mathrm{max}} = (M_H - M_L)^2$ we map $q^2$ to the complex $z$ plane in equation \ref{eq:zofq}.  Using the Bourreley-Caprini-Lellouch parameterization we can write our form factor equations as expanded polynomials of $z$, as in equations \ref{eq:scaler_FFofz}, \ref{eq:vector_FFofz}, and \ref{eq:tensor_FFofz}  It would be worth mentioning the impact of choice of $t_0 = 0$, and the enforcement of $f_+(q^2=0) = f_0(q^2=0)$.  A discussion of chiral perturbation theory ($\chi$-pt) and the form it takes in the chiral logarithm term is warranted.
+% \end{itemize}
+% \begin{equation}\label{eq:zofq}
+%   z(q^2,t_0)=\frac{\sqrt{t_+-q^2}-\sqrt{t_+-t_0}}{\sqrt{t_+-q^2}+\sqrt{t_+-t_0}}.
+% \end{equation}
+%   \begin{align}\label{eq:scaler_FFofz}
+%     f_0(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H_{0}^{*}}}}\sum_{n=0}^{N-1}a_n^0z^n\\
+%     \label{eq:vector_FFofz}f_+(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H^{*}}}}\sum_{n=0}^{N-1}a_n^+\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big)\\
+%      \label{eq:tensor_FFofz}f_T(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H^{*}}}}\sum_{n=0}^{N-1}a_n^T\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big).
+% \end{align}
+% \begin{itemize}
+%     \item \textbf{The Heavy HISQ approach}.  Now in this section I intend to discuss the needs for and the means by which we extrapolate to the physical b-quark mass.
+%     \item \textbf{Varying the heavy quark mass and HQET}. Here, among other topics, I can describe how the $D_{(s)}\rightarrow\pi (K)$ form factor calculations are a byproduct of Heavy-HISQ.
+% \end{itemize}
+
+\section{Lattice Form Factors}\label{sec:constructing_form_factors}
+With a satisfactory set of correlator fit results, we can work towards calculating lattice form factor results.  We emphasize the term \textit{lattice} here because the form factors directly derived from our correlator fit results will still contain ensemble-specific lattice artifacts, namely those which come from non-zero lattice spacing and unphysical quark masses.  Furthermore, these lattice form factors will be a discrete, non-continuous set of form factor values, rather than some function describing a continuous curve.  In sections \ref{sec:modified-z-expansion} and \ref{sec:extrapolate_to_phys_cont} we detail how we arrive at physical continuum form factors from these discrete form factors.  For now however, let's examine the outputs of our correlator fitting.
+
+The results of our correlator fitting includes the energies and amplitudes of heavy and light mesons $E_H$, $E_L$, $A_H$, $A_L$. The results then also include a set of current insertions amplitudes $J\in\{S,V,T\}$.  These energies and amplitudes correspond to different combinations of lattice spacings, quark masses, light meson momenta, and spin-taste construction.  Many of these parameters correspond to higher order exponential and or oscillating states which appear in our correlation function fit forms (equations \ref{eq:2ptcorrfit} and \ref{eq:3pt_correlator_fit}). However it is only the ground state heavy meson masses $M_{H}$, light meson energies $E_L$, and current insertion amplitudes $J^{nn}_{00}$, which we carry forward into form factor calculation\footnote{Considering that from this point onward we only care about the ground state meson masses and energies, we drop any $i=0$ and non-oscillating indicating notation for the mesons.}.
+
+\subsection{Equations of lattice form factors}\label{sec:equations_of_lattice_form_factors}
+Before we can construct our lattice form factors $f_0$, $f_+$, and $f_T$, we must first calculate the corresponding lattice matrix element.  We define the lattice matrix element as 
 \begin{equation}\label{Eq:fitnormalisation}
-  \bra{L}J_{\mathrm{latt}}\ket{\brachat{H}}=2Z_{\mathrm{disc}}\sqrt{M_{H}E_{L}}J^{\mathrm{nn}}_{00}.
+  \bra{L}J_{\mathrm{latt}}\ket{\brachat{H}}=2Z_{\mathrm{disc}}\sqrt{M_{H}E_{L}}J^{{nn}}_{00}.
 \end{equation}
+Here we use the same notation as the previous chapter for $J\in\{S,V,T\}$.  Furthermore, we introduce the notation $\brachat{}$ to denote that the heavy meson in the lattice matrix element must be of appropriate spin-taste construction for the accompanying lattice current $J_\mathrm{latt}$.  We write the Goldstone heavy meson as $H$, and any non-Goldstone heavy meson as $\hat{H} \in \{H',H'',H'''\}$.  In the right hand side of equation \ref{Eq:fitnormalisation} however we always use the the Goldstone (spin-taste $\gamma_5 \otimes\xi_5$) heavy meson mass from our correlator fits.  As discussed in chapter \ref{cha:Lattice_QCD}, the Goldstone heavy meson $H$ only differs from its non-Goldstone counterparts $\hat{H}$ by discretization effects.  Finally in equation \ref{Eq:fitnormalisation} we also include a normalization term $Z_\mathrm{disc}$ which accounts for $\mathcal{O}(m_h)^4$ discretization effects \cite{zdisc}. We define $Z_\mathrm{disc}$ explicitly in the following section.
+
+Having defined our lattice matrix elements in relation to correlator fit outputs, we can also define them in terms of scalar, vector, and tensor lattice form factors:
 \begin{align}\label{eq:scalar_FF}
   \bra{L}S_{\mathrm{latt}}\ket{H}&=\frac{M_{H}^2-M_{L}^2}{m_h-m_l}f_0(q^2),\\
 \label{eq:vector_FF}
-  Z_V\bra{L}V^{\mu}_{\mathrm{latt}}\ket{\hat{H}}&=f_+(q^2)\Big(p_{H}^{\mu}+p_{L}^{\mu}-\frac{M_{H}^2-M_{L}^2}{q^2}q^{\mu}\Big)+f_0(q^2)\frac{M_{H}^2-M_{K}^2}{q^2}q^{\mu},\\
+  Z_V\bra{L}V^{\mu}_{\mathrm{latt}}\ket{H^{\prime(\prime\prime)}}&=f_+(q^2)\Big(p_{H}^{\mu}+p_{L}^{\mu}-\frac{M_{H}^2-M_{L}^2}{q^2}q^{\mu}\Big)+f_0(q^2)\frac{M_{H}^2-M_{L}^2}{q^2}q^{\mu},\\
 \label{eq:tensor_FF}
-  Z_T(\mu)\bra{L}T^{k0}_{\mathrm{latt}}\ket{\hat{H}}&=\frac{2iM_{H}p_L^k}{M_H+M_L}f_T(q^2,\mu).
+  Z_T(\mu)\bra{L}T^{k0}_{\mathrm{latt}}\ket{H'''}&=\frac{2iM_{H}p_L^k}{M_H+M_L}f_T(q^2,\mu).
 \end{align}
-\begin{itemize}
-    \item \textbf{Renormalization terms}.  Here I will go into detail on the renormalization terms that are present in the above equations.  These terms include $Z_\text{disc}$, $Z_V$, and $Z_T$.
-\end{itemize}
+Here we emphasize that the form factors are functions of the squared four-momentum transfer $q^2=(p_H-p_L)^2$, where $p_H$ and $p_L$ are the heavy and light meson four-momenta.  In equation \ref{eq:scalar_FF} it is important to note that while the light meson mass $M_L$ denotes either some pion or kaon mass, the term $m_l$ always denotes the valence light quark mass on an ensemble, rather than the valence strange quark mass. In the equation for the vector lattice matrix element (equation \ref{eq:vector_FF}) the index $\mu \in \{0,1,2,3\}$ denotes the euclidean dimension $(x_0,x_1,x_2,x_3)$, where $x_0$ is the temporal dimension of the lattice and $x_1$, $x_2$, $x_3$ are equivalent spatial dimensions. We use the non-Goldstone heavy meson $H'$ (spin-taste $\gamma_5 \otimes\xi_5\xi_1$) with the temporal vector current $V^{0}_\mathrm{latt}$, and we use the non-Goldstone heavy meson $H''$ (spin-taste $\gamma_5 \gamma_0\otimes\xi_5\xi_0$) with any spatial vector current $V^{1,2,3}_\mathrm{latt}$. For the tensor matrix element the index $k$ can denote any spatial euclidean dimension; we choose $k=1$, and in the right hand side of equation \ref{eq:tensor_FF} we have $i = \sqrt{-1}$.  Unlike the scalar and vector form factors, the tensor form factor \textit{is} dependent on some energy scale $\mu$ (not to be confused with the index $\mu$ in the vector current equation).  Finally, $Z_V$ and $Z_T(\mu)$ are renormalization terms which we discuss in the following section. We can also note that if we require matrix elements to be finite, then from equation \ref{eq:vector_FF} at $q^2=0$ we have $f_+(0) = f_0(0)$.  This is a useful constraint that we can implement directly in our modified $z$-expansion fits, which we discuss in section \ref{sec:modified-z-expansion}.
+
+\subsection{Renormalization Terms}\label{sec:renorm_terms}
+In equation \ref{Eq:fitnormalisation} we find the lattice discretization renormalization term $Z_\mathrm{disc}$, which we define as
 \begin{equation}\label{eq:Zdisc}
-    Z_\text{disc} = \sqrt{\text{cosh}(m_{tree})\left(1 - \frac{1+\epsilon_{tree}}{2}\text{sinh}^2(m_{tree})\right)}
+    Z_\mathrm{disc} = \sqrt{\mathrm{cosh}(m_{\mathrm{tree}})\left(1 - \frac{1+\epsilon_\mathrm{tree}}{2}\mathrm{sinh}^2(m_\mathrm{tree})\right)}.
 \end{equation}
+Here, $m_\mathrm{tree}$ is the tree level pole mass of a quark of bare mass $m$ (in lattice units). We define $m_\mathrm{tree}$ and the Naik term $\epsilon_\mathrm{tree}$ in equations \ref{eq:m_tree} and \ref{eq:naik_epsilon} in section \ref{sec:symanzik_improvement}.  While these equations are true for any quark on the lattice, the $m_\mathrm{tree}$ and $\epsilon_\mathrm{tree}$ contributions from the light and strange quark masses are effectively zero, and so we only include the heavy quark mass contributions to $Z_\mathrm{disc}$.  
+
+The next renormalization term we can discuss is $Z_V$, which we use to calculate vector form factors in \ref{eq:vector_FF}. To determine $Z_V$, we first need to examine the continuum expression of the partially conserved vector current (PCVC) equation, given by
+\begin{equation}\label{eq:PCVC}
+    q_\mu\bra{L}V_\mathrm{local}^\mu\ket{H} = (m_h - m_l)\bra{L}S_\mathrm{local}\ket{H}.
+\end{equation}
+Here we emphasize that this relation only holds true for \textit{local} current insertions, which is the case for all $J\in\{S,V,T\}$ in this work.  Luckily, this continuum expression remains valid on the lattice for the HISQ formalism \cite{HISQ:2006rc}, up to discretization effects.  Taking this all into account, we can then also utilize the fact that the right hand side of equation \ref{eq:PCVC} is fully normalized \cite{Na_2010} to then define $Z_V$ as
 \begin{equation}\label{Eq:Zv}
-    Z_V=\frac{(m_h-m_l)\bra{L}S\ket{H}}{(M_{H}-M_{L})\bra{L}V^{0}\ket{\hat{H}}}\Bigg\rvert_{q^2=q^2_{\mathrm{max}}}.
+    Z_V=\frac{(m_h-m_l)\bra{L}S\ket{H}}{(M_{H}-M_{L})\bra{L}V^{0}\ket{{H'}}}\Bigg\rvert_{q^2=q^2_{\mathrm{max}}}.
 \end{equation}
-\begin{itemize}
-    \item \textbf{The modified $z$ expansion}.  Here I intend to introduce the motivations for using the modified $z$ expansion in our form factor work.  To deal with the pole mass term at $q^2_{\text{max}} = (M_H - M_L)^2$ we map $q^2$ to the complex $z$ plane in equation \ref{eq:zofq}.  Using the Bourreley-Caprini-Lellouch parameterization we can write our form factor equations as expanded polynomials of $z$, as in equations \ref{eq:scaler_FFofz}, \ref{eq:vector_FFofz}, and \ref{eq:tensor_FFofz}  It would be worth mentioning the impact of choice of $t_0 = 0$, and the enforcement of $f_+(q^2=0) = f_0(q^2=0)$.  A discussion of chiral perturbation theory and the form it takes in the chiral logarithm term is warranted.
-\end{itemize}
+We choose to calculate $Z_V$ at the limit of $q^2=q_\mathrm{max}^2$, where both the heavy and light mesons are in the rest frame of the lattice.  Adding three-momentum to mesons increases the noise of their correlation functions, and so evaluating $Z_V$ at $q_\mathrm{max}^2$ ($\vec{p}_L = 0$) minimizes its uncertainty.  Per ensemble and heavy quark mass, we can use the same value of $Z_V$ for all $V^\mu$ and $q^2$ in equation \ref{eq:vector_FF} \cite{Cooper_2020}, which is valid up to discretization effects.
+
+While $Z_v$ is fully normalized, independent of energy scale, we cannot say the same for tensor form factor renormalization term $Z_T$. For some time, the determination of $Z_T$ was only possible perturbatively and with large errors. The HPQCD collaboration in \cite{Hatton_2020} however manages to calculate values of $Z_T$ in the RI-SMOM scheme \cite{Martinelli_1995} which are then matched to the $\overline{\mathrm{MS}}$ scheme \cite{THOOFT1973455, PhysRevD.8.3497},  correcting for non-perturbative artifacts and $\mathcal{O}(\alpha_s^4)$ errors.  We present the values of $Z_T$ and their accompanying correlation matrix we use in this work in table \ref{tab:Z_T}.  The final values we use from table VIII in \cite{Hatton_2020} are first calculated at an energy scale of $\mu=2.0$ GeV in the RI-SMOM scheme.  They are then converted to the $\overline{\mathrm{MS}}$ scheme and run up the energy scale of the bottom quark pole mass.  It is worth noting that we do not have separate values of $Z_T$ for the fphys and sfphys ensembles. In our form factor calculations, they share the same value of $Z_T$ as their f5 and sf5 counterparts. %These values are valid for that energy range, which almost encompass the range of of heavy quark masses we use on our ensembles. 
+This energy scale is suitable for the physical $B\rightarrow\pi$ and $B_s \rightarrow K$ continuum extrapolations we perform.  With the aims of producing $D\rightarrow\pi$ and $D_s \rightarrow K$ tensor form factors however, we need a way to scale $Z_T(\mu = 4.8 \ \mathrm{GeV})$ for some arbitrary $M_H$, to a limit of $Z_T(\mu = 2.0 \ \mathrm{GeV})$ for the physical $D_{(s)}$ meson.  We can construct a linear interpolation of $\mu(M_H)$ as
+\begin{equation}\label{eq:mu_scaling}
+    \mu(M_H)[\mathrm{GeV}] = 2 + \frac{2.8}{(M_B^\mathrm{phys} - M_D^\mathrm{phys})}(M_H - M_D^\mathrm{phys}).
+\end{equation}
+Following from equation \ref{eq:mu_scaling} and equation \textbf{INSERT EQ} in \cite{Hatton_2020}, we can derive a multiplicative factor $\Gamma$ such that
+\begin{equation}\label{eq:charm_tensor_scaling}
+    f_T^{D_{(s)}\rightarrow\pi(K)}(q^2, \mu = 2.0 \ \mathrm{GeV}) = \Gamma \times f_T^{D_{(s)}\rightarrow\pi(K)}(q^2, \mu = 4.8 \ \mathrm{GeV}).
+\end{equation}
+For an energy scale of $\mu = 2.0$ GeV, we arrive at a value of $\Gamma = 1.0773(17)$.
+
+
+
+
+\begin{table}[]
+    \centering
+    \caption{Tensor renormalization factors $Z_T(\mu = 4.8 \ \mathrm{GeV})$ and their accompanying correlation matrix used in this work.  Values are taken from tables VIII and IX in \cite{Hatton_2020}.}
+    \begin{tabular}{c c c c c}
+        \hline
+        ensemble & $Z_T$ & \multicolumn{3}{c}{correlation matrix} \\
+        \hline
+        f5, fphys   & 1.0029(43)&  1.0        & 0.99605 &  0.93562\\
+        sf5, sfphys & 1.0342(43)&  0.99605    & 1.0     &  0.93197\\
+        uf5         & 1.0476(42)&  0.93562    & 0.93197 &  1.0\\
+             \hline
+    \end{tabular}
+    \label{tab:Z_T}
+\end{table}
+
+
+
+\section{The modified $z$-expansion}\label{sec:modified-z-expansion}
+In the previous section, we have described the necessary steps to translate correlator fit outputs into a discrete set of lattice form factors.  In this section, we describe the necessary steps to fit that set of lattice form factor data into appropriate fit forms, which are continuous functions of $q^2$ in the range of $0\leq q^2 \leq q^2_\mathrm{max} = (M_H - M_L)^2$.  The unphysical artifacts in our lattice form factor data are: unphysical and mistuned quark masses, lattice discretization effects, and non-zero lattice spacing.  We address all of these issues simultaneously, fitting the lattice form factor data in accordance with \textit{the modified $z$-expansion}, first introduced in \cite{Na_2010}.
+
+\subsection{Equations of in the modified $z$-expansion}
+The core of this technique is the mapping of $q^2$ to some complex number $z$ in the complex plane, and re-parameterizing $f_{0,+,T}$ as analytical functions of polynomials of $z$.  To begin, we can first map $q^2\rightarrow z$ by defining $z$ as 
 \begin{equation}\label{eq:zofq}
   z(q^2,t_0)=\frac{\sqrt{t_+-q^2}-\sqrt{t_+-t_0}}{\sqrt{t_+-q^2}+\sqrt{t_+-t_0}}.
 \end{equation}
+Here we follow the notation of \cite{boyd1995modelindependentdeterminationsb, PhysRevD.79.013008, PhysRevLett.95.071802} where $t_+ = (M_H + M_L)^2$ is the beginning of a branch cut (which corresponds to the current insertion having enough energy for on-shell $HL$ production), and $t_0$ is an arbitrary parameter that shifts $f_{0,+,T}$ along the $\mathrm{Re}[z]$-axis.  We choose to set $t_0 = 0$, such that $z(q^2 = 0, \ t_0=0) = 0$.  This choice facilitates the enforcement of the kinematic constraint $f_0(0) = f_+(0)$, which is a consequence of equation \ref{eq:vector_FF}.  We note that this parameter $t_0$ is unrelated to the same notation which appears in chapters \ref{cha:Lattice_QCD} and \ref{cha:fitting_correlation_functions}.
+
+Having defined $z$, we can now parameterize the equations of $f_{0,+,T}$ in terms of polynomials of $z$.  We use the Bourrely-Caprini-Lellouch (BCL) parameterization \cite{PhysRevD.79.013008} as a basis to now define our form factor equations as
   \begin{align}\label{eq:scaler_FFofz}
-    f_0(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H_{0}^{*}}}}\sum_{n=0}^{N-1}a_n^0z^n\\
-    \label{eq:vector_FFofz}f_+(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H^{*}}}}\sum_{n=0}^{N-1}a_n^+\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big)\\
-     \label{eq:tensor_FFofz}f_T(q^2)&=\frac{\mathcal{L}}{1-\frac{q^2}{M^2_{H^{*}}}}\sum_{n=0}^{N-1}a_n^T\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big).
+    f_0(q^2)&=\frac{\mathcal{L}}{P_0(q^2,M_H)}\sum_{n=0}^{N-1}a_n^0z^n,\\
+    \label{eq:vector_FFofz}f_+(q^2)&=\frac{\mathcal{L}}{P_+(q^2,M_H)}\sum_{n=0}^{N-1}a_n^+\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big),\\
+     \label{eq:tensor_FFofz}f_T(q^2)&=\frac{\mathcal{L}}{P_T(q^2,M_H)}\sum_{n=0}^{N-1}a_n^T\Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big).
 \end{align}
-\begin{itemize}
-    \item \textbf{The Heavy HISQ approach}.  Now in this section I intend to discuss the needs for and the means by which we extrapolate to the physical b-quark mass.
-    \item \textbf{Varying the heavy quark mass and HQET}. Here, among other topics, I can describe how the $D_{(s)}\rightarrow\pi (K)$ form factor calculations are a byproduct of Heavy-HISQ.
-\end{itemize}
+This \textit{modified} form of the BCL parameterization allows us to simultaneously extrapolate to zero lattice spacing and physical meson masses, across the physical range of $q^2$, while removing discretization effects and lattice artifacts.  We can therefore characterize our modified $z$-expansion fit routine as using the results of correlator fitting as input data, while equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz} are the fit forms. In these equations, $a_n^{0,+,T}$ are coefficients that multiply $N$ polynomials of $z^n$, for integer $n\in[0,N)$.  We furthermore account for chiral perturbation theory ($\chi$pt) with the inclusion of a non-analytical, $SU(2)$ chiral logarithm term $\mathcal{L}$.  We account for possible pole terms in this parameterization by dividing by a pole-mass term $P_{0,+,T}(q^2,M_H)$.  Doing so enforces that these functions be analytical in $z$.  We explore the definitions of these parameters in the remainder of this section.    
+
+\subsection{Coefficients of the $z$-expansion}\label{sec:coef_z_expand}
+The first terms we will discuss which appear in equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz} are the coefficients $a_n^{0,+,T}$.  We aim for these coefficients to capture the expected dependence on the heavy quark and heavy meson masses, quark mass mistuning, lattice discretization effects, and the (analytical) chiral extrapolation of the light quark mass.  We therefore define $a_n^{0,+,T}$ as
+\begin{equation}\label{eq:z_coefficients}
+    \begin{split}
+        a_n^{0,+,T}&=
+          {\Big(\frac{M_D}{M_H}\Big)^{{\zeta_n}}\Big(1+{\rho_n^{0,+,T}}\log\Big(\frac{M_D}{M_H}\Big)\Big)} \times(1+{\mathcal{N}^{0,+,T}_n})\\
+          &\times
+          \sum_{i,j,k,l=0}^{N_{ijkl}-1} d_{ijkln}^{0,+,T}\Big(\frac{\Lambda_{\mathrm{QCD}}}{M_{H}}\Big)^{{i}} 
+          \Big(\frac{am_h}{\pi}\Big)^{2{j}}
+          {\Big(\frac{a\Lambda_{\mathrm{QCD}}}{\pi}\Big)^{2k}}
+          {(x_{\pi}-x_{\pi}^{\mathrm{phys}})^{l}}.
+    \end{split}
+\end{equation}
+We define the terms in equation \ref{eq:z_coefficients} and prior selection in separate parts below.
+
+\subsubsection{Heavy meson mass dependency}
+We can first discuss the terms in equation \ref{eq:z_coefficients} which are dependent on the mass of the heavy meson $M_H$. From Heavy Quark Effective Theory (HQET) [citation needed?] we include an inverse power series of $M_H$ in $i$, scaled by $\Lambda_\mathrm{QCD}$.  We also include a prefactor with fitted power $\zeta_n$ to account for the $M_H^{-3/2}$ behavior at low $q^2$ we expect from Large Energy Effective Theory (LEET) \cite{Husung_2020}.  We note that by setting $t_0 = 0$ in equation \ref{eq:zofq}, the near-zero $q^2$ region of our form factors will be dominated by the $z^0$ terms in the $z$-expansion.  We have also seen this behavior modeled a logarithmic term in \cite{Will_towardsB}, which we expressly permit by including a $\log(M_H^{-1})$ term multiply by the parameter $\rho_n^{0,+,T}$.
+
+\subsubsection{Quark mass mistuning}
+By the inclusion of the term $\mathcal{N}^{0,+,T}_n$ in equation \ref{eq:z_coefficients}, we account for possible sea and valence quark mass mistuning effects.  This term does not account for the varying heavy quark masses. It also does not perform the $\chi$pt extrapolation of the unphysically heavy light quark masses on the ensembles where $m_s/m_l \approx 5$. We address that functionality later in this section. For now, we can simply define the quark mass mistuning term $\mathcal{N}^{0,+,T}_n$ as
+\begin{equation}\label{eq:mistuning term}
+        \mathcal{N}_n^{0,+,T}={c_{s,n}^{\mathrm{val},0,+,T}\delta_s^{\mathrm{val}}+c_{s,n}^{\mathrm{sea},0,+,T}\delta_s^{\mathrm{sea}}+2c_{l,n}^{0,+,T}\delta_l}+c_{c,n}^{\mathrm{sea},0,+,T}\delta_c^{\mathrm{sea}}.
+    \end{equation}
+The form of equation \ref{eq:mistuning term} is the sum of some fit constants $c$ times some known tuning term $\delta$ for each valence and sea quark.  The mass of the light valence and light sea quarks are degenerate (hence the factor of 2 multiplying $c_{l,n}^{0,+,T}$), which is not true for the strange quark. For any valence or sea quark $q\in{l,s}$, we define $\delta_q$ as
+\begin{equation}\label{eq:delta_q}
+    \delta_q = \frac{m_q - m_q^\mathrm{tuned}}{10m_s^\mathrm{tuned}}
+\end{equation}
+This form includes a factor of 10 in the denominator to account for the expected expansion parameter from $\chi$pt [citation needed?].  We also divide by $m_s^\mathrm{tuned}$ such that $\delta_q$ is scale independent.  We can define $m_s^\mathrm{tuned}$ relative to the mass of the $\eta_s$ meson\footnote{While constructing a pseudo-scalar meson composed of a strange and anti-strange quark pair is unphysical, we are not prevented from construing such a meson on the lattice in pure QCD.}:     
+\begin{equation}\label{eq:mstuned}
+  m_s^{\mathrm{tuned}}=m_s^{\mathrm{val}}\Bigg(\frac{M_{\eta_s}^{\mathrm{phys}}}{M_{\eta_s}}\Bigg)^2.
+\end{equation}
+Though we do not calculate the values of $M_{\eta_s}$, $M^{\mathrm{phys}}_{\eta_s}$ in our correlator fits, we can rely on previous HPQCD results \cite{Will_towardsB, PhysRevD.88.074504} which are fit on the same gluon field ensembles.  With $m_s^{\mathrm{tuned}}$ defined, we can use \cite{PhysRevD.98.074512} to then define $m_l^{\mathrm{tuned}}$ using the ratio
+\begin{equation}\label{eq:quark-mass-ratio}
+    \frac{m_s^{\mathrm{tuned}}}{m_l^{\mathrm{tuned}}} = 27.18(10).
+\end{equation}
+Finally for sea charm quark we can define $\delta^{\mathrm{sea}}_c$ as 
+\begin{equation}\label{eq:delta_c}
+\delta^{\mathrm{sea}}_c=\frac{m_c^{\mathrm{sea}}-m_c^{\mathrm{tuned}}}{m_c^{\mathrm{tuned}}},
+\end{equation}
+where we again use previous HPQCD work which fixes $m_c^{\mathrm{tuned}}$ from the mass of $\eta_c$ \cite{PhysRevD.102.054511}.  These tuned charm quark masses correspond well with the lightest heavy quark mass option on each ensemble.
+
+\subsubsection{Discretization effects}
+In equation \ref{eq:z_coefficients}, we also account for $\mathcal{O}(a^2)$ discretization effects.  This includes effects which are dependent on the mass of the heavy quark $(am_h)^{2j}$, and those which are independent of any quark mass, for which we include $(a\Lambda_\mathrm{QCD})^{2k}$.  With this construction we allow for discretization effect dependencies that either vary across ensembles with different heavy meson masses, and those which are constant for any given ensemble or heavy meson mass.
+
+\subsubsection{Light quark and meson mass dependency}
+Finally, we include an analytical $\chi$pt term $(x_{\pi}-x_{\pi}^{\mathrm{phys}})^{l}$ in equation \ref{eq:z_coefficients} to account for any form factor dependence of the light quark (and therefore also light meson) mass. This term is especially useful in addressing the unphysically heavy light meson masses ($m_s/m_l \approx 5$) which appear in the f5, sf5, and uf5 ensembles. For any meson $\mathcal{M}$, physical or otherwise, we can define a unit-less mass parameter $x_\mathcal{M}$ exactly as 
+\begin{equation}\label{eq:x_pi}
+    {x_{\mathcal{M}}}=\frac{M^2_{\mathcal{M}}}{(4\pi f_\pi)^2}.
+\end{equation}
+For $x_\pi$ however, rather than using fit outputs $M_\pi$ and $f_\pi$, we follow the method of \cite{Will_technical} and construct a useful approximate form where
+\begin{equation}\label{eq:approx_x_pi}
+    x_\pi^{(\mathrm{phys})} = 2\frac{m_l^{(\mathrm{phys})}}{5.63m_s^{\mathrm{phys}}}.
+\end{equation}
+Here the notation which denotes physical masses is equivalent to the ``tuned" notation describing valence quark masses discussed previously, and so we can use equations \ref{eq:mstuned} and \ref{eq:quark-mass-ratio} to define $m_s^{\mathrm{phys}}$ and $m_l^{\mathrm{phys}}$.  
+
+\subsubsection{Coefficient prior choices}
+In the related Boyd-Grinstein-Lebed (BGL) parameterization \cite{PhysRevLett.74.4603, PhysRevD.56.6895, GLENNBOYD1996493}, implementing the proper outer function imposes that the coefficients $b_n$ which multiply the polynomials of $z$ must be of order one or less.  However for the BCL parameterization, we cannot explicitly enforce that the coefficients $a_n^{0,+,T}$ in equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz} similarly lie within the bounds of $0\pm1$.  In previous $B\rightarrow\pi$ and $B_s \rightarrow K$ lattice results which use the BCL parameterization, the coefficients of the $z$-expansion they calculate are often of order one or less \cite{nfzp-p5dn}.  We likewise expect (but do not strictly enforce) that our final values of $a_n^{0,+,T}$ are of order one or less.  In our modified $z$-expansion however, the coefficients $a_n^{0,+,T}$ are constructed from the various terms in equation \ref{eq:z_coefficients}.  Therefore the natural priors to assign to the many parameters in \ref{eq:z_coefficients} are $0(1)$, unless there are physics informed reasons to do otherwise.  For example, the coefficients $d_{ijkln}^{0,+,T}$ which multiply the terms which have powers $i,j,k,l$ are mostly all given priors of $0(1)$ in our $z$-expansion fits.
+We know however the the HISQ action is $a^2$-improved \cite{HISQ:2006rc}, and so we can assign more strict priors to the terms which would be suppressed by the $a^2$ improvement: $P[d_{i10ln}^{0,+,T}]$,  $P[d_{i01ln}^{0,+,T}] = 0.0(3)$ for example.  
+
+To match the expected $M_H^{-3/2}$ behavior at low $q^2$ [citation needed?], we assign the prior $P[\zeta_0] = 1.5(5)$, and directly set all other $\zeta_{n\neq0} = 0$ in the $z$-expansion fit.   With the aim of matching HQET to QCD, we follow from \cite{davies_bs_to_ds,Will_technical} and assign priors $P[\rho_n^{0,+,T}] = 0(1)$ for all $n$.  For $n=0$, this choice permits different form factors to vary in $\zeta_0$, and for $n\neq0$ this choice allows for non-integer power $M_H$ dependence.   
+
+For the quark mass mistuning term, we assign various priors to groups of the constants $c_n^{0,+,T}$ which appear in equation \ref{eq:mistuning term}.  For the valence strange quark, we assign a prior $P[{c_{s,n}^{\mathrm{val},0,+,T}}]=0(1)$, which agrees in the variation of $B\rightarrow\pi$ form factors discussed in \cite{PhysRevD.93.034005}.  We expect less contribution to $\mathcal{N}_n^{0,+,T}$ from the quarks in the sea, and so we arrive at priors $P[{c_{s,n}^{\mathrm{sea},0,+,T}}]=0.0(5)$, $P[{c_{l,n}^{0,+,T}}]=0.0(5)$, and $P[{c_{c,n}^{\mathrm{sea},0,+,T}}]=0.0(1)$.  In test fitting we ensure these priors are not overly constraining to the fit, using the same methods of $\log(\mathrm{GBF})$ testing discussed in chapter \ref{cha:fitting_correlation_functions}.
+
+\subsection{Chiral perturbation theory}\label{sec:chi-pt}
+In the prefactor which multiplies the sum of polynomials in equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz}, we include a non-analytical chiral logarithm term $\mathcal{L}$.  The primary motivation for the inclusion of this term is to account for pion masses on three of our five gluon field ensembles which are unphysically heavy.  Following from \cite{BIJNENS201054, BIJNENS2011145}, we can define separate $SU(2)$ chiral logarithm terms for either meson decay as
+\begin{align}
+        \label{eq:chi-log_Hpi}
+        \mathcal{L}^{H\rightarrow \pi} &= 1 - \Big(\frac{3}{8}+\frac{9{g}^2}{8}\Big){x_{\pi}}\Big(\log{x_{\pi}}+\delta_{FV}\Big),\\
+        \label{eq:chi-log_HsK}
+        {\mathcal{L}^{H_s\rightarrow K}} &= 1 - \frac{3}{8}{x_{\pi}}\Big(\log {x_{\pi}}+\delta_{FV}\Big). 
+    \end{align}
+Here we use the same definition for $x_\pi$ as in equation \ref{eq:x_pi}, $g$ is the coupling strength between between $H$, $H^*$, and $\pi$. $\delta_{FV}$ is a small corrective term which accounts for finite volume effects. In our setup, the pion mass is effectively a light degree of freedom within the $\chi$pt expansion, as its mass varies significantly among the different ensembles.  The kaons in our simulations however have masses which are more stable across ensembles; all our valence strange quark masses are nearly physical. Dependencies any mistuning in valence or sea strange quark mass are likely absorbed by the quark mass mistuning term $\mathcal{N}_n^{0,+,T}$.  Furthermore, dependencies on the kaon mass are likely to be absorbed by the $\Lambda_\mathrm{QCD}$ terms in \ref{eq:z_coefficients} as $M_K \approx \Lambda_\mathrm{QCD}$.  For these reasons we choose to use $SU(2)$ chiral logarithm terms (with only $x_\pi$ dependence) over their respective $SU(3)$ analogues (which have dependencies on $x_K$ and $x_\eta$).  
+
+% Meanwhile $\delta_{FV}$ is a small corrective term which accounts for finite volume effects.  
+It is worth remarking upon the presence of the coupling strength term $g$ in equation \ref{eq:chi-log_Hpi} for $H\rightarrow\pi$ and its absence in equation \ref{eq:chi-log_HsK} for $H_s \rightarrow K$.  The coupling strength $g$ arises out of one loop interactions, such as $H^*\leftrightarrow H\pi$, in the $H\rightarrow \pi$ decay, and is specifically related to the interaction of pions and heavy mesons with heavy-light quark content.  In our $SU(2)$ treatment of the $H_s\rightarrow K$ decay however, there is no equivalent leading order $H_s^*\leftrightarrow H_s\pi$ contribution \cite{PhysRevD.85.114506, PhysRevD.76.014002}. 
 
 
-\section{Lattice Form Factors}\label{sec:constructing_form_factors}
-With a satisfactory set of correlator fit results, we can work towards calculating lattice form factor results.  We emphasize the term \textit{lattice} here because the form factors directly derived from our correlator fits will still contain ensemble-specific lattice artifacts, namely non-zero lattice spacing and nonphysical quark masses.  Furthermore, these lattice form factors will be a discrete, non-continuous set of form factor values, rather than some function describing a continuous curve.  In section \ref{sec:extrapolate_to_phys_cont} we detail how we calculate physical continuum form factors from these discrete form factors.  For now however, let's examine the outputs of our correlator fitting.
+If we now introduce the $M_H$ argument for the coupling strength we can scale $g$ with respect to heavy meson mass as
+\begin{equation}\label{eq:g_coupling}
+    g(M_H) = g_\infty + C_1\frac{\Lambda_\mathrm{QCD}}{M_H} + C_2\frac{\Lambda^2_\mathrm{QCD}}{M_H^2}.
+\end{equation}
+In this formulation, $g_\infty$ is the coupling strength in the infinite mass limit, and $C_{1,2}$ are fitted constants.  From \cite{Asmaa_Abada_2004} we have $g_\infty = 0.48(11)$. For the physical $D$ and $B$ masses we expect $g(M_D) = 0.570(6)$ \cite{PhysRevD.88.052003} and, based on an average of \cite{PhysRevD.93.014510,PhysRevLett.108.172003,2015278} we expect $g(M_B)=0.500(33)$.  Based on trial fits using these values of $g(M_D)$ and $g(M_B)$, we assign broad priors to the fitted constants $P[C_1]=0.5(1.0)$ and $P[C_2]=0.0(3.0)$. 
 
-The results of our correlator fitting includes a set two-point function heavy meson masses $M_H$, light meson energies $E_L$,  and both heavy and light meson amplitudes $A_{H,L}$. The results then also include a set of three-point function current insertions with amplitude $J$.  These masses, energies, and amplitudes correspond to different combinations of lattice spacings, quark masses, daughter meson momenta.  Though these quantities have higher order ($n \neq 0$) and oscillating states, it is only the ground states ($n = 0$ and non oscillating) that we need to carry forward into our lattice form factor calculations.
+Finally to account for effects which depend on the non-infinite volume of our lattices, we include the term $\delta_{FV}$ in our chiral logarithms functions.  Table \ref{tab:delta_FV} gives the values of $\delta_{FV}$ we use, which are calculated from Equation (47) in \cite{PhysRevD.65.054031}.  These are exact first order values, and so to accommodate higher order effects we include an additional $(0.7\%)^2$ error for each $\delta_{FV}$ in our $z$-expansion fits.
+\begin{table}[]
+    \centering
+    \caption{Finite volume correction terms $\delta_{FV}$ used for each ensemble.}
+    \begin{tabular}{c c}
+    \hline
+    Ensemble & $\delta_{FV}$ \\
+    \hline
+    f5     & 0.020801419 \\
+    fphys  & 0.06985291 \\
+    sf5    & 0.020801419 \\
+    sfphys & Equation (47) in \cite{PhysRevD.65.054031} \\
+    uf5    & 0.027538708 \\
+    \hline
+    \end{tabular}
+    \label{tab:delta_FV}
+\end{table}
 
-\subsection{Equations of lattice form factors}\label{sec:equations_of_lattice_form_factors}
+\subsection{Pole-mass terms}\label{sec:pole-mass_terms}
+The final terms we can discuss which appear in equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz} are the pole-mass terms $P_{0,+,T}(q^2,M_H)$.  The motivation for including such terms is to account for potential subthreshold heavy-light production whose quantum numbers match the given current insertion.  This is to say, we wish to account for the heavy mesons $H_0^*$ ($J^P=0^+$) and $H^*$ ($J^P=1^-$) who might have masses in the range between $q^2_\mathrm{max}=(M_{H_{(s)}}-M_{\pi(K)})^2$ and $t_+=(M_H+M_\pi)^2$.  We wish to draw extra attention to the notation here, because the branch-cut at $t_+$ is always equal to the square of the sum of the two mesons masses whose quark content is heavy-light and light-light.  This is true regardless of the spectator quark being a light quark or a strange quark.  In previous sections we often use the notation for a generic heavy meson $H$ whose quark content is either heavy-light or heavy-strange, but for the remainder of this section the notation $H$ always denotes a heavy-light meson.
+
+To begin, we can write the vector pole mass term $P_+(q^2,M_H)$ which appears in equation \ref{eq:vector_FFofz} as 
+\begin{equation}\label{eq:vector_pole_term}
+    P_{+}(q^2,M_H) = 1 - \frac{q^2}{{M^2_{H^{*}}}}.
+\end{equation}
+Using experimental results for $M_{D^*}^\mathrm{phys}$ and $M_{B^*}^\mathrm{phys}$, we can construct an equation for $M_{H^*}$ which interpolates between those two physical results. Using $M_{D^*}^\mathrm{phys}=2.00685(5)$ GeV and $M_{B^*}^\mathrm{phys}=5.32475(20)$ GeV \cite{ParticleDataGroup:2024cfk}, we can follow from \cite{Will_technical,davies_bs_to_ds} and write
+\begin{equation}\label{eq:vectorpolemass}
+    M_{H^*}=M_{H}+\frac{M^{\mathrm{phys}}_{D}}{M_{H}}\Delta(D) + \frac{M^{\mathrm{phys}}_{B}}{M_{H}}\Big[\frac{M_{H}-M^{\mathrm{phys}}_{D}}{M^{\mathrm{phys}}_{B}-M^{\mathrm{phys}}_{D}}\Big(\Delta(B)-\frac{M^{\mathrm{phys}}_{D}}{M^{\mathrm{phys}}_{B}}\Delta(D)\Big)\Big],
+\end{equation}
+where $\Delta(D) = M^\mathrm{phys}_{D^*} - M^\mathrm{phys}_{D}$ and $\Delta(B) = M^\mathrm{phys}_{B^*} - M^\mathrm{phys}_{B}$.  We likewise define the tensor pole factor term $P_T(q^2,M_H)$ = $P_+(q^2,M_H)$.  This choice is motivated by the fact that, in the heavy quark limit and up to known kinematic factors, $f_T(q^2) = f_+(q^2)$ \cite{PhysRevD.73.014012}.
+
+In the equation for the scalar form factor, we similarly define scalar pole mass term as
+\begin{equation}\label{eq:scalar_pole_term}
+    P_0(q^2,M_H) = 1 - \frac{q^2}{{M^2_{H_0^{*}}}},
+\end{equation}
+where $H_0^{*}$ is a heavy meson with quantum numbers $J^P=0^+$.  Looking to the $D$ meson end of the heavy quark mass spectrum, we have the PDG  result that $D_0^{*}=2.343(10)$ GeV \cite{ParticleDataGroup:2024cfk}.  While we do not have any experimental results for the mass of the $B_0^{*}$ meson, we expect from HQET that the energy splitting $\Delta = M_{D_0^{*}} - M_D \approx 0.48$ GeV will be similar for the B system \cite{10.1093/ptep/ptaf138}.  For the generic heavy-light meson $H$ we can therefore define $M_{H_0^{*}} = M_H + \Delta$.
+
+It is important to note that this definition places $(M_{H_0^{*}})^2$ above the branch cut threshold of $t_+ = (M_H+M_\pi)^2$, and so including this pole term in equation \ref{eq:scaler_FFofz} is not strictly necessary. However in other work \cite{PhysRevD.92.116001} and in our own test fitting, we find that the inclusion of this post-threshold pole mass term in the equation of the scalar form factor either has no effect, or somewhat improves fit results.
+
+\subsection{Testing $z$-expansion fits}
+In the previous sections we build the mathematical framework to perform a modified $z$-expansion fit, whose inputs are the outputs of some previous set of correlator fits.  Before presenting the current status of our continuum $B,D\rightarrow \pi$ and $B_s,D_s \rightarrow K$ form factors in the following chapters, it is helpful to visually show the intermediate steps of the $z$-expansion fits.  In figures \ref{fig:Hpi_FFofq2} and \ref{fig:HsK_FFofq2}, we show lattice form factor data from the uf5 ensemble correlator fit overlaid with continuous form factor curves, whose functions are built from the outputs of all-ensemble $z$-expansion test fits.  These figures demonstrate that the $z$-expansion fit forms (equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz}) accommodate not only $q^2$ dependence, but heavy quark mass (and therefore heavy meson mass) dependency as well.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{chapter5/pdfs/Hpi_UF_FFofq2.pdf}
+    \caption{Plots show $H\rightarrow\pi$ lattice form factor data calculated from uf5 ensemble ($a=0.044$ fm, $m_s/m_l\approx5$) correlator fits, shown over large $q^2$ kinematic range.  We show results for scalar (top left), temporal vector (top right), spatial vector (bottom right), and tensor (bottom left) form factors.  Blue, red, green, and purple data corresponds to heavy quark masses equal to $0.21$, $0.43$, $0.64$, and  $0.86$ times the physical b-quark mass respectively.  The matching colored continuous curves are the functional form factor results constructed from the outputs of all-ensemble $z$-expansion test fits.  The shaded region of each curve corresponds to the limits of the form factor results to $\pm1$ standard deviation.}
+    \label{fig:Hpi_FFofq2}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{chapter5/pdfs/HsK_UF_FFofq2.pdf}
+    \caption{Plots show $H_s\rightarrow K$ lattice form factor data calculated from uf5 ensemble ($a=0.044$ fm, $m_s/m_l\approx5$) correlator fits, shown over large $q^2$ kinematic range.  We show results for scalar (top left), temporal vector (top right), spatial vector (bottom right), and tensor (bottom left) form factors.  Blue, red, green, and purple data corresponds to heavy quark masses equal to $0.21$, $0.43$, $0.64$, and  $0.86$ times the physical b-quark mass respectively.  The matching colored continuous curves are the functional form factor results constructed from the outputs of all-ensemble $z$-expansion test fits.  The shaded region of each curve corresponds to the limits of the form factor results to $\pm1$ standard deviation.}
+    \label{fig:HsK_FFofq2}
+\end{figure}
 
 
-\subsection{Renormalization Terms}\label{sec:renorm_terms}
 
 \section{Extrapolating to physical continuum form factors}\label{sec:extrapolate_to_phys_cont}
+In the previous section, we describe the fit equations for the scalar, vector, and tensor form factors which use the BCL parameterization as a basis.  We modify this parameterization so that we can account for unphysical quark masses and meson mass dependencies, $\chi$PT and discretization effects, and non-zero lattice spacing simultaneously in one fit.  The result of this fit allows us to construct continuum limit versions of equations \ref{eq:scaler_FFofz}-\ref{eq:tensor_FFofz} which are valid for a generic heavy meson of mass $M_H$ and the respective physical $q^2$ range where $0\leq q^2 \leq q^2_\mathrm{max}=(M_H-M_L)^2$.
 
+We can define the continuum limit form factors $f^\mathrm{cont.}_{0,+,T}(q^2,M_H)$ as
+\begin{align}\label{eq:continuous_z-expansion}
+    f^{\mathrm{cont.}}_0(q^2,M_H)&=\frac{\mathcal{L}^{\mathrm{cont.}}(M_H)}{P_0(q^2,M_H)}\sum_{n=0}^{N-1}a_n^{0,(\mathrm{cont.})}(M_H)z^n,\\
+    f^{\mathrm{cont.}}_+(q^2,M_H)&=\frac{\mathcal{L}^{\mathrm{cont.}}(M_H)}{P_+(q^2,M_H)}\sum_{n=0}^{N-1}a_n^{+,(\mathrm{cont.})}(M_H)\times
+    \Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big),\\
+    f^{\mathrm{cont.}}_T(q^2,M_H)&=\frac{\mathcal{L}^{\mathrm{cont.}}(M_H)}{P_0(q^2,M_H)}\sum_{n=0}^{N-1}a_n^{T,(\mathrm{cont.})}(M_H)\times
+    \Big(z^n-\frac{n}{N}(-1)^{n-N}z^N\Big),
+  \end{align}
+where we have made explicit all $M_H$ arguments.  The continuum chiral logarithm term $\mathcal{L}^{\mathrm{cont.}}(M_H)$ differs from those describe in equations \ref{eq:chi-log_Hpi}, \ref{eq:chi-log_HsK} such that $\delta_{FV}=0$, and $x_\pi \rightarrow x_\pi^\mathrm{phys}$.  We can define the continuum expansion coefficients $a_n^{0,+,T,(\mathrm{cont.})}$ as
+\begin{equation}\label{eq:a_continuous}
+     a_n^{0,+,T,(\mathrm{cont.})}(M_H)=
+    \Big(\frac{M^{\mathrm{phys}}_D}{M_H}\Big)^{\zeta_n}\Big(1+\rho_n^{0,+,T}\log\Big(\frac{M_{H}}{M^{\mathrm{phys}}_{D}}\Big)\Big)\times
+    \sum^{N_{i}-1}_{i=0}d_{i000n}^{0,+,T}\Big(\frac{\Lambda_{\mathrm{QCD}}}{M_{H}}\Big)^i,
+\end{equation}
+where the only terms left in the summation are those for which $j,k,l=0$ for $d^{0,+,T}_{ijkln}$ in equation \ref{eq:z_coefficients}.  Such cases correspond to lattice spacing $a\rightarrow0$ and $x_\pi \rightarrow x_\pi^\mathrm{phys}$.  Furthermore in the continuum limit, the quark mass mistuning term $\mathcal{N}_n^{0,+,T} \rightarrow 0$. Therefore in this form $ a_n^{0,+,T,(\mathrm{cont.})}$ now only has funcitonal dependence on the heavy meson mass $M_H$.
 
+With this mathematical infrastructure, constructing physical continuum form factors is as simple as performing the appropriate $z$-expansion fit (either $H\rightarrow\pi$ or $H_s \rightarrow K$), plugging in the necessary fit outputs which appear in the continuum form factor equations, and then setting the desired physical heavy meson mass for either $D^\mathrm{phys}_{(s)}$ or $B^\mathrm{phys}_{(s)}$.
 

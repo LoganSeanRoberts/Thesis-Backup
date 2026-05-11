@@ -1,0 +1,99 @@
+\documentclass[tikz,border=2mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\newcommand{\midarrow}{\tikz \draw[-triangle 45] (0,0) -- +(.1,0);}
+\newcommand{\altarrow}{\tikz \draw[-triangle 45] (0,0) -- +(.5,0);}
+
+
+\usetikzlibrary{decorations.markings,calc,arrows.meta}
+% Arrow helper
+
+
+\begin{document}
+
+\begin{tikzpicture}[decoration={snake,amplitude=1.5pt,segment length=6pt}]
+  % Parameters
+
+\def\L{2.2}      % horizontal radius
+\def\H{0.5}
+
+ \coordinate (L1) at (-\L, \H);
+ \coordinate (L2) at (-\L, -\H);
+ \coordinate (R1) at (\L, \H);
+ \coordinate (R2) at (\L, -\H);
+ \coordinate (lept1) at (\L, \H*5);
+ \coordinate (lept2) at (\L, \H*3);
+ 
+ \coordinate (J) at (0, \H);
+ \coordinate (JJ) at (\L/2,4*\H);
+
+\begin{scope}[very thick, every node/.style={sloped,allow upside down}]  
+    \draw[line width = 1pt] (L2) -- node {\midarrow} (R2);
+    \draw[line width = 1pt] (J) -- node {\midarrow} (L1);
+    \draw[line width = 1pt] (R1) -- node {\midarrow} (J);
+    \draw[line width = 1pt] (JJ) -- node {\altarrow} (lept2);
+    \draw[line width = 1pt] (lept1) -- node {\midarrow} (JJ);
+\end{scope}
+  % Coordinates
+
+  %  \begin{scope}[very thick, every node/.style={sloped,allow upside down}]  
+  %   \draw[line width = 1pt] (L2) -- node {\midarrow} (R2);
+  %   \draw[line width = 1pt] (C1) -- node {\midarrow} (L1);
+  %   \draw[line width = 1pt] (R1) -- node {\midarrow} (C2);
+  %   \draw[line width = 1pt] (JJ) -- node {\altarrow} (lept1);
+  %   \draw[line width = 1pt] (lept2) -- node {\midarrow} (JJ);
+  %   \draw[-triangle 45, rotate = 45+185, line width=0.4pt] ($(C1) + (0-0.5,\H-0.70)$) -- +(0.1,0);
+  %   \draw[-triangle 45, rotate = 135, line width=0.4pt] ($(C1) + (0-0.6,\H-1.93)$) -- +(0.1,0);
+  % \end{scope}
+
+  % Upper arc: R -> L (flowing left)
+  %\draw[line width=1pt] (L) arc[start angle=180,end angle=90,x radius=\R,y radius=\H];
+
+  % Endpoints
+  %\node[font=\Large\bfseries] at (J) {$\otimes$};
+  \draw[decorate,thick] (J) -- (JJ);
+  %\begin{scope}
+  %  \fill[white] (J) circle (4.4pt);   % solid white background
+  %  \draw[thick] (J) circle (4.4pt);   % circle outline
+  %  \node[font=\Large\bfseries] at (J) {$\times$};
+    %\draw[thick] (2-4pt,0-4pt) -- (2+4pt,0+4pt); % cross
+    %\draw[thick] (2-4pt,0+4pt) -- (2+4pt,0-4pt);
+  %\end{scope}
+
+  %\fill (L1) circle (1.5pt);
+  %\fill (L2) circle (1.5pt);
+  %\fill (R1) circle (1.5pt);
+  %\fill (R2) circle (1.5pt);
+  \fill (J) circle (1.5pt);
+
+\node[black] at ($(L1) + (-0.3,0)$) {$\overline{b}$};
+\node[black] at ($(L2) + (-0.3,0)$) {${d}$};
+ \node[black] at ($(-\L + (-0.9,0)$) {$B^0$};
+% \node[font=\huge] at ($(-\L + (-0.7,0)$) {$\{$};
+
+\node[black] at ($(R1) + (0.3,0)$) {$\overline{u}$};
+\node[black] at ($(R2) + (0.30,0)$) {$d$};
+ \node[black] at ($(\L + (0.9,0)$) {$\pi^-$};
+% \node[font=\huge] at ($(\L + (0.7,0)$) {$\}$};
+
+\node[black] at ($(J) + (0.1,0.6)$) {$W^+$};
+\node[font=\small] at ($(J) + (0,-0.25)$) {$V_{ub}$};
+
+\node[black] at ($(lept1) + (0.3,0)$) {$e^+$};
+\node[black] at ($(lept2) + (0.3,0)$) {${\nu_e}$};
+
+
+  %\node[blue] at ($(S)+(-0.2,0)$) {$J$};
+  %\node[blue] at ($(T)+(0.2,0)$) {$h$};
+  %\node[red] at ($(Talt)+(0.2,0)$) {$l$};
+  %\node[blue] at ($(B)+(0.2,0)$) {$l$};
+  %\node[red] at ($(Balt)+(0.2,0)$) {$l$};
+
+
+
+
+
+
+  \end{tikzpicture}
+  \end{document}

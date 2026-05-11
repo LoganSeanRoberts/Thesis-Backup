@@ -1,86 +1,839 @@
 \chapter{Lattice Quantum Chromodynamics}\label{cha:Lattice_QCD}
+In this chapter we establish the foundational principles of lattice QCD. We discuss the motivation for developing a discretized theory, and how we discretize the path integral.  We review various gluon and quark actions, arriving at the improved action we use in the work: the Highly Improved Staggered Quark (HISQ) action.  We end this chapter with an in-depth exploration of quark propagators and correlation functions on the lattice.
 
-\section{The motivation fort Lattice QCD}\label{sec:motivation_for_LQCD}
-This section would present perturbation theory, and why a non-perturbative theory like Lattice QCD is needed
+\section{The motivation for Lattice QCD}\label{sec:motivation_for_LQCD}
+% This section would present perturbation theory, and why a non-perturbative theory like Lattice QCD is needed
+% ...
+The motivation to put QCD on the lattice originates from to the problem of energy scales and perturbativity.  The strong coupling constant $a_s = \frac{g_s^2}{4\pi}$ has energy scale dependency, and at low energies the strong coupling constant becomes large.  The result of a large $a_s$ is that quarks and gluons do not exist as free particles, but are instead confined within the composite structure of hadrons \cite{PhysRevD.10.2445}.  Furthermore, perturbation theory requires coupling constants to be small, and so an analytical perturbative approach to QCD breaks down at low energies where the coupling constant is large.  The methods of lattice QCD therefore involve using a numerical approach to solve the path integral, which can be managed by computers with the introduction of discretization theory.
+
 \section{The fundamentals of Lattice QCD}\label{sec:fundementals_of_LQCD}
-This section ought to describe a range of Lattice QCD topics: the path integral, the gluon action, quarks on the lattice.  Quarks on the lattice specifically warrants extensive writing.
+% This section ought to describe a range of Lattice QCD topics: the path integral, the gluon action, quarks on the lattice.  Quarks on the lattice specifically warrants extensive writing.
+In this section, we explore the basic principles of Lattice QCD.  These fundamentals cover path integral discretization, lattice actions, and the description of particles on the lattice.  Much of the content and notation in this section is based on \cite{lepage2005latticeqcdnovices}.
+
+\subsection{Path integral discretization}\label{sec:path_integral_discretization}
+In section \ref{sec:path_integrals_and_corrfuncs} we discussed the path integral and correlation functions in the context of the physical continuum, which is to say, not on the lattice.  Let us begin building a discretized theory with the equation for the path integral (equation \ref{eq:path_integral}) and some real scalar field $\phi$.  We first move from a Minkowski metric to a Euclidean metric via Wick rotation, such that time $t\rightarrow -it$, and likewise for a four-vector $x$ we have $x \rightarrow (-ix^0,\vec{x})$.  We can the denote the action of the scalar field $\phi$ in terms of its Euclidean action $S[\phi]$.  With these terms we can write the associated partition function $Z$ in a Euclidean spacetime as
+\begin{equation}\label{eq:partition_funciton_full}
+    Z = \int D\phi e^{-S[\phi]},
+\end{equation}
+which again simply the path integral without any operator insertion.  We can arrive at some $n$-point correlation function by inserting an operator which is a function of the scalar field.  If we insert such an operator $\Gamma[\phi]$, our $n$-point correlation function is then
+\begin{equation}\label{eq:n-point_corr_func}
+    C_n(x) = \frac{1}{Z} \int D\phi\Gamma[\phi] e^{-S[\phi]}.
+\end{equation}
+Through Wick rotation, we have replaced the oscillating phase term which appears in the equation of a non-discretized path integral (equation \ref{eq:path_integral}) with an exponential decaying term.  
+
+Having Wick rotated to a Euclidean metric, we can now introduce the lattice into this theory.  We formally discretize our four-dimensional (Euclidean) space time, on which we impose periodic boundary conditions.  The resulting spacetime structure is a four-dimensional torus.  This spacetime has coordinates $x_j = (x^0_j, x^1_j, x^2_j, x^3_j)$ which, for a given dimension, are separated by a constant \textit{lattice spacing} $a$, which is sometimes referred to as the \textit{lattice constant}.  In this work we often mix notation for our spacetime dimensions where the dimension $\mu \in \{0,1,2,3\} \equiv\{t,x,y,z\}$.  Each spacetime dimension has a number of coordinates, or \textit{lattice sites} $N_\mu$.  The length of the $\mu$ direction is therefore $aN_\mu$. Throughout this work we will often find quantities or variables given in \textit{lattice units}, where a factor of $a$ is implied.  For example, we can simply say that a given lattice dimension is of length $N_\mu$ in lattice units.  Similarly, in lattice units the four-dimensional torus has a volume $\mathrm{Vol}=N_tN_xN_yN_z$, such that the lattice site $x_j \in \{0,1,...,\mathrm{Vol}\}$.
+
+This discretization gives us the benefit of having a model with finite degrees of freedom.  Within this model we can simulate standard model physics numerically with computers.  This naturally introduces \textit{discretization errors} that separate this theory from an infinite volume, physical continuum theory. However, having a non-infinite volume and non-zero lattice spacing prevents \textit{infrared} and \textit{ultra-violet} divergences in the theory.  This is to say, we have removed very low energy/long distance effects, and we have removed very high energy/short distance effects
+
+Under this scheme where we have discretized spacetime, we can now treat continuous integrals over spacetime as finite sums over some number of lattice sites.  Likewise, we can now treat derivatives as finite differences.  Recalling equation \ref{eq:n-point_corr_func}, we can write the infinite dimensional measure $D\phi$ as
+\begin{equation}
+    D\phi = \prod_{x_j \in \mathrm{lattice}} d\phi(x_j).
+\end{equation}
+With the now discretized integral measure defined, we can address defining the discretized path integral itself.  We do so via the methods of Monte Carlo integration \cite{Metropolis:1953am, Hastings:1970aa, Creutz:1980zw, Duane:1987de}, which we will summarize here.  Suppose we generate a number $N_\mathrm{cfg}$ of field configurations $\phi^{(\alpha)}$ for $\alpha \in \{1,2,...,N_\mathrm{cfg}\}$; this gives us
+\begin{equation}
+    \phi^{(\alpha)} = \{ \phi^{(\alpha)}(x_{j=0}),...,\phi^{(\alpha)}(x_{j=\mathrm{Vol}}) \}.
+\end{equation}
+Suppose now that we select some number of configurations from the probability distribution $P[\phi^{(\alpha)}]$, where $P[\phi^{(\alpha)}] \propto e^{-S[\phi^{(\alpha)}]}$.  If that number of configurations is sufficiently high, we can approximate the n-point correlation function (equation \ref{eq:n-point_corr_func}) as
+\begin{equation}\label{eq:approx_n-corr_func}
+    C_n[\phi] \approx \frac{1}{N_\mathrm{cfg}} \sum_{\alpha=1}^{N_\mathrm{cfg}} \Gamma [\phi^{(\alpha)}].
+\end{equation}
+This Monte Carlo approach allows us to apply statistical methods to our lattice simulation.  To summarize: the action $S[\phi^{(\alpha)}]$ determines the probability distribution $P[\phi^{(\alpha)}]$, from which some number $N_\mathrm{cfg}$ of field configurations $\phi^{(\alpha)}$ are generated.  The path integral is then calculated as the average over those field configurations. Configuration generation is carried out via a Markov Chain process, the Metropolis algorithm in particular \cite{Metropolis:1953am}.  This algorithm begins by selecting some initial $\phi_{x_j}$.  Some random number $\delta$ is then drawn from a uniform distribution with range $(-r,r)$, where then $\phi({x_j})$ is updated such that $\phi({x_j})\rightarrow \phi({x_j})+\delta$.  This update precipitates some measurable change in the action $\Delta S$.  In the case where $\Delta S < 0$, then the update is kept and the algorithm moves on to $\phi(x_{j+1})$.  Meanwhile if $\Delta S \geq 0$, we accept the update only if $e^{-\Delta S}> u$, where $u$ is a random number in the range $(0,1)$.  If $e^{-\Delta S} \leq u$ then the update is rejected and the algorithm proceeds to $\phi(x_{j+1})$.
+
+The last step in this algorithm is key to avoiding unwanted behavior in the Markov Chain.  Namely, without allowing some random instances of positive $\Delta S$, the algorithm might stabilize at what is only a local minimum, or simply find a state which minimizes the action.  There are improved versions of this algorithm, such as the \textit{Hybrid Monte Carlo} method \cite{Duane:1987de}, which eliminate discretization errors for large $|\delta|$.  This is especially useful in lattice QCD where minimizing discretization errors is paramount.
 
 
-\section{The High Improved Staggered Quark formalism}\label{sec:HISQ}
-Here I will get into some nitty-gritty Lattice QCD.  Topics would include the naive quark action and the doubling problem, Symanzik improvement at tree level and at one loop, the Naik $\epsilon$ term in the HISQ action, staggered quarks, and twisted boundary conditions.  I might then end this section with the inclusion of the data table of the various HISQ ensembles I use in this work, such as the following.  
-\subsection{Opposite parity states}\label{sec:opposite_parity}
-From \cite{PhysRevD.67.054505}, the doubling in the temporal lattice direction gives rise to opposite parity states manifesting as oscillating terms $-(-1)^t$ in the correlation function. 
+\subsection{Gluon actions and improvements}\label{sec:lattice_actions_and_improvements}
+Let us move on to discuss how we implement various actions on the lattice.  Ultimately we seek to have both quark fields $\psi$ and gluon fields $A_\mu$ in our discretized path integral, where the action in that integral ought to be guided by a Euclidean and discretized version of the QCD Lagrangian (equation \ref{eq:QCD_Lagrangian}).  Putting quarks aside for now, let us first explore how we model gluons on the lattice.  Rather than placing gluons at actual lattice cites $A_\mu(x)$, we instead model gluon as links between lattice cites $U_\mu(x)$.  For a lattice spacing $a$, a direction along a lattice dimension $\mu$, and the unit vector in that direction $\hat{\mu}$, we can define the path ordered (denoted by $\mathcal{P}$) gluon field \textit{link} as
+\begin{equation}\label{eq:gluon_link}
+\begin{split}
+    U_\mu(x) &= \mathcal{P}e^{-i\int_x^{x+a\hat\mu} g_s A\cdot dx} \\
+    &\approx e^{-iag_sA_\mu}
+\end{split}
+\end{equation}
+With this approximation, we can maintain gauge field invariance in our discretized theory.  For example, if we apply the $SU(3)$ gauge transformation $G(x)=e^{-i\alpha(x)}$ on a gluon field link $U_\mu(x)$ we have
+\begin{equation}\label{eq:SU3_gauge_transformation}
+    \begin{split}
+        U_\mu(x) &\rightarrow G(x)U_\mu (x) G^\dagger(x+a\hat{\mu}).
+        %\psi(x) &\rightarrow G(x)U_\mu(x)    
+    \end{split}
+\end{equation}
+This transformations allow us to safely define $U_\mu(x)$ as a \textit{gauge link} between lattice sites $x$ and $x+a\hat\mu$  We can also define the hermitian conjugate $U^\dagger_\mu(x) = U_{-\mu}(x + a\hat\mu)$, which describes a gluon link in the inverse direction from $x+a\hat\mu$ to $x$.  Because the $SU(3)$ gauge transformation is unitary ($GG^\dagger=1$), it is possible to construct connected loops of gluon links which are entirely gauge invariant.
 
-Appendix D in \cite{HISQ:2006rc} discusses how, in a flavor singlet case, there is no oscillating term in the correlator at zero meson momentum.  The quark and antiquark are created by the same field, and the only means by which they would have an interaction (which would have an amplitude), would be from annihilation and the emission of a highly off shell gluon.  Such gluons are removed by the contact terms discussed in that paper.
+The most basic gauge invariant quantity we can build with gluon links is an $a\times a$ loop, known widely in lattice theory as the \textit{plaquette} \cite{PhysRevD.10.2445, Wilson1980}.  Tracing over color, we can define the plaquette $P_{\mu\nu}(x)$ as 
+\begin{equation}\label{eq:plaquette}
+    P_{\mu\nu}(x) = \frac{1}{3}\mathrm{ReTr}\left[ U_\mu(x) U_\nu(x+a\hat\mu)U^\dagger_\mu(x+a\hat\nu)U^\dagger_\nu(x)
+    \right]
+\end{equation}
+Defining the plaquette is a powerful tool on the lattice; we can see why when we vary the gauge field around the lattice site $x_0$.  Expanding in powers of $-iag_sA$ we get 
+\begin{equation}\label{eq:plaquette_expansion}
+    P_{\mu\nu}(x) = \frac{1}{3}\mathrm{ReTr}\left[
+    1-i \oint g_sA \cdot dx - \frac{1}{2}\left( \oint g_sA \cdot dx \right)^2 ...
+    \right].
+\end{equation}
+If for now we only worry about first order terms, we can use Greens theorem can write the loop integral which appears in equation \ref{eq:plaquette_expansion} as
+\begin{equation}\label{eq:greens_theorem_derivation}
+\begin{split}
+    \oint A \cdot dx &= \int_{-a/2}^{a/2} dx_\mu dx_\nu \left[
+    \partial_\mu A_\nu(x_0+x) -  \partial_\nu A_\mu(x_0+x)
+    \right]\\
+    &= \int_{-a/2}^{a/2} dx_\mu dx_\nu \left[
+    F_{\mu\nu}(x_0) + (x_\mu D_\mu + x_\nu D_\nu)F_{\mu\nu}(x_0) + \frac{1}{2}
+    (x_\mu^2 D_\mu^2 + x_\nu^2 D_\nu^2)F_{\mu\nu}(x_0)
+    \right]
+    {}\\
+    &= a^2 F_{\mu\nu}(x_0) + \frac{a^4}{24}(D_\mu^2 + D_\nu^2)F_{\mu\nu}(x_0)+...\quad,
+\end{split}
+\end{equation}
+where $F_{\mu\nu}$ is the QCD field strength tensor. Substituting the right hand side of the last line of equation \ref{eq:greens_theorem_derivation} into equation \ref{eq:plaquette_expansion} we arrive at
+\begin{equation}\label{eq:plaquette_wilson}
+    P_{\mu\nu}(x) = \frac{1}{3}\mathrm{Tr}\left[
+    1-
+   \frac{a^4}{2}F^2_{\mu\nu} - \frac{g^2_s a^6}{24}F_{\mu\nu} (D_\mu^2 + D_\nu^2)F_{\mu\nu} +...
+    \right]\bigg\rvert_{x_0}   .
+\end{equation}
+We can use this formulation of the plaquette to define the Wilson Action $S_\mathrm{W}$ \cite{PhysRevD.10.2445}.  Truncating $S_\mathrm{W}$ to only $\mathcal{O}(a^2)$ terms we get 
+\begin{equation}\label{eq:Wilson_Action}
+\begin{split}
+    S_\mathrm{W} &= \frac{6}{g_s^2} \sum_{x,\mu > \nu}(1-P_{\mu\nu})\\
+    &= \int d^4x \sum_{\mu\nu} \frac{1}{2}\mathrm{Tr}
+    \left[
+    F^2_{\mu\nu} + \frac{a^2}{12}F_{\mu\nu}(x_0)(D_\mu^2 + D_\nu^2)F_{\mu\nu}(x_0) +...
+    \right] .
+\end{split}
+\end{equation}
+With the Wilson action, we can define the scale of the lattice via the coupling strength term $g_s$. In common lattice QCD notation we often use the lattice scale term $\beta = \frac{6}{g^2_s}$ In this context, we can refer to the Wilson action the \textit{naive} gluon action: the action succeeds at instantiating gluon links on the lattice, but it does introduce certain discretization errors.  From equation \ref{eq:Wilson_Action} we can see that the Wilson action differs from the the continuum gluon action $\mathcal{L_{\mathrm{glue}}}=\frac{1}{4}\mathrm{Tr}F_{\mu\nu}F^{\mu\nu}$ by increasing powers of lattice spacing $a$.  To address this problem we can implement the methods of Symanzik improvement \cite{SYMANZIK1983187}, whereby the appropriate combination of various gluon loops removes certain terms of order $a^2$ or higher \cite{Luscher1985}.  
 
-References to opposite parity states -> oscillating, need matching isospin I+0 that is why $a_0$ not f(500): \cite{PhysRevD.70.094505, PhysRevD.73.114503}
-\subsection{Twisted boundary conditions}\label{sec:twisted_boundary_conditions}
-Citations \cite{Bedaque_2004, DEDIVITIIS2004408, Guadagnoli_2006}
+For the sake of completeness, it is worth mentioning the problem of \textit{tadpoles} can appear even in improved gluon actions.  In lattice QCD, tadpoles are plaquettes with only one vertex.  They effectively act as self-interaction loops which artificially inflate quantum corrections on the lattice.  These higher order terms appear in the expansion of $e^{-iag_sA_\mu}$ in the gluon link operator $U_\mu$.  We can make our gluon action \textit{tadpole improved} \cite{PhysRevD.48.2250} by taking $U_\mu \rightarrow u_0U_\mu$, where $u_0 = \bra{0}P_{\mu\nu}\ket{0}^{-1/4}$.
+
+
+\section{The Highly Improved Staggered Quark formalism}\label{sec:HISQ}
+% Here I will get into some nitty-gritty Lattice QCD.  Topics would include the naive quark action and the doubling problem, Symanzik improvement at tree level and at one loop, the Naik $\epsilon$ term in the HISQ action, staggered quarks, and twisted boundary conditions.  I might then end this section with the inclusion of the data table of the various HISQ ensembles I use in this work, such as the following.  
+In the previous section, we described how to model gluons on the lattice as links between lattice cites, and used plaquettes to describe a Symanzik improved Wilson action.  Plenty of lattice QCD research can be carried out by only considering gluons in this discretized theory.  However because the interest of this work is ultimately related to the decays of heavy mesons, we seek to add the description of quarks to our action.  We do so via the Highly Improved Staggered Quark (HISQ) formalism \cite{HISQ:2006rc}, the construction of which we fully explore in this section.
+
+\subsection{The naive quark action and the doubling problem}\label{sec:naive_quark_action}
+Let us return to the lattice QCD Lagrangian given in equation \ref{eq:QCD_Lagrangian}. If we define the matrix $M = (\slashed{D} + m)$, then we can succinctly define the action of QCD as 
+\begin{equation}\label{eq:QCD_action}
+    \begin{split}
+        S_\mathrm{QCD} &= S_\mathrm{glue} + \sum_x \overline{\psi}  (\slashed{D} + m)\psi, \\
+          &= S_\mathrm{glue} + \overline{\psi}M\psi.
+    \end{split}
+\end{equation}
+We can therefore define the quark portion of the QCD action as $S_\mathrm{quark} = \overline{\psi}M\psi$.  Under the same $SU(3)$ gauge transformation we applied to gluon links, we expect $\psi(x) \rightarrow G(x)\psi(x)$.  We were successful in the previous section in using gluon plaquettes to reduce discretization errors in the gluon action.  We now wish to develop a similarly effective approach to discretization the quark action.  To begin, we can consider how the matrix $M$ in $S_\mathrm{quark}$ contains a covariant derivative term.  In the interest of discretization, let us introduce the discrete derivative $\Delta_\mu$ where
+\begin{equation}\label{eq:discrete_derivative_on_quark}
+    \Delta_\mu \psi(x) = \frac{1}{2a} \left[ 
+    U_\mu(x)\psi(x+a\hat{\mu}) - U^\dagger_\mu(x-a\hat\mu)\psi(x-a\hat\mu)
+    \right].
+\end{equation}
+Discretizing the quark action in this naive way does get us closer to a full description of fermions on the lattice, however it does introduce the problem of \textit{doubling symmetry} \cite{KARSTEN1981103, KAWAMOTO1981100}.  This symmetry occurs where, for every quark we instantiate on the lattice, we indirectly create 15 other quarks of equivalent flavor at different lattice cites.   To explain this phenomenon, let us first consider the qualities of gamma matrices $\gamma_\mu$ in a Euclidean metric.  In such a case, the gamma matrices have the following relevant properties: $\{\gamma_\mu,\gamma_\nu\}=2\delta_{\mu\nu}$, $\gamma^\dagger_\mu = \gamma_\mu$, and $\gamma_\mu^2=1$.  With these matrices we can define complete set of 16 spinor matrices $\gamma_n$ as
+\begin{equation}\label{eq:spinors}
+    \gamma_n = \prod_{\mu=0}^3 (\gamma_\mu)^{n_\mu},
+\end{equation}
+where $n$ is a four-vector whose components $n_\mu \in \{0,1\}$.  Suppose now that the naive quark action is symmetric about the transformation $\psi \rightarrow \tilde{\psi}$ where
+\begin{equation}\label{eq:spinor_transform}
+\begin{split}
+        \tilde{\psi} &\equiv \gamma_5\gamma_\mu (-1)^\frac{x_\mu}{a}\psi(x),\\
+        &=  \gamma_5\gamma_\mu e^\frac{i\pi x_\mu}{a} \psi(x). 
+\end{split}
+\end{equation}
+As a result of the $\frac{\pi}{a}$ term which appears in this equation, there will be an equivalent mode with momentum $p_\mu \approx \frac{\pi}{a}$ for every low momentum mode $\psi(x)$.  Here we can also note that we can make this transformation in one lattice dimension independently of any other.  As such, we can characterize the behavior of this general transformation as
+\begin{equation}\label{eq:doubler_transform}
+    \begin{split}
+        \psi(x) &\rightarrow B_\zeta (x) \psi(x), \\
+        \overline{\psi}(x) &\rightarrow \overline{\psi}(x) B^\dagger_\zeta (x).
+    \end{split}
+\end{equation}
+We can define this general transformation operator $B_\zeta (x)$ for $\zeta_\mu \in \{0,1\}$ as 
+\begin{equation}\label{eq:general_transformation}
+\begin{split}
+    B_\zeta(x) &\equiv \gamma_{\overline{\zeta}}(-1)^\frac{\zeta \cdot x}{a}\propto 
+    \prod_\mu (\gamma_5 \gamma_\mu)^{\zeta_\mu}e^\frac{ix\cdot\zeta\pi}{a},\\
+    \overline{\zeta}_\mu &\equiv \sum_{\mu \neq \nu} \zeta_\nu \mathrm{mod}2.
+\end{split}
+\end{equation}
+Though the notation here is dense, the key take away is that we have a total of 16 $\zeta_\mu$s, 15 \textit{doublers} and one real $\zeta_0 = (0,0,0,0)$ mode.  From now on we will refer to these extra fermion doublers as \textit{tastes} rather than flavors, to avoid the obvious confusion with physical quark flavors.
+
+If these various quark tastes were identical and did not interact with each other, then a simple insertion of $\frac{1}{16}$ into $\mathrm{Det}(M)$ would solve the problem of this doubling symmetry.  Unfortunately, the existence of \textit{taste exchange} interaction prevents such a simple solution; the various tastes do in fact interact with each other.  For example, a quark can emit a gluon with momentum $p\approx \frac{\zeta\pi}{a}$, which can then be absorbed by another low momentum quark of another taste.  Such quarks would remain mostly on-shell, and as a result they would both  experience taste change.  This form of taste change is present on the lattice as another discretization error, and is suppressed by the scale of $a^2$.  Various other quark actions attempt to resolve the problem of doubling symmetry by giving mass to the doublers.  Such a change causes the tastes to decouple as $a\rightarrow 0$.  Among such action are the well known Wilson quark action \cite{PhysRevD.10.2445} and Clover quark action \cite{SHEIKHOLESLAMI1985572}.  In this work, we use the HISQ action \cite{HISQ:2006rc}, which we develop further in the following sections.
+
+\subsection{Symanzik improved quark actions}\label{sec:symanzik_improvement}
+We can begin working towards the final form of the HISQ action by first tackling leading order taste exchange discretization errors.  We do this through the introduction of the form factor $f_\mu(p)$ to the gluon quark vertex $\overline{\psi}\gamma_\mu U_\mu \psi$.  This form factor has the quality $f_\mu(p) = 0$ for $p\rightarrow\frac{\zeta \pi}{a}$, $\zeta^2\neq0$, and $\zeta_\mu=0$. In the case of $\zeta_\mu = 1$, the interaction vanishes.  Alternatively, $f_\mu(p) = 1$ for $p\rightarrow0$.  This formulation is facilitated on the lattice by the smearing operator $\mathcal{F}_\mu$, which acts on our gluon gauge links like $U_\mu(x)\rightarrow\mathcal{F}_\mu U_\mu (x)$.  Symmetrizing over all possible operator orderings \cite{PhysRevD.59.074502}, we can define the smearing operator as
+\begin{equation}\label{eq:smearing_operator}
+    \mathcal{F}_\mu \equiv \prod_{\mu \neq \nu}\left( 
+    1 + \frac{a^2 \delta_\nu^{(2)}}{4} 
+    \right)\Bigg\rvert_\mathrm{symm}.
+\end{equation}
+Here we use the special operator $\delta_\nu^{(2)}$, where the $(2)$ notation indicates that the operator acts like a covariant second derivative when acting on the gauge link $U_\mu(x)$:
+\begin{equation}\label{eq:smear_pt2}
+\begin{split}
+    \delta_\nu^{(2)} U_\mu (x) &\equiv \frac{1}{a^2} \Big[
+    U_\nu(x)U_\mu(x+a\hat\nu)U^\dagger_\nu(x+a\hat\mu)\\
+    &+ U_\nu^\dagger(x-a\hat\nu)U_\mu(x-a\hat\nu)U_\nu(x-a\hat\nu+a\hat\mu) - 2U_\mu(x)
+    \Big].
+\end{split}
+\end{equation}
+With this definition we can see that when $p \rightarrow \frac{\pi}{a}$ the smearing operator $\mathcal{F}$ vanishes as $\delta_\nu^{(2)}U_\mu \rightarrow \frac{-4}{a^2}U_\mu$.
+
+Unfortunately, $\mathcal{O}(a^2)$ errors are introduced in equation \ref{eq:smearing_operator}. These errors however are addressed by the Symanzik-improved ASQTAD action \cite{PhysRevD.59.074502}. Implementing the ASQTAD action begins with amending the smearing operator such that
+\begin{equation}\label{eq:ASQTAD_smearing}
+    \mathcal{F}_\mu^\mathrm{ASQTAD} = \mathcal{F_\mu} - 
+    \sum_{\nu\neq\mu}\frac{a^2(\delta_\nu)^2}{4}.
+\end{equation}
+Here we once again have a special operator $\delta_\nu$, which acts as a covariant first derivative on the gauge link:
+\begin{equation}\label{eq:ASQTAD_smearing_pt2}
+    \begin{split}
+    \delta_\nu U_\mu (x) &\equiv \frac{1}{a} \Big[
+    U_\nu(x)U_\mu(x+a\hat\nu)U^\dagger_\nu(x+a\hat\mu)\\
+    &- U_\nu^\dagger(x-a\hat\nu)U_\mu(x-a\hat\nu)U_\nu(x-a\hat\nu+a\hat\mu)
+    \Big].
+\end{split}
+\end{equation}
+
+Before arriving at the final form of  the ASQTAD action, we need to also address the naive discrete derivative operator $\Delta_\mu$ (see equation \ref{eq:difference_operators}), which also has $\mathcal{O}(a^2)$ errors.  We do so by the inclusion of a \textit{Naik} term \cite{NAIK1989238}, such that the discrete derivative $\Delta_\mu \rightarrow \Delta_\mu - \frac{a^2}{6}\Delta^3_\mu$.  Putting this all together we arrive at the equation for the ASQTAD action:
+\begin{equation}\label{eq:ASQTAD_action}
+    S_\mathrm{ASQTAD} = \sum_x \overline{\psi}(x)\left[ 
+    \sum_\mu \gamma_\mu \left( \Delta_\mu (V) - \frac{a^2}{6}\Delta^3_\mu(U) + m_0\right) \right],
+\end{equation}
+where $m_0$ is the bare lattice mass and $V_\mu = \mathcal{F}_\mu^\mathrm{ASQTAD} U_\mu(x)$.
+
+At this point our Symanzik-improved action serves us well at tree level.  The smearing in the ASQTAD action however introduces a problem at one loop.  This is to say, when we smear gauge links in one direction under the ASQTAD action, we are left with non-smeared gauge links in all orthogonal directions.  The presence of these non-smeared gauge links allows for the persistence of taste exchange errors in our quark action at one loop.  Addressing this problem within the ASQTAD action directly leads us to the the HISQ action \cite{HISQ:2006rc}, which implements the technique of repeated smearing.  We define the HISQ action as
+\begin{equation}\label{eq:Hisq_action}
+    S_\mathrm{HISQ} = \sum_x \overline\psi (x) (\slashed{D}^\mathrm{HISQ}+m)\psi.
+\end{equation}
+Furthermore we define the HISQ covariant derivative $D_\mu^\mathrm{HISQ}$ and the HISQ smearing operator $\mathcal{F}_\mu^\mathrm{HISQ}$ as
+\begin{align}\label{eq:Hisq_derivative}
+    D_\mu^\mathrm{HISQ}  &\equiv \Delta_\mu(W) - \frac{a^2}{6}\big(1+\epsilon_\mathrm{tree}(m)\big)\Delta^3_\mu(X)\\ \label{eq:HISQ_smear}
+    \mathcal{F}_\mu^\mathrm{HISQ} &\equiv \left( 
+    \mathcal{F_\mu} - 
+    \sum_{\nu\neq\mu}\frac{a^2(\delta_\nu)^2}{4}
+    \right)\mathcal{U}\mathcal{F}_\mu.
+\end{align}
+Let us break down the various terms which appear in equations \ref{eq:Hisq_action} and \ref{eq:Hisq_derivative}.  First, in equation \ref{eq:Hisq_derivative} we find a different Naik term which contains $\epsilon_\mathrm{tree}$, which is a function of the tree level pole mass $m_\mathrm{tree}$. In the HISQ action we can define $m_\mathrm{tree}$ as 
+\begin{equation}\label{eq:m_tree}
+    m_\mathrm{tree}(m) = m\left( 1 - \frac{3}{80}m^4 + \frac{23}{2240}m^6 + \frac{1783}{537600}m^{10} + \mathcal{O}(m^{12}) \right).
+\end{equation}
+Furthermore if we require that the tree level pole mass is equal to the tree level kinematic mass \cite{zdisc}, we can define the Naik Epsilon term \cite{NAIK1989238} at tree level as
+\begin{equation}\label{eq:naik_epsilon}
+    \epsilon_\mathrm{tree}(m) = -1 + \frac{1}{\sinh^2(m_\mathrm{tree})} \times 
+    \left( 4 - \sqrt{4+\frac{12m_\mathrm{tree}}{\cosh({m_\mathrm{tree}})\sinh(m_\mathrm{tree})}},
+    \right)
+\end{equation}
+where we have suppressed $m$ arguments in $m_\mathrm{tree}$.  Furthermore in equation \ref{eq:Hisq_derivative} we introduce the difference operators $W$ and $X$, where 
+\begin{equation}\label{eq:difference_operators}
+\begin{split}
+    W_\mu(X) &\equiv \mathcal{F}_\mu^\mathrm{HISQ} U_\mu(x), \\
+    X_\mu(x) &\equiv \mathcal{U}\mathcal{F}_\mu U_\mu (x).
+\end{split}
+\end{equation}
+Finally then in equation \ref{eq:HISQ_smear} and \ref{eq:difference_operators} we implement the the special operator $\mathcal{U}$, which make the operator it acts upon unitary.  From this construction, we can say that the HISQ action taste exchange error corrected at order $a_s(am)^2$, which is a substantial advantage over the ASQTAD action. 
+
+\subsection{Staggered quarks}\label{sec:staggered_quarks}
+Having explored the \textit{highly improved} aspect of the HISQ action, we can address the namesake \textit{staggered quarks} \cite{PhysRevD.11.395} of the HISQ action. Though staggered quarks are functionally equivalent to naive quarks, the introduction of quark staggering greatly reduces computation time.
+
+We can begin our investigation of staggered quarks by transforming the naive quark fields as
+\begin{equation}\label{eq:stagger_transform}
+\begin{split}
+    \psi(x) &\rightarrow \Omega(x)\chi(x), \\
+    \overline{\psi}(x) &\rightarrow \overline{\chi}(x)\Omega^\dagger (x).Ω
+\end{split}
+\end{equation}
+Here we introduce another set of 16 spinor matrices $\Omega(x)$, which we define as 
+\begin{equation}\label{eq:staggered_omega}
+\Omega(x) \equiv \prod_{\mu=0}^3 \gamma_\mu^{(x_\mu)}.
+\end{equation}
+These matrices have the properties that $\Omega^\dagger(x)\Omega(x) = 1$, and $\Omega(x) = \gamma_n$ for $n_\mu = x_\mu \mathrm{mod}2$.  With these spinor matrices we can define the spinor matrix term $\alpha_\mu(x)$ as 
+\begin{equation}\label{eq:spinor_matrix_term}
+    \alpha_\mu(x) = \Omega^\dagger(x)\gamma_\mu \Omega(x+\hat{\mu})
+\end{equation}
+Using this definition of $\alpha_\mu(x)$, and the discretized covariant derivative $\Delta$ from the naive quark action, we can define the staggered quark action $S_{sq}$ as
+\begin{equation}\label{eq:staggered_quark_action}
+\begin{split}
+    S_\mathrm{sq} &= \overline{\psi}(x)(\gamma \cdot \Delta+m)\psi(x)\\ 
+      &= \overline{\chi}(x)(\alpha(x)\cdot\Delta+m)\chi(x).
+\end{split}
+\end{equation}
+
+One benefit of this action is that it is diagonal in spinor space. As a result, we only need one component of the staggered quark field $\chi$: the various components of $\chi$ are identical.  %These qualities are similarly present in the HISQ action.  
+We can utilize this quality of staggered quark fields to construct the observable
+\begin{equation}\label{eq:HISQ_quark_propagator}
+    \langle\chi(x)\overline{\chi}(y)\rangle = g(x,y)\textbf{1}_\mathrm{spinor}.
+\end{equation}
+Here we introduce the staggered quark propagator $g(x,y)$, which has one only spinor component. Fortunately for us, having only one spinor component effectively reduces the number of quark tastes present on the lattice from 16 to four, and computation time is likewise reduced by that same factor of four.
+
+
+\subsection{Twisted boundary conditions} \label{sec:twisted_boundary_conditions}
+In the previous section we described the doubling symmetry problem, which is related to specific low momentum modes on the lattice. It is worthwhile then to discuss how we actually impart momentum into quarks on the lattice.  We elect to do this via twisted boundary conditions \cite{SACHRAJDA200573, Bedaque_2004, DEDIVITIIS2004408, Guadagnoli_2006}, which we briefly go over here.  For a quark of three-momentum $\vec{p}$, we can define the $j$th component of its momentum $p_j$ as 
+\begin{equation}\label{eq:twist_def}
+    p_j = 2\pi\frac{\theta_j}{aN_j},
+\end{equation}
+where $\theta$ is the \textit{twist angle} and $aN_j$ is the length of the lattice in the $j$ direction.  We use the index $j$ here rather than $mu$ because twisted boundary conditions are limited to the three spacial dimensions on the lattice $j\in\{1,2,3\}\equiv\{x,y,z\}$. Using this definition, suppose we aim to impart momentum by transforming our quark fields as $\psi(x) \rightarrow e^{i\vec{p}\cdot \vec{x}} \psi(x)$.  On the lattice, we can do this by multiplying gauge links by $e^{iap_j}$, giving us
+\begin{equation}\label{eq:gauge_link_multiply}
+    \overline\psi e^{iap_j} U_j(x) \psi(x+a\hat j) = 
+    \overline{\psi}e^{i\vec{p}\cdot \vec{x}}U_j(x)e^{i\vec{p}\cdot (\vec{x}+a\hat j)}\psi(x+a\hat j).
+\end{equation}
+Inserting momentum onto the quark field in this manner leads to periodic boundary conditions, such that
+\begin{equation}\label{eq:periodic_boundary}
+    \psi(x + aN_j \hat j) = e^{2\pi i\theta_j}\psi(x).
+\end{equation}
+In theory, the presence of the $aN_j$ terms in these equations means that this method introduces twist angle dependent finite volume effects into our lattice simulation.  We can minimize such effects if we avoid selecting values of $\theta \approx n\frac{2\pi}{N_j}$, where $n$ is just some integer \cite{FLYNN2006313}.
+
+
+ \subsection{Addressing quark masses on the lattice}\label{sec:quark_mass_on_lattice}
+ We have now addressed imparting momentum into quarks on the lattice, let us now discuss the issue of dealing with quark masses on the lattice.  Recall that we can separate the QCD action $S_\mathrm{QCD}$ into a gluon portion $S_\mathrm{glue}$ and a quark portion $S_q =\overline{\psi}M\psi$, where the quark mass matrix $M =( \slashed{D}+m)$.  This matrix appears in the path integral's partition function $Z$, which we can rearrange as:
+ \begin{equation}\label{eq:partition_mass}
+ \begin{split}
+      Z &= \int \mathcal{D}U\mathcal{D}\psi \mathcal{D}e^{-(S_\mathrm{glue}+\overline{\psi}M\psi)}  \\
+      &= \int\mathcal{D}U \mathrm{Det}(M) e^{-S_\mathrm{glue}} \\
+      &= \int\mathcal{D}U e^{-S_\mathrm{glue}+\log(\mathrm{Det}(M))} \\
+ \end{split}
+ \end{equation}
+The presence of $\mathrm{Det}(M)$ in this equation poses a challenge to any line of lattice QCD research: calculating $\mathrm{Det}(M)$ is prohibitively demanding of computer resources.  So much so, that many lattice calculations are carried out in the \textit{quenched approximation}, where massive sea quarks are removed from the action entirely.  
+
+The challenge of calculating $\mathrm{Det}(M)$ is not only reserved to the partition function: the term can also appear in the correlation function of a meson.  Suppose we wish to simulate some generic meson $H$ with quark composition $q_1$ and $q_2.$ traveling along the lattice.  Inserting a creation operator for this meson at some initial time $t_0$, and then inserting an annihilation operator at some later time $t_0+t$, we can write its two-point correlation function\footnote{We explore correlation functions on the lattice in great detail in section \ref{sec:correlation_functions_lattice}.  We discuss them here only to prove the point that we cannot ignore the need to calculate $\mathrm{Det}(M)$.} as
+\begin{equation}\label{HISQ_integral}
+    \begin{split}
+        \bra{0}H^\dagger(t_0+t)H(t_0)\ket{0} &= %\frac{1}{Z}\int \Big[ \mathcal{D}U\mathcal{D}\overline\psi\mathcal{D}\psi \\
+        %&\times \sum_{\vec x, \vec x _0}
+        %\overline{\psi}^{q_1}(T+t_0,\vec x)\Gamma\psi^{q_2}(T+t_0,\vec x)
+        %\overline\psi^{q_2}(t_0,\vec x_0) \Gamma \psi^{q_1}(t_0,\vec x_0)e^{-%(S_\mathrm{glue}+\overline{\psi}M\psi)}\Big]\\
+        \frac{1}{Z}\int \mathcal{D}U \mathrm{\underset{spin}{Tr}}\; \mathrm{\underset{color}{Tr}}\; {\underset{\vec{x}}{\mathrm{Tr}}}\left[
+        (M_{q_1}^{-1}\Gamma M_{q_2}^{-1}\Gamma)e^{-S_\mathrm{glue}+\log(\mathrm{Det}(M))}{}\right].
+    \end{split}
+\end{equation}
+In this equation $\Gamma$ is some local operator which creates $H$, and within the integral we take the trace over spin, color, and the three lattice spacial dimensions $\vec{x}$.  In equation \ref{HISQ_integral} we can again spot the $\mathrm{Det}(M)$ term.  
+
+We can approximately calculate $\mathrm{Det}(M)$ if we make a slight detour and address the problem of calculating $M^{-1}$ first.  This inverse mass matrix also appears in equation \ref{HISQ_integral}, and though is not as expensive to calculate as $\mathrm{Det}(M)$, it too is prohibitively demanding of computer resources.  
+Therefore we instead take advantage of the Hermitian positive definite properties of the mass matrix:
+\begin{equation}\label{eq:hermitian}
+    M^\dagger(M^\dagger M)^{-1}=M(M^2)^{-1}=MM^{-2}=M^{-1}.
+\end{equation}
+Therefore instead of directly calculating $M^{-1}$ we can instead place out interest in $(M^\dagger M)^{-1}$.  For the propagator source $\xi$ we can write that $\xi = M^\dagger M x$.  This then implies that $x = (M^\dagger M)^{-1}\xi$.  To solve for $x$ here, we can employ the conjugate gradient algorithm \cite{HestenesStiefel1952}. As a prerequisite to using this algorithm, we can first identify that minimizing $f(x)$ where
+\begin{equation}
+    f(x) = \frac{1}{2}x^TM^\dagger Mx - \xi^T x,
+\end{equation}
+is equivalent to solving for $x$.  We will not go into full detail, but we will summarize the technique here. The conjugate gradient algorithm minimizes $f(x)$ by iteratively moving along directions which are \textit{conjugate} (independent with respect to the function’s curvature), rather than simply moving along the direction of steepest descent.  Each step $n$ chooses an optimal step size along the current direction.  That optimal step size is determined by the residual $r_n$, for which
+\begin{equation}
+    -r_n = \nabla f(x_n) = M^\dagger M x_n - \xi.
+\end{equation}
+Iterating upon these steps guarantees that the largest reduction in $f(x)$ occurs along that line.  By constructing mutually conjugate directions, the algorithm converges to the minimum of $f(x)$ in at most $n$ steps for an $n$-dimensional quadratic function.
+
+% ... aim is to invert $M^\dagger M$ such that we end up with a Hermitian and positive definite matrix, where in $M^\dagger(M^\dagger M)^{-1} = M^{-1}$.  If we wish to solve for x, we can employ the conjugate gradient algorithm and instead minimize a function of $x$ such that...
+% \begin{equation}\label{eq:conjugate_gradient_algorithm}
+%     f(x) = \frac{1}{2}x^TM^\dagger Mx - \xi^T x.
+% \end{equation}
+%  We solve $f(x)$ by the conjugate gradient algorithm... steepest gradient dictates the direction of the step down function...
+%  \begin{equation}\label{eq:step_down_steps}
+%      \begin{split}
+%      x_{n+1} &= x_n + \alpha_n d_n, \\
+%      \alpha_n &= \frac{r_n^T r_n}{d_n^T M^\dagger M d_n^T},\\
+%      d_0 &= r_0, \\
+%      d_{n \neq 0} &= r_n + \beta_n d_{n-1},\\
+%      r_n &= \xi - M^\dagger M x_n,\\
+%      \beta_n &= \frac{r_n^T r_n}{r_{n-1}^T r_{n-1}}.
+%      \end{split}
+%  \end{equation}
+ % ... initiate random $x_0$... gradient of $f(x)$ can be calculated as
+ % \begin{equation}\label{eq:gradient}
+ % \begin{split}
+ %    \nabla f(x) &= M^\dagger M x_0 - \xi \\
+ %                &= -r_0
+ % \end{split}
+ % \end{equation}
+ % ... step in $d_n$ direction... orthogonal... residue $r_n$ indicates proximity to solution... 
+
+Once we have minimized $f(x)$, we have equivalently solved for $x = (M^\dagger M)^{-1}\xi$.  Using then the relations in equation \ref{eq:hermitian} we can then more easily arrive at an approximate value of $M^{-1}$ and save computation time.  Recall however that our initial motivation for calculating $M^{-1}$ was that it would help us calculate $\mathrm{Det}(M)$. Having already calculated the inversion of $(M^\dagger M)^{-1}$ in the previous step, we can utilize another algorithmic technique: the $\Phi$ algorithm \cite{PhysRevD.35.2531}.  With this technique we modify the determinant term like $\mathrm{Det}(M)\rightarrow \mathrm{Det}(M^\dagger M)$.  Introducing an arbitrary scalar field $\Phi$, we can write the heuristic equation
+ \begin{equation}\label{eq:detMdaggerM}
+     \mathrm{Det}(M^\dagger M) = \int \mathcal{D}\Phi^\dagger\mathcal{D}\Phi
+     e^{-\Phi^\dagger(M^\dagger M)^{-1}\Phi}.
+ \end{equation}
+We do not attempt to solve this equation analytically, we instead utilize numerical Monte Carlo techniques.  We find this technique to be successful in determining $\mathrm{Det}(M^\dagger M)$, which leaves us with one final hurdle: for each quark flavor we would now have two factors of the mass matrix.  In fact, as a result of the doubling symmetry and our staggered quarks, we actually are left with eight factors of $M$.  Fortunately for us, taking the eighth root of the determinant is sufficient to recover an acceptable determination of $\mathrm{Det}(M)$.  
+
+In both the cases of calculating $M^{-1}$ and $\mathrm{Det}(M)$, even with these algorithmic techniques, the computation time needed remains burdensome.  Suppose we want to include sea quarks in our action.  At the low energy scale of lattice QCD, sea quark effects are dominated by up, down, and strange quarks \cite{Appelquist:1974tg}.  This worsens the problem of calculating $M^{-1}$ and $\mathrm{Det}(M)$, because these quantities must be calculated for every quark flavor.  Problematically, doing so is more expensive for lighter quark flavors. We can somewhat suppress this problem by simulating two degenerate light quarks $l$ such that $m_l = m_u = m_d$, rather than calculating $M^{-1}$ and $\mathrm{Det}(M)$ separately for an up quark and down quark of non-degenerate masses.  Additionally, we can set the light quark mass to be non-physically large, closer to the mass of the strange quark.  We do this explicitly on some of our gluon field ensembles (see section \ref{sec:HISQ_ensembles}).  The lattice spacing in this work are fine enough that we can justify adding charm quarks to the sea as well.  However the ultra-violet cutoff effect from these lattice spacings rules out the need to add bottom and top quarks to the sea.
+  
+
+\section{The heavy-HISQ method}\label{sec:heavy-hisq}
+Throughout this work, we will reference a generic heavy quark $h$.  This heavy quark  paired with a \textit{spectator} light quark $l$ or strange quark $s$ constitute a generic heavy meson $H$.  When the flavor of the spectator quark is important we will use the notation $H_l \equiv H$ and $H_s$, but for much of this discussion $H$ will suffice.  In this section we outline how, by varying the mass of this heavy quark, we can model the four meson decays of interest to this work: $D\rightarrow\pi$, $B\rightarrow \pi$, $D_s\rightarrow K$, $B_s\rightarrow K$.
+
+\subsection{Varying the heavy quark mass}
+In this work, we simulate heavy quarks which have masses $am_h$ that range from the physical charm quark mass to a limit where $am_h = 0.8$.  On our finest gluon field ensemble, which is to say on our ensemble with the smallest lattice spacing, the value of $am_h = 0.8$ is approximately equal to $85\%$ of the physical bottom quark mass.  We do not simulate heavy quark masses at the physical bottom quark mass, and the reason why is related to power series expansions which appear later in this line of form factor calculations (see section \ref{sec:coef_z_expand}).  To get to the physical bottom quark mass on the ensembles available to us, we would need heavy quark masses greater than or approximately equal to one.  In a power series expansion, such a value of $am_h$ would cause obvious problems in the convergence of infinite sums.  This is all despite the fact that the HISQ action has small $\mathcal{O}(am_h)$ discretization errors.
+
+Our solution to this problem is the heavy-HISQ method. In this method we simulate and perform calculations at many heavy quark masses, from the charm quark mass up to some percentage of the physical bottom quark mass.  This provides us with enough data to extrapolate results to the physical bottom quark mass, provided we have accounted for heavy quark mass dependencies in that extrapolation.  This quark mass extrapolation is analogous to a continuum limit extrapolation, where we use gluon field ensembles of varying lattice spacing $a$ such that we can model how results change as $a\rightarrow0$. The heavy-HISQ method has been utilized successfully in previous lattice calculations involving $D$ and $B$ mesons \cite{davies_bs_to_ds, Cooper_2020, Harrison_2020, Will_towardsB, Will_technical, harrison2024brightarrowdvector}, and we likewise employ the method in this work as well.
+
+\subsection{Heavy Quark Effective Theory}
+As alluded to previously, extrapolating to the physical bottom quark mass only produces reliable results if we properly account for heavy quark mass dependencies.  We do so through our implementation of Heavy Quark Effective Theory (HQET) \cite{GEORGI1990447, EICHTEN1990511, neubert1996heavyquarkeffectivetheory}. 
+This theory aims to construct an effective theory of heavy meson decays, which improves in quality as we approach the \textit{heavy quark limit}, which is to say, as $m_h \rightarrow \infty$.  This treatment is possible due to the significant energy splitting between the heavy quarks (charm and bottom) and the natural energy scale of lattice QCD $\Lambda_\mathrm{QCD} = 0.5$ GeV.  The energy scale $\Lambda_\mathrm{QCD}$ aligns well with the light and strange valence quarks in our simulations, which we can take to be the light degrees of freedom in this theory. 
+
+In the heavy quark limit, we can consider the heavy quark to be static in the rest frame of the heavy meson.  As a result, the light and strange quarks only interact with the color field of the static heavy meson; they are impartial to any differences in the heavy meson's flavor or spin \cite{NEUBERT_2006}.  So long as the implications of the heavy quark limit are valid down to the energy scale of the charm quark, we can safely compare and interpolate the results of heavy mesons whose masses lie within the $D$ to $B$ mass range.  That validity is ensured by various HQET-respecting terms which appear in the later stages (see chapter \ref{cha:form_factors}) of our forms factor calculations.
+
+\subsection{HISQ ensembles}\label{sec:HISQ_ensembles}
+For this work, we have access to data generated from five different gluon field ensembles, and we are in the process of generating data from four more ensembles.  Table \ref{tab:ensembles} presents the specifications of the five ensembles we presently use in this work.  We assign to each ensemble, or \textit{sets}, a label which denotes its relative lattice spacing $a$, and the ratio of the valence strange quark mass to the valence light quark mass. The lattice spacings include \textit{fine} ($a\approx 0.09$fm), \textit{superfine} ($a\approx 0.06$), and \textit{ultrafine} ($a\approx 0.044$), which we can abbreviate as ``f", ``sf", and ``uf" respectively. If for an ensemble the strange to light quark mass ratio $m_s/m_l \approx 5$, then a ``$5$" is added to the set label.  Meanwhile if that ratio on an ensemble instead matches the physical expectation \cite{PhysRevD.98.074512} of $m_s/m_l = 27.18(10)$, then the suffix ``phys" is added to the ensemble label.
+
+The lattice spacing $a$ is not something that we directly set for our gluon field ensembles, but is something we must derive.  To do so, we first need to set the strong coupling constant strength $g_s$; by convention we do so indirectly by instead choosing a value of $\beta = 6/g_s^2$ (see equation \ref{eq:Wilson_Action}).  With $\beta$ defined we can then go on to calculate the ratio $w_0/a$, where $w_0$ is the Wilson flow parameter \cite{Borsanyi2012}.  This calculation is carried out by smearing and integrating the Wilson flow \cite{Luscher2010} on the lattice until some dimensionless observable of our choice converges on a desired or expected value.  The observables we use are the continuum mass ratios of the pion, kaon, and $\Omega$ baryon \cite{Borsanyi2012, Durr2011}.  In the context of this work, we arrive at a Wilson flow parameter value of $w_0 = 0.1715(9)$fm \cite{PhysRevD.88.074504}, from which we can then finally calculate lattice spacing.
+
+The MILC collaboration generates all the HISQ ensembles we use in this work \cite{MILC_2010, MILC_2012, PhysRevD.93.094510, PhysRevD.98.074512}.  These ensembles can all be described as $N_f = 2+1+1$ ensembles. This indicates that, in the sea, the ensembles have two degenerate light quarks, a strange quark, and a charm quark.  The absence of bottom and top quarks in the sea does give rise to some systematic uncertainties.  However at the low energy scale we use in this work, these uncertainties are small.  The strange and charm quark masses in the sea are not exactly equal to the valence strange and charm quark masses on our ensembles.  Following the tuning procedure seen in \cite{PhysRevD.91.054508} we are able to tune those valence quark masses to be approximately equal to their physical values.  Any remaining effect of quark mass mistuning (including that of the light quarks who have $am_l^\mathrm{sea}=am_l^\mathrm{val}$) is accounted for later in our form factor calculation chapter \ref{cha:form_factors}.
+
+\begin{table*}
+\caption{Gluon field ensembles used in this work.  The parameter $\beta=6/g_s^2$ sets the strength of the strong coupling constant $g_s^2$.  We discuss the ratio of the Wilson flow parameter $w_0$ divided by lattice spacing $a$ in the text.  The dimensions of the the lattice on each ensemble in lattice units are given in column 4, where we have three spacial dimension of length $N_x$ and one temporal dimension of length $N_t$.  Finally, the masses of the various sea and valence quarks in each ensemble are given in columns 5-9}%; we note that the valence and sea light quarks have equal masses.}
+\begin{center} 
+\begin{tabular}{l c c c c c c c c c c}
+\hline
+    Set & $\beta$ & $w_0/a$ &  $N_x^3\times N_t$  &    $am_{l}^{\mathrm{sea/val}}$ & $am_{s}^{\mathrm{sea}}$ & $am_c^{\mathrm{sea}}$& $am_{s}^{\mathrm{val}}$ & $am_c^{\mathrm{val}}$ \\
+\hline
+\hline
+    1 - f5   &  6.3    &  1.9006(20)   & $32^3\times 96$  &    0.0074       &   0.037        &  0.440&  0.0376  &  0.449 \\
+\hline
+    2 - fphys   &  6.3  & 1.9518(7)   & $64^3\times 96$    &   0.00120       &  0.0363         &  0.432&   0.036  &  0.433 \\
+\hline
+    3 - sf5   & 6.72    &  2.896(6)  & $48^3\times 144$    &   0.0048       &  0.024         &  0.286& 0.0234 &  0.274 \\
+\hline
+    4- sfphys   &  6.72 & 3.0170(23)   & $96^3\times 192$    &   0.0008       &  0.022         &  0.260&   0.0219  &  0.2585 \\
+\hline
+    5 - uf5   &  7.0    &   3.892(12) & $64^3\times 192$    &  0.00316       &  0.0158         &  0.188& 0.0165 &  0.194 \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\label{tab:ensembles}
+\end{table*}
 
 \section{Correlation functions on the lattice}\label{sec:correlation_functions_lattice}
+In section \ref{sec:path_integrals_and_corrfuncs} we arrived at a description of continuum correlation functions expressed in terms of amplitudes and energies.  In this section, we will  formulate a description of correlation functions in terms of quark propagators on the lattice.  It is these forms of correlations that we can actually instantiate on the lattice.  These two descriptions are what allow us to fit the lattice correlation functions to the energy and amplitude fit forms we saw in the previous chapter.  Moving forward in this effort, we will abide by the the convention that lattice quantities be given in lattice units.  Therefore the notation for quantities with units of energy $aE\rightarrow E$, units of length $aN_\mu\rightarrow N_\mu$, and units of time $t/a \rightarrow t$.  In this scheme, lattice time corresponds to integer steps on the lattice, which we often refer to as lattice \textit{time slices}.
 
+We can begin our in-depth discussion of correlation function by first examining two-point correlation functions.  To construct such a function on the lattice, we insert the creation operator of a meson at some initial lattice site $x_0$.  Breaking this lattice site into its temporal and spacial components we can say that $x_0 = (t_0,\vec{x}_0)$.  We then allow the meson to propagate along the lattice until it reaches some lattice site $x_1 = (t_1,\vec{x}_1)$, where we insert the appropriate meson annihilation operator.  The corresponding correlation function $C_2(t_0,t_1)$ is then constructed by varying $t_1$ and taking the average over all potential spatial start and end locations.  Mapping the function in this way allows us to interpret the correlation function as a probability distribution, the amplitude of which corresponds to the likely presence of the meson propagator at some time $t$ between $t_0$ and $t_1$.  Following the notation of equation \ref{eq:C_n-inf-time} for $n=2$ we can write the two point correlation function as
+\begin{equation}\label{eq:cha3_2ptcorr}
+    C_2 (t_0, t_1) = \sum_{\vec x_0, \vec x_1} \bra{\Omega}\phi_H(x_0)\phi_H(x_1)\ket{\Omega},
+\end{equation}
+where we have required $t_0 < t_1$, $\ket{\Omega}$ is the interacting theory ground state, and $\phi_H$ is a scalar field in the Heisenberg picture.  Keeping this formulation in mind for the $n=2$ case we can now move on to the $n=3$ case: the three-point correlation function.  In this scenario, the meson experiences an interaction at some time slice $t_1$ in between its creation at $t_0$ and annihilation at $t_2$. We may then write the appropriate three-point correlation function as
+\begin{equation}\label{eq:cha3_3ptcorr}
+    C_3 (t_0, t_1, t_2) = \sum_{\vec x_0, \vec x_1, \vec x_2} \bra{\Omega}\phi_H(x_0)\phi_H(x_1)\phi_H(x_2)\ket{\Omega},
+\end{equation}
+where we similarly require $t_0 < t_1 < t_2$.
 
-\begin{itemize}
-    \item MILC code takes spin taste combination and implements as lattice site dependent phase to quark propogators
-    \item Operator/Current $J(x_t)$ annihilates goldstone meson $\bar{h}l$ at $x_t$
-    \item Current $J^\dagger(x_0)$ creates goldstone meson $\bar{h}l$ at $x_0$
-    \item Two point function is then $\braket{J(x_t)J^\dagger(x_0)}$
-    \item Wick contraction of this is equivalent to propagating $\bar{h}$ from $x_0$ to $x_t$, and propagating $l$ from $x_0$ to $x_t$.
-    \item Out pops $\gamma_5 \otimes \xi_5$ requires no phase added to staggered quarks
-    \item
-\end{itemize}
-\subsection{Spin-taste notation}
+Only two and three-point correlation functions are of relevant interest to this work, and so we can condense the notation above which is contextualized for any $n$-point correlation function.  First, while we insert creation operators at different values of $t_0$, the periodic boundary conditions of the lattice allow us to rotate lattice site labels as we please.  We always then work within the effective assumption that $t_0 = 0$.  For a two-point function, we conventionally state that the matching annihilation operator is inserted at time $t_0+t = t$.  This single parameter $t$ then parametrizes the separation of the creation and annihilation operators, and as such the correlation function only has $t$ dependence: $C_2(t_0, t_0 + t)\rightarrow C_2(t)$.  Meanwhile for three-point correlation functions, we maintain the convention that annihilation occurs as some time $t_0 + T = T$.  Furthermore the ``extra" interaction %, which we might call a \textit{current insertion}, 
+occurs at time $t_0+t=t$.  Insisting that $t_0 < t < T$ ensures that the interaction on the lattice corresponds to the relevant equivalent physical phenomenon.  In our simulations we therefore implement values of $T$ which much smaller than the temporal length of the lattice $N_t$.  This avoids the effects which periodic boundary conditions might have on the otherwise clean physical ordering of creation, interaction, and then annihilation.
 
-The construction of two and three point correlators from HISQ quark bilinears in this work are as follows:
-    \begin{equation}\label{eq:correlator_spin-taste}
+\subsection{Staggered quark phases and spin-taste notation}\label{sec:phase_and_spin-taste}
+As discussed throughout section \ref{sec:HISQ}, the staggered quarks we wish to simulate on the lattice have qualities that vary not only in spin as one might expect, but taste also.  In this section and those following, we describe how we encode the composite \textit{spin-taste} structure of a propagating quark as a general \textit{phase term} in its corresponding correlation function.  
+
+We can begin by recalling the definition of the spinor matrices $\gamma_n$ in equation \ref{eq:spinors}, which are composed of multiplicative sums of the gamma matrices $\gamma_\mu$ raised to the power $n_\mu$, where $n$ is a four-vector whose components $n_\mu$ are either 0 or 1. In equation \ref{eq:staggered_omega} we defined the related spinor matrices $\Omega(x)$ which are equal to the $\gamma_n$ in the case that $n=(x)\mathrm{mod}2$.  The matrices $\Omega(x)$ facilitate the local field transformation of a naive quark $\psi(x)$ to a staggered quark $\chi(x)$ such that 
+\begin{equation}
     \begin{split}
-        H_{(s)} &= \bar{\psi}_h(\gamma_5 \otimes\xi_5)\psi_{l(s)},\\
-        H'_{(s)} &= \bar{\psi}_h(\gamma_5 \otimes\xi_5\xi_1)\psi_{l(s)},\\
-        H''_{(s)} &= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_5\xi_0)\psi_{l(s)},\\
-        H'''_{(s)} &= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_2\xi_3)\psi_{l(s)},\\
-        \pi(K) &= \bar{\psi}_l(\gamma_5\otimes\xi_5)\psi_{l(s)},\\
-        S_{(s)} &= \bar{\psi}_h(I_4\otimes I_4)\psi_{l(s)} = \bar{\psi}_h\psi_{l(s)},\\
-        V^0_{(s)} &= \bar{\psi}_h(\gamma_0 \otimes\xi_0)\psi_{l(s)},\\
-        V^1_{(s)} &= \bar{\psi}_h(\gamma_1 \otimes\xi_1)\psi_{l(s)},\\
-        T^{10}_{(s)} &= \bar{\psi}_h(\gamma_1\gamma_0 \otimes \xi_1\xi_0)\psi_{l(s)}.
+        \psi(x) \rightarrow \Omega(x)\chi(x),\\
+        \overline{\psi} \rightarrow \overline{\chi}(x)\Omega^\dagger(x).
     \end{split}
-    \end{equation}
-For the purposes of constructing three-point functions, we wish to arrange these correlators such that the 3 point interaction conserves the quantum numbers of the mesons involved.  Thusly we construct our $H\rightarrow\pi$ three point functions as in equation \ref{eq:spin-taste_3pt_function_construction}.  Our constructions of $H_s\rightarrow K$ three point functions are done similarly.
-\begin{equation}\label{eq:spin-taste_3pt_function_construction}
-    \begin{split}
-        \text{Scalar:}&\quad \pi-S-H\\
-        \text{Temporal Vector:}&\quad \pi-V^0-H'\\
-        \text{Spatial Vector:}&\quad \pi-V^1-H'' \\
-        \text{Tensor:}&\quad \pi-T^{01}-H''' \\
-    \end{split}
+\end{equation}
+Finally then let us recall the spinor matrix term $\alpha_\mu(x)$ in equation \ref{eq:spinor_matrix_term}. We can redefine $\alpha_\mu(x)$ as
+\label{eq:general_phase_term}
+\begin{align}
+     \alpha_\mu(x) &= \Omega^\dagger(x)\gamma_\mu \Omega(x+\hat{\mu})=(-1)^{x_\mu^<},\\
+           x_\mu^< &= \sum_{\nu = 0}^{\mu-1}x_\nu.
+\end{align}
+With this expanded definition we might better refer to $\alpha_\mu(x)$ as a lattice site-dependent phase term.  We can see where such a term might appear when we see how the non-staggered Feynman quark propagator $S_F(a,b)$ relates to the staggered quark propagator $g(a,b)$:
+\begin{equation}\label{eq:feyn_prop}
+\begin{split}
+    S_F(a,b) &= \langle \psi(a)\overline\psi(b)\rangle\\
+             &= g(a,b)\Omega(a)\Omega^\dagger(b).
+\end{split}
+\end{equation}
+This formulation of the Feynman propagators describes a quark that propagates from a point $b$ to some point $a$. To describe the case for an antiquark propagating from $b$ to $a$, we have
+\begin{equation}\label{eq:feyn_prop_anti}
+\begin{split}
+       \gamma_5 S^\dagger_F(a,b)\gamma_5 &= \langle \psi(b)\overline\psi(a)\rangle,\\
+       &= \gamma_5 \Omega(b)\Omega^\dagger(a)g^\dagger(a,b) \gamma_5.
+\end{split}
+\end{equation}
+Here the ``fifth" gamma matrix $\gamma_5 = \gamma_0\gamma_1\gamma_2\gamma_3$, and therefore $\gamma_5 = \gamma_n$ when $n=(1,1,1,1)$.  The presence of $\gamma_5$ matrices in equation \ref{eq:feyn_prop_anti} is a result of reversing the argument ordering in the Feynman propagator: is preserves the hermitian symmetry of the action.
+
+From equation \ref{eq:staggered_quark_action} we know that the phase term $\alpha_\mu(x)$ appears in the staggered quark action. To complete our discussion of the HISQ method we ought to describe how the spin-taste structure of a propagator is encoded as a lattice site dependent phase.  Recalling the doubling problem described in section \ref{sec:symanzik_improvement}, for every naive quark operator we are left with 16 different taste operators.  These operators we can represent as four-dimensional vectors $s$ whose components are either 1 or 0.  These tastes have the identical structure to the spin matrices $\gamma_n$, and so we will differentiate between the two by denoting a taste matrix as  $\xi_s$ (not to be confused with the notation for the propagator source $\xi$).  We can therefore denote a propagator's spin-taste structure as $\gamma_n \otimes \xi_s$.  Recalling equation \ref{eq:general_phase_term} we can then write the spin-taste operator's action upon a quark field as
+\begin{equation}\label{eq:spin-taste}
+    \gamma_n \otimes \xi_s \psi(x) = (-1)^{\overline{s}\cdot x} \gamma^\dagger_s \gamma_n \psi(x \oplus (s+n))
+\end{equation}
+Here, we use the direct sum operator $\oplus$ to add $(s+n)$ to the lattice site $x$ modulo the hypercube (ignoring the periodic boundary conditions for now) in which $x$ lies. We can call this hypercube $X$, where $X_\mu\mathrm{mod}2 = 0$.  As such we can write that if $x$ lies in $X$, then 
+\begin{equation}\label{eq:spin-taste_pt2}
+    (x \oplus (s+n))_\mu \equiv X_\mu + (x_\mu  - X_\mu+(s+n)_\mu)\mathrm{mod}2,
+\end{equation}
+from which we get the useful property that $x_\mu - X_\mu \in \{0,1\}$.  The possible results of $(x \oplus (s+n))_\mu$ are limited to three outcomes, which are dependent on whether or not $s_\mu = n_\mu$ and whether $x_\mu \mathrm{mod}2=0$ or $1$:
+\begin{equation}
+    (x \oplus (s+n))_\mu = 
+    \begin{cases}
+        x_\mu   &(s_\mu = n_\mu),\\
+        x_{\mu+1}  &(s_\mu \neq n_\mu, x_\mu \mathrm{mod}2=0),\\
+        x_{\mu-1}  &(s_\mu \neq n_\mu, x_\mu \mathrm{mod}2=1).
+    \end{cases}
+\end{equation}
+In the cases where $s_\mu \neq n_\mu$, we left with \textit{point-split} fermion operators, an example of which is $\psi(x+\hat{\mu})$.  Here and in equation \ref{eq:spin-taste} we suppress any gauge link operators to to keep the notation simple; a point-split operator of this kind should in full be written as $U_\mu(x)\psi(x+\hat{\mu})$.  Moving forward we will continue to suppress gauge link operators in our notation.
+
+Returning back now to equation \ref{eq:spin-taste}, there are a few principles to keep in mind when inserting any given spin-taste operator into our quark propagators.  First, the presence of point-split operators tends to make the corresponding correlation function noisier, and so local ($n_\mu=s_\mu$) spin-taste operators are preferred.  Second, quark taste is ultimately an unphysical property.  If any taste-pertaining terms in a correlation function do not cancel, that correlation function will reduce to zero plus any noise.  Finally, we can remind ourselves that it is standard model physics we wish to simulate on our lattices; spin is a quantum number that should be preserved in a QCD interaction. The spin operator should therefore match that of the physical meson or current of interest to us.  Fortunately,  implementing a chosen spin-taste structure as phases with lattice site dependency is rather trivial: that functionality is built into the MILC code \cite{MILC_2010, MILC_2012} we use to generate correlation functions.
+
+Let us now summarize the the general methodology we employ to generate our desired propagators and correlation functions on the lattice.  We begin by using naive quarks to build a desired correlation function. We then transform that correlation function into staggered quark propagators and lattice site-dependent phases.  For each configuration (see chapter \ref{sec:path_integral_discretization}), we then invert the Dirac matrix $M$ off of the source of $\xi$ to calculate those staggered quark propagators.  Finally then we group appropriate propagators together as new correlation functions and take the average over the number of configurations.
+
+\subsection{Two-point correlation functions}
+Having established the theory of spin-taste structure and phases for our staggered quark propagators, let us take a closer look at how exactly we build the correlation functions we instantiate onto the lattice, beginning with two-point correlation functions.  The example meson we will use for the following discussion is a generic pseudo-scalar heavy meson $H$, with heavy-light quark content $\overline{h}l$.  The two-point diagram of such a meson is given in figure \ref{fig:2pt-diagram}.  Keep in mind however that swapping $H$ for another meson with differing quark content is trivial in the upcoming suite of correlation function derivations: it is mostly a change in quark propagator labeling.  
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{chapter3/pdfs/2pt-diagram.pdf}
+    \caption{Sample diagram of a two-point correlation function. The meson $H$ with quark content $\overline{h}l$ is created time $t_0$. It propagates along the lattice, where it is then annihilated at time $t_0+t$.}
+    \label{fig:2pt-diagram}
+\end{figure}
+
+Moving forward, there are four different spin-taste structured correlation functions of interest to our work.  The first of these is the meson current $H^5_5(x_t) = \overline{\psi}_h(x_t)\gamma_5 \otimes \xi_5\psi_l(x_t)$, where the current's subscript and superscript notation indicates the $n$ and $s$ vectors in the spin-taste operator. The $\gamma_5$ and $\xi_5$ operators indicate that the vectors $n=s=\overline{s} = (1,1,1,1)$.  Here the current $H^5_5(x_t)$ annihilates a local Goldstone heavy meson $H$ with $\overline{h}l$ quark content at the lattice time slice $x_t$.  With equation \ref{eq:spin-taste} we can write for this current that
+\begin{equation}
+\begin{split}
+    H^5_5(x_t) &= \overline{\psi}_h(x_t)\xi_5\otimes\gamma_5\psi_l(x_t),\\
+               &= \overline{\psi}_h(x_t)(-1)^{x^0_t+x^1_t+x^2_t+x^3_t}\gamma_5^\dagger\psi_l(x_t),\\
+               &= (-1)^{\tilde{x}_t}\overline{\psi}_h(x_t)\psi_l(x_t).
+\end{split}
+\end{equation}
+Here we see the components of $x_t = (x_t^0, x_t^1, x_t^2, x_t^3)$ appear in the phase term, and introduce $\tilde{x} = \sum_\mu x^\mu$.  We can likewise create that same $H$ meson at the lattice time slice $x_0$ using the meson current insertion 
+\begin{equation}
+\begin{split}
+    H^{5\dagger}_5 &= (-1)^{\tilde{x}_0}\left(\overline{\psi}_h(x_t)\psi_l(x_t)\right)^\dagger, \\
+    &= (-1)^{\tilde{x}_0}\left({\psi}^\dagger_h(x_t)\gamma_0\psi_l(x_t)\right)^\dagger,\\
+    &= (-1)^{\tilde{x}_0}{\psi}^\dagger_l(x_t)\gamma_0^\dagger\psi_h(x_t), \\
+    &= (-1)^{\tilde{x}_0}\overline{\psi}_l(x_t)\psi_h(x_t).
+\end{split}
+\end{equation}
+With these meson currents, we can construct the associated two-point correlation function using the time ordered field operator $T\{\}$:
+\begin{equation}
+\begin{split}
+    \langle H^5_5(x_t) H^{5\dagger}_5(x_0)\rangle &= \bra{0}T\{ H^5_5(x_t) H^{5\dagger}_5(x_0)\}\ket{0}, \\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_t}
+    \bra{0}T\{ \overline{\psi}_h(x_t)\psi_l(x_t) \overline{\psi}_l(x_0)\psi_h(x_0)   \}\ket{0}.
+\end{split}
+\end{equation}
+From this point we can perform appropriate Wick contractions to rearrange the propagator terms in the correlation function.  We ignore the global phase terms which might arise from rearranging the propagators in this way; we can correct for any final global phase term when we interface with the aforementioned MILC code.  Implementing Wick contractions in this way means that this correlation function is equivalent to a light quark $l$ propagating between its creation and annihilation points of $x_0$ and $x_t$, and likewise for an heavy antiquark $\overline{h}$.  Writing out these Wick contractions and using equations \ref{eq:feyn_prop} and \ref{eq:feyn_prop_anti} we can now write the correlation function as
+\begin{equation}\label{eq:big2ptderive}
+\begin{split}
+    \langle H^5_5(x_t) H^{5\dagger}_5(x_0)\rangle &=
+    (-1)^{\tilde{x}_0+\tilde{x}_t}
+    \bra{0}\wick{ 
+  \c1{\overline{\psi}}_h(x_t)\, \c2\psi_l(x_t)\,
+  \c2{\overline{\psi}}_l(x_0)\, \c1\psi_h(x_0)
+  } \ket{0}, \\
+  &= (-1)^{\tilde{x}_0+\tilde{x}_t} \bra{0} \wick{ 
+  \c1{{\psi}}_h(x_0)\, \c1{\overline{\psi}}_h(x_t)\,
+  \c1{{\psi}}_l(x_t)\, \c1{\overline{\psi}}_l(x_0)
+  } \ket{0},\\
+  &= (-1)^{\tilde{x}_0+\tilde{x}_t}\mathrm{\underset{{spin}}{Tr}}\left[\gamma_5 S_F^{h\dagger}(x_t,x_0)\gamma_5 S^l_F(x_t,x_0)\right],\\
+  &= (-1)^{\tilde{x}_0+\tilde{x}_t}\mathrm{\underset{{spin}}{Tr}}\left[\gamma_5 \Omega(x_0)\Omega^\dagger(x_t)
+  \mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)\right)\gamma_5 \mathrm{\underset{color}{Tr}}\left(g^l(x_t,x_0)\right) 
+  \Omega(x_t)\Omega^\dagger(x_0)  \right],\\
+  &= (-1)^{\tilde{x}_0+\tilde{x}_t}\mathrm{\underset{{spin}}{Tr}}\left(\gamma_5 \Omega(x_0)\Omega^\dagger(x_t)\gamma_5\Omega(x_t)\Omega^\dagger(x_0)\right)
+  \mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t,x_0)\right).   
+\end{split}
+\end{equation}
+In this equation we see operators which trace over both color and spinor indices.  We have thus far suppressed the implied spinor indices in the Feynman propagators and the $\gamma_n$ matrices for the sake of limiting notation, but we include the necessary trace over spin operator here.  We can further simplify the last line of equation \ref{eq:big2ptderive} by considering how $\gamma_\mu\gamma_5=-\gamma_5\gamma_\mu$ and the definition of $\Omega(x)$ from equation \ref{eq:staggered_omega}.  Doing so we can write that $\gamma_5 \Omega(x) = (-1)^{\tilde{x}}\Omega(x)\gamma_5$, and likewise we can write $\gamma_5 \Omega^\dagger(x) = (-1)^{\tilde{x}}\Omega^\dagger(x)\gamma_5$.  Therefore we have
+\begin{equation}\label{eq:scalar2pt}
+\begin{split}
+    \langle H^5_5(x_t) H^{5\dagger}_5(x_0)\rangle &= 
+    (-1)^{\tilde{x}_0+\tilde{x}_t}(-1)^{\tilde{x}_0+\tilde{x}_t}\mathrm{\underset{{spinor}}{Tr}}\left(\gamma_5\gamma_5 \Omega(x_0)\Omega^\dagger(x_t)\Omega(x_t)\Omega^\dagger(x_0)\right)
+  \mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t,x_0)\right),   \\
+  &= 4\mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t,x_0)\right), 
+\end{split}
+\end{equation}
+where the trace over the spinor matrices gives us the factor of 4. From this equation we can see that the two-point correlation function built from staggered quark propagators with $\xi_5 \otimes \gamma_5$ spin-taste structure has no phase term with lattice site dependency.  This spin-taste structure describes the local (not point-split) Goldstone heavy and light mesons $H$, $H_s$, $\pi$, and $K$ that we will encounter in this work.  We will come to see however that, in order to eventually calculate vector and tensor form factors for various meson decays, we will need two-point correlation functions of non-Goldstone mesons.   
+
+The first two-point correlation function with non-Goldstone spin-taste structure we might discuss is built from the local current insertion $H^{5t}_{5t}(x_t)=\overline{\psi}_h(x_t) \gamma_5\gamma_0 \otimes \xi_5\xi_0 \psi_l(x_t)$.  The notation here indicates spin taste structure where, like before, $\gamma_5$ and $\xi_5$ are indicated by the number 5 in the superscript and subscript of the current insertion.  We meanwhile follow the notation where for $\gamma_{n\neq5}$ and $\xi_{s\neq5}$, $n,s \in (0,1,2,3)$ are indicated by $(t,x,y,z)$ respectively.  This meson current, like before, annihilates a heavy meson at lattice time slice $x_t$, but this time that meson has non-Goldstone spin-taste structure.
+
+To derive the phase dependency, we can use the relation that $\gamma_m\gamma_n \otimes \xi_r\xi_s = \gamma_m\otimes\xi_r \gamma_n \otimes \xi_s$.  Additionally we can say for $\gamma_0$, $\xi_0$ that the spin-taste vectors $n = s = (1,0,0,0)$, $\overline{n} = \overline{s} = (0,1,1,1)$.   Putting these relations together we arrive at
+\begin{equation}\label{eq:tvec2ptderive}
+\begin{split}
+    H^{5t}_{5t}(x_t) &= \overline{\psi}_h(x_t) \gamma_5\gamma_0 \otimes \xi_5\xi_0 \psi_l(x_t),\\
+    &= \overline{\psi}_h(x_t) \gamma_5\otimes\xi_5\gamma_0 \otimes \xi_0 \psi_l(x_t),\\
+    &= \overline{\psi}_h(x_t) (-1)^{\tilde{x}_t}(-1)^{\tilde{x}_t-x_t^0} \psi_l(x_t),\\
+    &= (-1)^{{x}^0_t} \overline{\psi}_h(x_t) \psi_l(x_t).
+\end{split}
+\end{equation}
+Following from this definition, we can find that the corresponding current $J^{5t\dagger}_{5t}(x_0)=(-1)^{\tilde{x}^0_0} \overline{\psi}_l(x_t) \psi_h(x_t)$ creates that same meson at $x_0$.  Using the same techniques of Wick contractions and tracing over spinor matrices in equations \ref{eq:big2ptderive} and \ref{eq:scalar2pt}, we can construct the two-point correlation function of the local non-Goldstone heavy meson $H'$ as
+\begin{equation}\label{eq:tvec2ptderivept2}
+\begin{split}
+    \langle H^{5t}_{5t}(x_t) H^{5t\dagger}_{5t}(x_0)\rangle &=  (-1)^{x^0_0+x^0_t} \bra{0}\wick{ \c{\psi}_h(x_0) \, \c1{\overline{\psi}}_h(x_t)\,
+    \c{\psi}_l(x_t) \, \c1{\overline{\psi}}_l(x_0)\,}\ket{0},\\
+    &= (-1)^{x^0_0+x^0_t} (-1)^{\tilde{x}_0+\tilde{x}_t}4\mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t,x_0)\right),\\
+    &=(-1)^{\tilde{x}_0+\tilde{x}_t+x^0_0+x^0_t} 4\mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t,x_0)\right).
+\end{split}
+\end{equation}
+We can see in this equation that this phase term encodes dependency on the lattice sites $x_0$ and $x_t$.  While the meson corresponding to this correlation function is non-Goldstone, the spin-taste structure is still local.  The next current insertion we can discuss is the non-local, point-split current $H^{5x}_5(x_t)$ which has spin-taste structure $\gamma_5 \otimes \xi_5\xi_1$.  The implied identity spin matrix $\mathds{1}$ has the vector $n = \overline{n} = (0,0,0,0)$, while the taste vector in $\xi_1$ is $s = (0,1,0,0)$, and $\overline{s}=(1,0,1,1)$. We can define $H^{5x}_5(x_t)=\overline{\psi}_h\gamma_5 \otimes \xi_1\xi_5 \psi_l$, having swapped the positions of $\xi_5\xi_1\rightarrow\xi_1\xi_5$.  Doing so precipitates an overall (not lattice site dependent) phase of $-1$, which we can promptly ignore. Implementing this swap, and inserting the implied identity spin matrix $\mathds{1}$ we can write
+\begin{equation}\label{eq:5x_curr_insrt}
+\begin{split}
+    H^{5x}_{5}(x_t) &= \overline{\psi}_h(x_t) \mathds{1}\gamma_5\otimes \xi_1\xi_5 \psi_l(x_t),\\
+    &= \overline{\psi}_h(x_t) \mathds{1}\otimes\xi_1\gamma_5\otimes\xi_5 \psi_l(x_t),\\
+    &= (-1)^{\tilde{x}_t}(-1)^{\tilde{x}_t - x^1_t}\overline{\psi}_h(x_t)\gamma_1^\dagger\psi_l(x_t \oplus (0,1,0,0)),\\
+    &=(-1)^{x^1_t}\overline{\psi}_h(x_t)\gamma_1^\dagger\psi_l(x_t \oplus \hat1).
+\end{split}
+\end{equation}
+In this formulation, the point-split fermions are joined by the (implicit) gauge link operator $U_1(x_t)$ in the direction of $x^1_t$.  The unit vector $\hat1$ likewise shares the $x^1_t$ direction.  It is also important to note that we pick up and then ignore an additional global $(-1)$ phase term from $\gamma_1^\dagger$ (see equation \ref{eq:spin-taste}) in the third line of equation \ref{eq:5x_curr_insrt}. For $H^{5x}_{5}(x_0)$ we likewise arrive at $H^{5x\dagger}_{5}(x_0) = (-1)^{x^1_0}\overline{\psi}_l(x_0\oplus \hat1)\gamma_1\psi_h(x_0)$. 
+
+Constructing a two-point function with $\langle H^{5x}_{5}(x_t)H^{5x}_{5}(x_0)\rangle$ allows us to describe the non-local, non-Goldstone heavy meson which we will denote as $H''$.  We can do so utilizing equation \ref{eq:general_phase_term}, which implies the relations $\Omega(x\oplus\hat1) = (-1)^{x^0}\gamma_1\Omega(x)$ and likewise $\Omega^\dagger(x\oplus\hat1) = (-1)^{x^0}\Omega^\dagger(x)\gamma^\dagger_1$.  Writing this out we get
+\begin{equation}\label{eq:x2pt}
+\begin{split}
+    \langle J^{5x}_{5}(x_t)J^{5x}_{5}(x_0)\rangle &= (-1)^{x_0^1+x_t^1}\bra{0}\wick{
+    \c{\psi}_h(x_0)\, \c{\overline{\psi}}_h(x_t)\, \gamma_1^\dagger \c{\psi}_l(x_t\oplus\hat1)\,\c{\overline{\psi}}_l(x_0\oplus\hat1)}\ket{0},\\
+    &= (-1)^{x_0^1+x_t^1}\mathrm{\underset{{spin}}{Tr}}\left(\gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5 \gamma^\dagger_1\Omega(x_t\oplus \hat1)\Omega^\dagger(x_0\oplus \hat1)\gamma_1  \right)\\
+    &\times \mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t\oplus \hat1,x_0\oplus\hat1)\right),\\
+    &= (-1)^{x_0^1+x_t^1}(-1)^{\tilde{x}_0+\tilde{x}_t}(-1)^{x^0_0+x^0_t}\mathrm{\underset{{spin}}{Tr}}\left(\Omega(x_0)\Omega^\dagger(x_t) \Omega(x_t\oplus \hat1)\Omega^\dagger(x_0\oplus \hat1) \right)\\
+    &\times \mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t\oplus \hat1,x_0\oplus\hat1)\right),\\
+    &= (-1)^{{x}^2_0+{x}^2_t+x^3_0+x^3_t} 4\mathrm{\underset{{color}}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t\oplus \hat1,x_0\oplus\hat1)\right).
+\end{split}
+\end{equation}
+This correlation function contains a point-split quark propagator, and a lattice site-dependent phase term.  Once again, we have suppressed the gluon link operators which are implied from the point splitting.
+
+The final meson insertion we need is the non-local, non-Goldstone, point split $H^{yz}_{5t}(x_t) = \overline{\psi}_h\gamma_5\gamma_0 \otimes \xi_2\xi_3 \psi_l(x_t)$.  The corresponding meson with $\gamma_5\gamma_0 \otimes \xi_2\xi_3$ spin-taste structure we can denote as $H^{\prime\prime\prime}$. Here we have two instances of point-splitting, and so we will try be clear in our derivation where terms cancel.  We can write this meson current insertion as
+\begin{equation}\label{eq:tensor2ptoperator}
+\begin{split}
+    H^{yz}_{5t}(x_t) &= \overline{\psi}_h(x_t)\gamma_5\gamma_0 \otimes \xi_2\xi_3 \psi_l(x_t),\\
+    &= \overline{\psi}_h(x_t)\gamma_5\otimes \xi_2\gamma_0 \otimes \xi_3 \psi_l(x_t),\\
+    &= (-1)^{\tilde{x}_t-x^3_t}\overline{\psi}_h\gamma_5\otimes \xi_2 \gamma^\dagger_3\gamma_0\psi_l(x_t\oplus (1,0,0,1)),\\
+     &= (-1)^{\tilde{x}_t-x^3_t}(-1)^{\tilde{x}_t-x^2_t}\overline{\psi}_h(x_t) \gamma^\dagger_2\gamma_5 \gamma^\dagger_3\gamma_0\psi_l(x_t\oplus \hat1),\\
+     &= (-1)^{-(x^2_t+x^3_t)}\overline{\psi}_h(x_t) \gamma^\dagger_2\gamma_5 \gamma^\dagger_3\gamma_0\psi_l(x_t\oplus \hat1),\\
+     &= (-1)^{x^2_t+x^3_t}\overline{\psi}_h (x_t)\gamma^\dagger_1\psi_l(x_t\oplus \hat1),\\
+     \implies  H^{yz\dagger}_{5t}(x_0) &= (-1)^{x^2_0+x^3_0}\overline{\psi}_l(x_0\oplus \hat1) \gamma_1 \psi_h(x_0).
+\end{split}
+\end{equation}
+Once again we take advantage of ignoring overall $(-1)$ global phase terms, which in this case arise from shifting the positions of gamma matrices and using $\gamma_5=\gamma_0\gamma_1\gamma_2\gamma_3$.  The Euclidean metric gives us some leniency as the matrices $\gamma_\mu$ are hermitian ($\gamma_\mu^\dagger =\gamma_\mu$).  Finally then the two-point correlation function for $H^{\prime\prime\prime}$ can be constructed as
+\begin{equation}\label{eq:tensor2ptcorrfunc}
+\begin{split}
+\langle H^{yz}_{5t}(x_t) H^{yz\dagger}_{5t}(x_0)\rangle &= (-1)^{x^2_0+x^3_0}(-1)^{x^2_t+x^3_t} \bra{0} \wick{ \c1{{\psi}}_h(x_0)\, \c1{\overline{\psi}}_h(x_t)\,
+  \gamma_1^\dagger\c1{{\psi}}_l(x_t\oplus \hat1)\,  \c1{\overline{\psi}}_l(x_0\oplus \hat1)\gamma_1} \ket0\\
+  &= (-1)^{x^2_0+x^3_0+x^2_t+x^3_t} \underset{\mathrm{spin}}{\mathrm{Tr}}\left( \gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5 \gamma^\dagger_1\Omega(x_t\oplus \hat1)\Omega^\dagger(x_0\oplus \hat1)\gamma_1
+  \right)\\
+  &\times \underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_t, x_0)g^l(x_t\oplus \hat1,x_0\oplus \hat1) \right) \\
+  &= (-1)^{x^2_0+x^3_0+x^2_t+x^3_t}(-1)^{x^0_0+x^0_t}\underset{\mathrm{spin}}{\mathrm{Tr}}\left( \gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5 \gamma^\dagger_1
+  \gamma_1\Omega(x_t)\Omega^\dagger(x_0)\gamma^\dagger_1\gamma_1 \right)\\
+  &\times \underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_t, x_0)g^l(x_t\oplus \hat1,x_0\oplus \hat1) \right) \\
+  &= (-1)^{\tilde{x_0}-x^1_0+\tilde{x}_t-x^1_t}(-1)^{\tilde{x}_0+\tilde{x}_t}\underset{\mathrm{spin}}{\mathrm{Tr}}\left(\Omega(x_0)\Omega^\dagger(x_t)\Omega(x_t)\Omega^\dagger(x_0)\right)\\
+  &\times \underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_t, x_0)g^l(x_t\oplus \hat1,x_0\oplus \hat1) \right) \\
+   &= (-1)^{x^1_0+x^1_t}4\underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_t, x_0)g^l(x_t\oplus \hat1,x_0\oplus \hat1) \right)
+\end{split} 
 \end{equation}
 
 
+\subsection{Three-point correlation functions}\label{sec:three-pt-corr-funcs}
+In the previous section, we explored the current insertions which acted as meson operators in two-point correlation functions.  The meson operators of interest to us in this work are $J \in \{H_{(s)}, H^{\prime}_{(s)}, H^{\prime\prime}_{(s)}, H^{\prime\prime\prime}_{(s)}, \pi, K\}$.  Moving forward, we will refer to these current insertions strictly as \textit{meson operators}, and reserve the term \textit{current insertion} to the scalar, vector, and tensor current insertions ($J \in \{S,V,T\}$) which we will construct in this section.  
+
+Figure \ref{fig:3pt-diagram} gives a sample diagram of a three point correlation function for a heavy meson $H$, a light meson $\pi$, and some current insertion $J$.  The mesons are separated on the lattice by some length $T$, while the source meson and current insertion are separated by some smaller length $t$ such that $t<T$.  The implied time reversal in this figure ($\pi\rightarrow H$ rather than $H\rightarrow \pi$) is explained in section \ref{sec:random_wall_sources}. For now, we may trust the fact that QCD is symmetric under time reversal and so none of the corresponding physics should meaningfully change. 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{chapter3/pdfs/3pt-diagram.pdf}
+    \caption{Sample diagram of a three-point correlation function.  A pion is created at time $t_0$.  Some current insertion $J$ is inserted at time $t_0 + t$, which annihilates $\overline{l}$ and creates $\overline{h}$.  A heavy meson is then annihilated at time $t_0 + T$.}
+    \label{fig:3pt-diagram}
+\end{figure}
+
+The first current insertion we can discuss in this context is the most simple: the scalar current insertion $S(x_t) = \overline{\psi}_l (x_t) \psi_h(x_t)$, where we do not include the implied $\mathds{1} \otimes \mathds{1}$ spin-taste structure.  We can say for this scalar current insertion that, at $x_t$, a light antiquark is annihilated and a heavy antiquark is created.  To construct a three-point correlation function, we follow a similar procedure as before using Wick contractions and spin-taste identities.  We also choose the meson operators $H^5_5$ and $\pi^5_5$ which both have Goldstone spin-taste structure $\gamma_5 \otimes\xi_5$.  If we wish to insert a pion at $x_0$, a scalar current at $x_t$, and a heavy meson at $x_T$, we can construct the namesake \textit{scalar} three-point correlation function as
+\begin{equation}\label{eq:scalar3ptderive}
+\begin{split}
+    \langle H^5_5(x_T)S(x_t)\pi^{5\dagger}_5(x_0)\rangle &= (-1)^{\tilde{x}_0+\tilde{x}_T}\bra{0}\wick{
+    \c1{\overline{\psi}}_h(x_T)\, \c2{\psi}_l(x_T)\, \c3{\overline{\psi}}_l(x_t) \, \c1{\psi}_h(x_t)\, \c2{\overline{\psi}}_l(x_0)\, \c3{\psi}_l(x_0)\, }\ket{0}\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_T}\bra{0}\wick{
+    \c{\psi}_h(x_t) \, \c{\overline{\psi}}_h(x_T) \, \c{\psi}_l(x_t) \, \c{\overline{\psi}}_l(x_0) \, \c{\psi}_l(x_0) \, \c{\overline{\psi}}_l(x_t) \, \ket{0}} \\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_T} \underset{\mathrm{spin}}{\mathrm{Tr}}\left(\gamma_5 S_F^{h\dagger}(x_T,x_t)\gamma_5 S_F^l(x_T,x_0) \gamma_5 S_F^{l\dagger}(x_t,x_0)\gamma_5 \right),\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_T} \underset{\mathrm{spin}}{\mathrm{Tr}}\left( \gamma_5 \Omega(x_t)\Omega^\dagger(x_T)\gamma_5 \Omega(x_T)\Omega^\dagger(x_0)\gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5\right)\\
+    &\times \underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0) \right),\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_T}(-1)^{\tilde{x}_0+\tilde{x}_T} \underset{\mathrm{spin}}{\mathrm{Tr}}\left( \Omega(x_t)\Omega^\dagger(x_T)\Omega(x_T)\Omega^\dagger(x_0)\Omega(x_0)\Omega^\dagger(x_t)\right)\\
+    &\times \underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0) \right),\\
+    &= 4\underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0) \right).
+\end{split}
+\end{equation}
+Like in the case of two-point correlation functions, we can shift the position of spinor components and only pick up global phase terms, which we again ignore.  Like the meson operators with $\gamma_5\otimes\xi_5$ spin-taste structures, we can see that the scalar three-point correlation function also has no lattice site dependent phase term. 
+
+The next current insertion we can examine is the \textit{temporal} vector current insertion $V^0(x_t)=\overline{\psi}_l(x_t) \gamma_0 \otimes \xi_0 \psi_h(x_t)$.  We stress the term ``temporal" here because the raised index $0$ denotes the $x^0$ direction on the lattice, which we call the temporal dimension.  The spin and taste vectors in this case are then $n=s=(1,0,0,0)$, $\overline{n}=\overline{s} = (0,1,1,1)$.  We can likewise define a \textit{spatial} vector current insertion as $V^1(x_t)=\overline{\psi}_l(x_t) \gamma_1 \otimes \xi_1 \psi_h(x_t)$, with spin and taste vectors $n=s=(0,1,0,0)$ and $\overline{n}=\overline{s} = (1,0,1,1)$.  We treat the three spatial dimensions of lattice identically, and so any correlation function built from the current insertions $V^2(x_t)$ and $V^3(x_t)$ would be equivalent to those we build from $V^1(x_t)$. Following the same techniques as before, we can convert spin-taste operators into relative phase terms for both vector currents and write that
+% Beginning with the temporal vector current insertion, we can construct a three-point correlation function with the local non-Goldstone heavy meson operator $H'$, the current insertion $V^1$, and the same Goldstone pion as before. Using the fact that 
+\begin{equation}\label{eq:vec_define}
+\begin{split}
+    V^0(x_t) &= \overline{\psi}_l(x_t) \gamma_0 \otimes \xi_0 \psi_h(x_t),\\
+             &= (-1)^{\tilde{x}_t - x^0_t}\overline{\psi}_l(x_t)\psi_h(x_t),\\
+    V^1(x_t) &= \overline{\psi}_l(x_t) \gamma_1 \otimes \xi_1 \psi_h(x_t),\\
+             &= (-1)^{\tilde{x}_t - x^1_t}\overline{\psi}_l(x_t)\psi_h(x_t).
+\end{split}    
+\end{equation}
+
+Focusing first now on the temporal vector three-point correlation function, we may use the same pion as the scalar case with $\gamma_5 \otimes \xi_5$ spin-taste structure.  However, to ensure the conservation of quantum numbers and canceling of taste terms, we use the $H^\prime$ heavy meson with $\gamma_0 \otimes \xi_0$ spin taste structure to build the temporal vector three-point correlation function.  Doing so, we arrive at
+\begin{equation}\label{eq:tvector3ptderive}
+\begin{split}
+\langle H^{5t}_{5t}(x_T)V^{0}(x_t)\pi^{5\dagger}_5(x_0)\rangle &= (-1)^{x^0_T+\tilde{x}_t - x^0_t + \tilde{x}_0}
+    \bra{0}\wick{
+    \c{\psi}_h(x_t)\, \c{\overline{\psi}}_h(x_T)\,  \c{\psi}_l(x_T)\, \c{\overline{\psi}}_l(x_0)\,   \c{\psi}_l(x_0)\, \c{\overline{\psi}}_l(x_t)\, }\ket{0},\\
+    &= (-1)^{x^0_T+\tilde{x}_t - x^0_t + \tilde{x}_0}(-1)^{\tilde{x}_T+\tilde{x}_0} 
+    4\underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0)\right),\\
+    &= (-1)^{\tilde{x}_t+\tilde{x}_T-x^0_t - x^0_T}
+ 4\underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0)\right).
+\end{split}
+\end{equation}
+Intuitively, the temporal vector three-point correlation function has phase dependency in the temporal dimension lattice sites.  
+
+Deriving the right equation for the spatial vector three-point correlation function is not as simple, and so we show the steps more thoroughly.  While we can still use the Goldstone pion as before, we need the non-Goldstone point-split heavy meson $H'' \equiv H^{5x}_{5}(x_T)$ to use in tandem with $V^1(x_t)$.  Putting these operators together we have
+\begin{equation}\label{eq:xvector_3ptderive}
+\begin{split}
+    \langle H^{5x}_{5}(x_T)V^{1}(x_t)\pi^{5\dagger}_5(x_0)\rangle &= 
+    (-1)^{x^1_T+\tilde{x}_t -x^1_t+\tilde{x}_0}   
+    \bra{0} \wick{
+    \c1{\overline{\psi}}_h(x_T)\,\gamma_1^\dagger \c2{\psi}_l(x_T \oplus \hat{1})\,
+    \c3{\overline{\psi}}_l(x_t)\, \c1{\psi_h(x_t)}\,
+    \c2{\overline{\psi}}_l(x_0) \, \c3{\psi}_l(x_0)\,}
+    \ket{0}\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_t+x^1_T -x^1_t}   
+    \bra{0} \wick{
+    \c{\psi_h(x_t)}\, \c{\overline{\psi}}_h(x_T)\,
+    {\gamma_1^\dagger}\c{\psi}_l(x_T \oplus \hat{1})\, \c{\overline{\psi}}_l(x_0) \,
+    \c{\psi}_l(x_0)\, \c{\overline{\psi}}_l(x_t)\,
+    }\ket{0}\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_t+x^1_T -x^1_t}\underset{\mathrm{spin}}{\mathrm{Tr}}\left(\gamma_5\Omega(x_t)\Omega^\dagger(x_T)\gamma_5\gamma_1^\dagger\Omega(x_T\oplus\hat1)\Omega^\dagger(x_0)\gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5 \right)\\
+    &\times \underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0) \right)\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_t+x^0_T+x^1_T -x^1_t}\underset{\mathrm{spin}}{\mathrm{Tr}}\left(\gamma_5\Omega(x_t)\Omega^\dagger(x_T)\gamma_5\Omega(x_T)\Omega^\dagger(x_0)\gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5 \right)\\
+    &\times \underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0) \right)\\
+    &= (-1)^{\tilde{x}_0+\tilde{x}_t+x^0_T+x^1_T -x^1_t}(-1)^{\tilde{x}_0+\tilde{x}_T}\underset{\mathrm{spin}}{\mathrm{Tr}}\left(\Omega(x_t)\Omega^\dagger(x_T)\Omega(x_T)\Omega^\dagger(x_0)\Omega(x_0)\Omega^\dagger(x_t) \right)\\
+    &\times \underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0) \right)\\
+    &= (-1)^{\tilde{x}_t - x^1_t + x^2_T + x^3_T}4
+    \underset{\mathrm{color}}{\mathrm{Tr}} \left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0) \right)
+\end{split}
+\end{equation}
+Like the temporal case, we can see here in the phase term that the spatial vector three-point correlation function has dependency on spacial dimension lattice sites.  Both the temporal and spatial vector three-point functions here can be used to eventually calculate vector form factors; in chapters \ref{cha:fitting_correlation_functions} and \ref{cha:form_factors} we discuss cases where either or both are useful.
+
+Finally then, with the aim of calculating tensor form factors, we need a three-point correlation function which contains a tensor current insertion $T^{0k}$.  The tensor current insertion can have different spin-taste structures $\gamma_0\gamma_k\otimes\xi_0\xi_k$ where $k\in \{1,2,3\}$.  A value of $k=1$ is the only option we use in this work, and so we shorten our notation such that $T^{01}\equiv T$.  We can therefore write 
+\begin{equation}\label{eq:tensor_current_insertion}
+\begin{split}
+    T(x_t) &= \overline{\psi}_l(x_t)\gamma_0\gamma_1\otimes\xi_0\xi_1\psi_h(x_t),\\
+    &= \overline{\psi}_l(x_t)\gamma_0\otimes\xi_0\gamma_1\otimes\xi_1\psi_h(x_t),\\
+    &= (-1)^{x^0_t+x^1_t}\overline{\psi}_l(x_t)\psi_h(x_t).
+\end{split}
+\end{equation}
+As alluded to before, we need the $H^{\prime\prime\prime}$ meson with $\gamma_5\gamma_0 \otimes \xi_2\xi_3$ spin-taste structure to construct a correlation function with the same Goldstone pion and tensor current insertion.  Doing so we get
+\begin{equation}\label{eq:tensor3ptcorr}
+\begin{split}
+\langle H^{yz}_{5t}(x_T)T(x_t)\pi^{5\dagger}_5(x_0) \rangle &= (-1)^{\tilde{x}_0+x^0_t+x^1_t+x^2_T+x^3_T}\bra{0}\wick{
+\c{\psi}_h(x_t)\, \c{\overline{\psi}}_h(x_T)\, \gamma_1^\dagger\c{\psi}_l(x_T\oplus\hat1)\, \c{\overline{\psi}}_l(x_0)\,
+\c{\psi}_l(x_0)\, \c{\overline{\psi}}_l(x_t)\,}\ket{0},\\
+&=(-1)^{\tilde{x}_0+x^0_t+x^1_t+x^2_T+x^3_T} \underset{\mathrm{spin}}{\mathrm{Tr}}\left( 
+\gamma_5\Omega(x_t)\Omega^\dagger_h(x_T)\gamma_5\gamma^\dagger_1\Omega(x_T\oplus\hat1)\Omega^\dagger(x_0)\gamma_5\Omega(x_0)\Omega^\dagger(x_t)\gamma_5\right)\\
+&\times \underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0)\right),\\
+&= (-1)^{\tilde{x}_T-x^1_T+x^0_t+x^1_t}\underset{\mathrm{spin}}{\mathrm{Tr}}\left( 
+\Omega(x_t)\Omega^\dagger_h(x_T)\Omega(x_T)\Omega^\dagger(x_0)\Omega(x_0)\Omega^\dagger(x_t)\right)\\
+&\times \underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0)\right),\\
+&= (-1)^{\tilde{x}_T-x^1_T+x^0_t+x^1_t} 4\underset{\mathrm{color}}{\mathrm{Tr}}\left( g^{h\dagger}(x_T,x_t)g^l(x_T\oplus\hat1,x_0)g^{l\dagger}(x_t,x_0)\right).
+\end{split}
+\end{equation}
+Here and in the spacial vector case, we again note that we have suppressed the gauge link terms $U_1(x_T)$ which would appear with the point-split staggered quark propagator. 
+
+\subsection{Spin-taste structure summary}
+In this section we provide a condensed summary of the spin-taste structures and correlation functions discussed in the previous sections.  We include notation here to indicate where we might swap a light quark propagator for a strange quark propagator. To begin, the meson operators and current insertions (which we might also call HISQ quark bilinears) in this work are as follows:
+    \begin{equation}\label{eq:correlator_spin-taste}
+    \begin{split}
+        H_{(s)} &: H^5_{(s),5} = \bar{\psi}_h(\gamma_5 \otimes\xi_5)\psi_{l(s)},\\
+        H'_{(s)} &: H^{5t}_{(s),5t} = \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_5\xi_0)\psi_{l(s)},\\
+        H''_{(s)} &: H^{5x}_{(s),5} = \bar{\psi}_h(\gamma_5 \otimes\xi_5\xi_1)\psi_{l(s)},\\
+        H'''_{(s)} &: H^{yz}_{(s),5t}= \bar{\psi}_h(\gamma_5 \gamma_0\otimes\xi_2\xi_3)\psi_{l(s)},\\
+        \pi(K) &: \pi(K)^5_5 = \bar{\psi}_l(\gamma_5\otimes\xi_5)\psi_{l(s)},\\
+        S &= \bar{\psi}_h\psi_{l},\\
+        V^0 &= \bar{\psi}_h(\gamma_0 \otimes\xi_0)\psi_{l},\\
+        V^1 &= \bar{\psi}_h(\gamma_1 \otimes\xi_1)\psi_{l},\\
+        T &= \bar{\psi}_h(\gamma_1\gamma_0 \otimes \xi_1\xi_0)\psi_{l}.
+    \end{split}
+    \end{equation}
+For any meson operator, its corresponding two point correlation functions are constructed identically: using $H^5_5$ for example we have $\langle H^5_5(x_t)H^{5\dagger}_5(x_0)\rangle$.  Moving on, the ordering of quark bilinears in three-point correlation functions is important, so we will not generalize.  We label our required three-point correlation functions by their current insertion $J\in\{S,V^0,V^1,T\}$.  Their forms for $H \rightarrow \pi$ are given by\footnote{Technically these functions describe $\pi \rightarrow H$, but the symmetries of QCD make correcting this difference trivial.}
+\begin{equation}\label{eq:spin-taste_3pt_function_construction}
+    \begin{split}
+        \text{Scalar:}&\quad  \langle H^5_5(x_T)S(x_t)\pi^{5\dagger}_5(x_0)\rangle,\\
+        \text{Temporal Vector:}&\quad \langle H^{5t}_{5t}(x_T)V^{0}(x_t)\pi^{5\dagger}_5(x_0)\rangle,\\
+        \text{Spatial Vector:}&\quad \langle H^{5x}_{5}(x_T)V^{1}(x_t)\pi^{5\dagger}_5(x_0)\rangle,\\
+        \text{Tensor:}&\quad \langle H^{yz}_{5t}(x_T)T(x_t)\pi^{5\dagger}_5(x_0) \rangle.\\
+    \end{split}
+\end{equation}
+The strange spectator quark equivalent of the above functions are made simply by swapping $H\rightarrow H_s$ and $\pi\rightarrow K$. In the next section it will be useful to generalize two and three-point correlation functions as
+\begin{align}\label{eq:generic2pt}
+    C_2(x_t,x_0) &= (-1)^{\phi_2(x_0,x_t)}\mathrm{\underset{color}{Tr}}\left(g^{h\dagger}(x_t,x_0)g^l(x_t,x_0)\right),\\ \label{eq:generic3pt}
+    C_3(x_T,x_t,x_0) &= (-1)^{\phi_3(x_0,x_t,x_T)}
+    \mathrm{\underset{color}{Tr}}\left(g^{h\dagger}(x_t,x_T)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0)\right).
+\end{align}
+Here $(-1)^{\phi_2(x_0,x_t)}$ and $(-1)^{\phi_3(x_0,x_t,x_T)}$ are the specific lattice site dependent phase terms which encode the spin-taste structure of a specified two or three-point correlation function.  Equation \ref{eq:generic2pt} describes a heavy meson with heavy-light valence quark content, and equation \ref{eq:generic3pt} describes the $H \rightarrow \pi$. %Again, we can just as easily construct a correlation function for a heavy-strange quark content meson by swapping $g^l(x_t,x_0)$ for $g^s(x_t,x_0)$.  We can make similar substitutions to construct light-light quark content pions, and light-strange quark content kaons.  Likewise, substituting $g^l(x_T,x_0)$ for $g^s(x_T,x_0)$ in equation \ref{eq:generic3pt} changes the described meson decay from $H\rightarrow\pi$ to $H_s \rightarrow K$.  
+We will stick with these general forms of equations \ref{eq:generic2pt} and \ref{eq:generic3pt} for now, but again note that changing the flavor of the spectator quark from $l\rightarrow s$ precipitates functions which describe $H_s$, $K$, and $H_s \rightarrow K$.
+
+\subsection{Random wall sources}\label{sec:random_wall_sources}
+Seeing as kinematic form factors of interest to this work, we must have a robust methodology for imparting momentum into our lattice simulations.  We have already discussed twisted boundary conditions \cite{SACHRAJDA200573} in section \ref{sec:twisted_boundary_conditions}, but it is useful to develop those ideas further in the context of our staggered quark propagators and their corresponding correlation functions.  Through a Fourier transform, we can recover mesons in momentum eigenstates which have three-momentum $\vec{p}$.  Using the technique of twisted boundary conditions we can impart momentum onto a single quark. Therefore the Fourier transform of the generic two point function (equation \ref{eq:generic2pt}) can be written as
+\begin{equation}\label{eq:2pt_fourier}
+\tilde{C}^{\vec{p}}_2(t_0,t_0+t) = \frac{1}{N^3_x} \sum_{\vec{x}_t, \vec{x}_0} e^{-i\vec{p}\cdot(\vec{x}_0-\vec{x}_t)}C_2(x_t,x_0),
+\end{equation}
+where we have slightly altered our notation such that $x^0_0\equiv t_0  $, and $x^0_t \equiv t_0+t$.  Solving this equation requires staggered quark propagators for all $x_0$ and $x_t$ options on the lattice. Unfortunately, this leads to increases in computation time proportional to two times the volume of the lattice squared.  We address this problem through the implementation of random wall sources.  Doing so introduces random noise into our correlation functions, but it does significantly reduce computation time.  We implement random wall sources by first introducing the following new propagators:
+\begin{align}\label{eq:new_prop_light}
+    P^{l,\vec{p}}(x_t,t_0) &\equiv \frac{1}{\sqrt{N^3_x}} \sum_{\vec{x}_0} e^{i\vec{p}\cdot(\vec{x}_0-\vec{x}_t)}\Phi(\vec{x}_0) g^l(x_t,x_0),\\ \label{eq:new_prop_heavy}
+    P^{h,\vec{p}\dagger}(x_t,t_0) &\equiv \frac{1}{\sqrt{N^3_x}} \sum_{\vec{x}_0} e^{-i\vec{p}\cdot(\vec{x}_0-\vec{x}_t)} (-1)^{\phi_2(x_0,0)} g^{h\dagger}(x_t,x_0) \Phi^\dagger(\vec{x}_0).
+\end{align}
+Here we include the term $\Phi(\vec{x}_0)$, which is a field of random complex color vectors that act on the spacial components of $t_0$ \cite{PhysRevD.59.074503, PhysRevD.73.074506}; different choices of $\Phi(\vec{x}_0)$ are made for each gauge field configuration.  For some function $f(\vec{x}, \vec{x}')$, this random color field has the property
+\begin{equation}\label{eq:color_field_property}
+   \langle f(\vec{x}, \vec{x}') \Phi^\dagger(\vec{x}') \Phi(\vec{x})\rangle =
+   \delta_{\vec{x}', \vec{x}} f(\vec{x}, \vec{x}').
+\end{equation}
+We also note that the source's spin-taste phase term only needs to be applied to one quark propagator.  With these new random color wall propagators, we can define a new construction $\rho_2$ as
+\begin{equation}\label{eq:rho_def}
+    \rho_2 = \sum_{\vec{x}_t}(-1)^{\phi_2(x_0,0)}\mathrm{\underset{color}{Tr}}\left(P^{h,\vec{p}\dagger}(x_t,t_0)P^{l,\vec{p}}(x_t,t_0)\right).
+\end{equation}
+Expanding the random color wall propagators in this equation and giving momentum only to the heavy quark, we can see that this construction is equal to the Fourier transform of a two-point correlation function:
+\begin{equation}\label{eq:rho_derive}
+\begin{split}
+ \rho_2 &= \frac{1}{N^3_x}\sum_{\vec{x}_t}(-1)^{\phi_2(0,x_t)}\mathrm{\underset{color}{Tr}}\left( 
+ \sum_{\vec{x}^{\prime}_0} e^{-i\vec{p}\cdot(\vec{x}^{\prime}_0-\vec{x}_t)} (-1)^{\phi_2(x^{\prime}_0,0)} g^{h\dagger}(x_t,x^{\prime}_0) \Phi^\dagger(\vec{x}^{\prime}_0)
+ \sum_{\vec{x}_0} \Phi(\vec{x}_0)g^l(x_t,x_0)
+ \right),\\
+ &= \frac{1}{N^3_x}\sum_{\vec{x}_t}(-1)^{\phi_2(0,x_t)}\sum_{\vec{x}^{\prime}_0, \vec{x}} e^{-i\vec{p}\cdot(\vec{x}^{\prime}_0-\vec{x}_t)} (-1)^{\phi_2(x^{\prime}_0,0)} \mathrm{\underset{color}{Tr}}\left(g^{h\dagger}(x_t,x^{\prime}_0) \Phi^\dagger(\vec{x}^{\prime}_0) \Phi(\vec{x}_0)g^l(x_t,x_0) \right),\\
+ &= \frac{1}{N^3_x}\sum_{\vec{x}_t,\vec{x}_0}(-1)^{\phi_2(x_0,x_t)}e^{-i\vec{p}\cdot(\vec{x}_0-\vec{x}_t)}\mathrm{{\underset{color}{Tr}}}\left(g^{h\dagger}(x_t,x^{\prime}_0)g^l(x_t,x_0) \right),\\
+ &= \tilde{C}_2^{\vec{p}}(t_0, t_0+t).
+\end{split}
+\end{equation}
+We have made two substitutions in this derivation.  First, we note that $(-1)^{\phi_2(a,b)}=(-1)^{\phi_2(a,0)}\times(-1)^{\phi_2(0,b)}$. Second, we implement the two-component dummy variable $x^\prime_0=(x_0^0, \vec{x}^\prime_0)$, where only the second component is also a dummy variable.  Arriving at $\rho_2 = \tilde{C}_2^{\vec{p}}(t_0, t_0+t)$ means that we can produce quark propagators on random color walls $\Phi(x)$, impart momentum and a lattice site dependent phase to a single quark at the source, and then destroy those quark propagators while inserting the relative phase at the sink.  Importantly, these quark propagators can all be grouped together at the source by taking the average over the random color walls.  
+
+Tying propagators together in this way is less resource-demanding than calculating $g(x,y)$, which is an \textit{all-to-all} propagator.  That calculation would require us to solve an equation of the form
+\begin{equation}\label{eq:all-to-all}
+\begin{split}
+    g(x^0,\vec{x},y^0,\vec{y}) &= \sum_{z^0,\vec{z}}D^{-1}(x^0,\vec{x},z^0,\vec{z})\delta^3(\vec{y}-\vec{z})\delta(y^0-z^0)\\
+    &= \sum_{\vec{z}} D^{-1}(x^0,\vec{x},y^0,\vec{z})\delta^3(\vec{y}-\vec{z})
+\end{split}
+\end{equation}
+The problem becomes clear when we assign indices $a,b,c$ to the three spacial coordinates. In doing so, equation \ref{eq:all-to-all} implies that%These indices follow the pattern where $a = 0$ denotes the spacial lattice coordinate $(0,0,0)$..
+\begin{equation}\label{eq:all-to-all-part2}
+    g_{ac}(x^0,y^0) = D^{-1}_{ab}(x^0,y^0)\delta_{bc}
+\end{equation}
+Here, we need to invert the matrix $D$ off of the source vector for every choice of index $c$, of which there are $N^3_x$ permutations.  This inversion of $D$ is made difficult because, besides the 1 in the $c$ position, all of the source vector's elements equal 0.  We are spared this challenge however by the insertion of random color walls: the propagator instead becomes
+\begin{equation}\label{eq:random_wall}
+\begin{split}
+    P(x^0,\vec{x},y^0) &= \sum_{\vec{y}} \left(
+    \sum_{z^0,\vec{z}}D^{-1}(x^0,\vec{x},z^0,\vec{z})\delta^3(\vec{y}-\vec{z})\delta(y^0-z^0)\Phi(\vec{y}) \right)\\
+    &= \sum_{\vec{z}}D^{-1}(x^0,\vec{x},y^0,\vec{z})\Phi(\vec{z})
+\end{split}
+\end{equation}
+Reintroducing the spacial coordinate indices, equation \ref{eq:random_wall} likewise implies that 
+\begin{equation}\label{eq:random_Wall_part2}
+    P_a(x^0,y^0) = D^{-1}_{ab}(x^0,y^0)\Phi_b
+\end{equation}
+where $\Phi_b$ is a random wall vector, the inclusion of which in this equation merges the many $N^3_x$ inversions we see in equation \ref{eq:all-to-all-part2} into just a single inversion.  This significantly reduces computation time, with the trade off of introducing random noise.
+
+Having tackled two-point correlation functions, let us now address three-point correlation functions. Now source phase and momentum is instead given to the light antiquark $\overline{l}$.  Meanwhile the light spectator quark $l$ propagator acts as an \textit{extended source} for the $\overline{h}$ propagator.  That is to say, the $l$ serves as a source to generate the $\overline{h}$.  Taking the Fourier transform of the generic three-point correlation function (equation \ref{eq:generic3pt}), we get
+\begin{equation}\label{eq:3ptFourier_transform}
+    \tilde{C}^{\vec{p}}_3(t_0,t_0+t,t_0+T) = \frac{1}{N^3_x} \sum_{\vec{x}_T,\vec{x}_t, \vec{x}_0} e^{-i\vec{p}\cdot(\vec{x}_0-\vec{x}_t)}C_3(x_T,x_t,x_0).
+\end{equation}
+Because we only apply momentum to the light antiquark, which propagates from $t_0+t$ to $t_0$, $x_T$ only appears in the Fourier transform as an argument in $C_3(x_T,x_t,x_0)$.  In the context of a three-point correlation function, we can define the random color wall propogators for the light quark and light antiquark propagators as
+\begin{align}\label{eq:3ptcolorwall_pt1}
+    P^{l,\vec{p}}(x_T, t_0) &\equiv \frac{1}{\sqrt{N^3_x}} \sum_{\vec{x}_0}e^{i\vec{p}\cdot(\vec{x}_0 - \vec{x}_T)}\Phi(\vec{x}_0)g^l(x_T,x_0),\\
+    \label{eq:3ptcolorwall_pt2}
+    P^{l,\vec{p}\dagger}(x_t, t_0) &\equiv \frac{1}{\sqrt{N^3_x}} \sum_{\vec{x}_0}e^{-i\vec{p}\cdot(\vec{x}_0 - \vec{x}_t)}(-1)^{\phi_3(x_0,0,0)}g^{l\dagger}(x_t,x_0)\Phi^\dagger(\vec{x}_0).
+\end{align}
+For our extended source $\overline{h}$, we can likewise define its random color wall propagator as
+\begin{equation}\label{eq:3ptcolorwall_pt3}
+    P_{\mathrm{ext.}}^{h,\vec{p}_h\vec{p}_l\dagger}(x_t, t_0,t_0+T) \equiv \sum_{\vec{x}_T}e^{-i\vec{p}\cdot(\vec{x}_t - \vec{x}_T)}(-1)^{\phi_3(0,0,x_T)}g^{h\dagger}(x_t,x_T)P^{l,\vec{p}_l}(x_T, t_0).
+\end{equation}
+Like the two-point correlator case, we can propose a construction $\rho_3$ comprised of random color wall propagators which equals the Fourier transform of the generic three-point correlation function:
+\begin{equation}\label{eq:3ptcolorwall_derive}
+\begin{split}
+    \rho_3 &= \sum_{\vec{x}_t} (-1)^{\phi_3(0,x_t,0)}\mathrm{\underset{color}{Tr}}\left(P_{\mathrm{ext.}}^{h,\vec{0},\vec{0}\dagger}(x_t, t_0,t_0+T)P^{l,\vec{p}\dagger}(x_t, t_0)  \right),\\
+    &= \frac{1}{N^3_x}\sum_{\vec{x}_t} (-1)^{\phi_3(0,x_t,0)}\mathrm{\underset{color}{Tr}}\bigg((-1)^{\phi_3(0,0,x_T)}g^{h\dagger}(x_t,x_T)\\
+    &\times \sum_{\vec{x}^\prime_0,\vec{x}_0}\Phi(\vec{x}^\prime_0)g^l(x_T, x^\prime_0)
+    e^{-i\vec{p}\cdot(\vec{x}_0 - \vec{x}_t)}(-1)^{\phi_3(x_0,0,0)}g^{l\dagger}(x_t,x_0)\Phi^\dagger(\vec{x}_0)\bigg),\\
+    &= \frac{1}{N^3_x} \sum_{\vec{x}_T,\vec{x}_t, \vec{x}_0} (-1)^{\phi_3(x_0,x_t,x_T)} e^{-i\vec{p}\cdot(\vec{x}_0-\vec{x}_t)}
+    \mathrm{\underset{color}{Tr}}\left( g^{h\dagger}(x_t,x_T)g^l(x_T,x_0)g^{l\dagger}(x_t,x_0) \right),\\
+    &= \tilde{C}^{\vec{p}}_3(t_0, t_0+t, t_0+T).
+\end{split}
+\end{equation}
+From this equation we can see how its possible to take the same heavy-light and light-light propogators from our two-point correlation functions and reuse them in the corresponding three-point function.  We still however need the extended source generated propagator for the case of the three-point function. Because it is cheaper to generate heavier quarks on the lattice than light quarks, we only regenerate $\overline{h}$ off of the extended source $l$.  The ability to reuse quark propagators in this way is actually the reason why we construct our three-point correlators ``backwards".  Notice from figure \ref{fig:3pt-diagram} that we do not place the heavy meson at $t_0$ and the pion at $t_0+T$ to intuitively match the meson decay of interest: $H\rightarrow \pi$.  Instead we swap their positions, such that the spectator light quark acts as an extended source in generating the heavy antiquark.  Fortunately, QCD is symmetrical in time; and so performing the time reversal whenever it is necessary is trivial on our pure QCD lattices.  
 
 
-\begin{table*}
-  \caption{Gluon field ensembles used in this work.}
-  \begin{scriptsize}
-  \begin{center} 
-    \begin{tabular}{l c c c c c c c c c c c c c}
-      \hline
-      Set & $\beta$ & $w_0/a$ & $a$ (fm) & $N_x^3\times N_t$  &$N_{\mathrm{cfg}}\times N_{\mathrm{src}}$ &    $am_{l}^{\mathrm{sea/val}}$ & $am_{s}^{\mathrm{sea}}$ & $am_c^{\mathrm{sea}}$& $am_{s}^{\mathrm{val}}$ & $am_c^{\mathrm{val}}$ & $Z_T(m_b)$\\
-  \hline
-  \hline
-    1 - f5   &  6.3    &  1.9006(20)  & 0.09 & $32^3\times 96$  & $500 \times 16$  &   0.0074       &   0.037        &  0.440&  0.0376  &  0.449 & 1.0029(43)\\
-    \hline
-    2 - fphys   &  6.3  & 1.9518(7)   & 0.088 & $64^3\times 96$    & $500 \times 8$&  0.00120       &  0.0363         &  0.432&   0.036  &  0.433 & 1.0029(43)\\
-      \hline
-        3 - sf5   & 6.72    &  2.896(6)  & 0.059 & $48^3\times 144$    & $500 \times 8$&  0.0048       &  0.024         &  0.286& 0.0234 &  0.274 & 1.0342(43)\\
-    \hline
-    4- sfphys   &  6.72 & 3.0170(23)   & 0.06 & $96^3\times 192$    & $100 \times 4$&  0.0008       &  0.022         &  0.260&   0.0219  &  0.2585 & 1.0342(43)\\
-      \hline
-    5 - uf5   &  7.0    &   3.892(12) & 0.044 & $64^3\times 192$    & $375 \times 4$&  0.00316       &  0.0158         &  0.188& 0.0165 &  0.194 & 1.0476(42) \\
-    \hline
-    \hline
-    \end{tabular}
+\subsection{Opposite parity states}\label{sec:opposite_parity}
+As a final note to end this chapter, it is worth noting a peculiar phenomenon which emerges from the HISQ action.  We have already seen how the doubling problem and spin-taste structure manifests as phase terms in the equations of correlation functions.  As a consequence, we expect our lattice correlation function to have an oscillating phase term $(-1)^t$.  Recall that it is not just the lattice equivalent of a \textit{ground state} physical pion which couples to the correlation function, but all states with matching quantum numbers (see equations \ref{eq:_C2_final} and \ref{eq:_C3_final}).  With no oscillating phase term, the coupled states would include some ground state meson and a theoretically infinite tower of radially excited states, all with otherwise identical quantum numbers.  With the inclusion of this oscillating phase term however, we now also expect states which differ in having opposite parity to couple to the given correlation function \cite{PhysRevD.67.054505}. For this reason, we might refer to these opposite parity states as \textit{oscillating states}.
 
-  \end{center}
-    \end{scriptsize}
-  \label{tab:ensembles}
-\end{table*}
+We can expect oscillating states to couple to all of our lattice two and three-point correlation functions, with one exception.  Appendix D in \cite{HISQ:2006rc} discusses how, in a flavor singlet case, there is no oscillating term in the correlator at zero meson momentum.  The quark and antiquark are created by the same field, and the only means by which they would have an interaction (which would have an amplitude), would be from annihilation or the emission of a highly off shell gluon.  Such gluons are removed by the contact terms in the HISQ action.  Therefore we do not expect any oscillating states to couple to the correlation function for a pion with zero three-momentum.

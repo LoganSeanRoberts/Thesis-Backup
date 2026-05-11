@@ -1,6 +1,33 @@
 \chapter{$D_s \rightarrow K$ and $B_s \rightarrow K$ form factors}\label{cha:DsBstoK}
 
-\section{Priors for correlator fitting}\label{sec:HsK_corr_priors}
+\section{Correlator fitting}\label{sec:HsK_corr_priors}
+
+\subsection{Priors}\label{sec:HsK_priors}
+
+\begin{table*}
+\caption{Parameters and statistics related to the correlation functions generated from the gluon field ensembles used in this work.  Column 2 gives the number of correlator configurations $N_\mathrm{cfg}$ times the number of sources $N_\mathrm{src}$ for given ensemble.  Column 3 gives the range of heavy quark masses (in lattice units), where the lightest option is chosen to be tuned to the physical charm quark mass.  Column 4 gives the non-zero twist angles $\theta\neq0.0$, which relate to three-momentum via equation \ref{eq:twist_angle}; we note that all ensembles also have correlators with values of $\theta=0$ as well.  Finally, column 5 gives the range of source-sink separation values $T$.  This table is identical to table \ref{tab:Hpi_Stats} in chapter \ref{cha:DBtopi}, as these parameters and statistics apply to both the $H\rightarrow\pi$ and $H_s\rightarrow k$ meson decays}
+\begin{center} 
+\begin{tabular}{l c c c c}
+\hline
+      Set & $N_{\mathrm{cfg}}\times N_{\mathrm{src}}$ & $am_h$ & $\theta\neq0.0$ & $T$ \\
+\hline
+\hline
+    1 - f5   &$500 \times 16$  & 0.450, 0.55, 0.675, 0.8 &  0.4281, 1.282, 2.1410, 2.570 & 15, 18, 21, 24 \\
+\hline
+    2 - fphys   & $500 \times 8$& 0.433, 0.555, 0.678, 0.8 &  0.58, 0.87, 1.13, 3.000 & 15, 18, 21, 24 \\
+\hline
+        3 - sf5 & $500 \times 8$& 0.274, 0.5, 0.65, 0.8 &  1.261, 2.108, 2.666, 5.059 & 22, 25, 28, 31 \\
+\hline
+    4- sfphys &$100 \times 4$& 0.2585, 0.5, 0.65, 0.8 &  2.522, 4.216, 7.94, 10.118 & 22, 25, 28, 31 \\
+\hline
+    5 - uf5 & $375 \times 4$& 0.194, 0.4, 0.6, 0.8 & 0.706, 1.529, 2.235, 4.705 & 29, 34, 39, 44 \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\label{tab:HsK_Stats}
+\end{table*}
+
 
 \begin{table}[]
     \centering
@@ -21,12 +48,12 @@
 
 \begin{table}[]
     \centering
-    \caption{$Hs\rightarrow K$ ground state three-point amplitude priors $P[J_{00}^{nn}]$ for all ensembles, twists $\theta$, and currents $J \in \{S_s,V_s^0,V_s^1,T_s\}$.  Twist is related to the kaon's three-momentum $\vec{p}$ via equation \ref{eq:twist_angle}.  Methods for determining these priors is discussed in section \ref{sec:Amp_effs_3pt}.}
+    \caption{$Hs\rightarrow K$ ground state three-point amplitude priors $P[J_{00}^{nn}]$ for all ensembles, twists $\theta$, and currents $J \in \{S,V^0,V^1,T\}$.  Twist is related to the kaon's three-momentum $\vec{p}$ via equation \ref{eq:twist_angle}.  Methods for determining these priors is discussed in section \ref{sec:Amp_effs_3pt}.}
     \label{tab:3ptpriors_HsK}
     \begin{tabular}{c c | c c c c}
     \hline
     \hline
-    Ensemble & $\theta$ & $S_s$ & $V_s^0$ & $V_s^1$ & $T_s$ \\
+    Ensemble & $\theta$ & $S$ & $V^0$ & $V^1$ & $T$ \\
     \hline
     \hline
     f5 & 0.0    & 1.8(1.8)   & 0.8(0.8)   & -          & -   \\
@@ -85,3 +112,24 @@
     \end{center}
   \label{tab:3pt_pesky_priors_HsK}
 \end{table}
+
+\subsection{Results}\label{sec:HsK_results}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{chapter7/pdfs/customHsK_Edisp_plots.pdf}
+    \includegraphics[width=0.8\linewidth]{chapter7/pdfs/customHsK_Ampdisp_plots.pdf}
+    \caption{Energy (top) and amplitude (bottom) dispersion relation plots for current set of $H_s\rightarrow K$ correlator fits.  Data shown are ground state, non-zero twist energy and amplitude fit posteriors divided by a function equal to the right hand side of either equation \ref{eq:dispersion_energy} (energy) or equation \ref{eq:dispersion_amplitude} (amplitude) without the discretization factor.  The shaded cyan corresponds to the area bound by the function $y=1\pm \left(\frac{a\vec{p}}{\pi}\right)^2$.}
+    \label{fig:HsK_disp-plots}
+\end{figure}
+
+\section{$z$-expansion fit}\label{sec:Hsk_zfit}
+
+\subsection{Priors}\label{sec:HsK_zfit_priors}
+
+\subsection{Results}\label{sec:HsK_zfit_results}
+
+\section{Status of form factors calculations}\label{sec:HsK_FF_status}
+
+\subsection{$D_s\rightarrow K$}\label{sec:BsK_status}
+
+\subsection{$B_s \rightarrow K$}\label{sec:BsK_status}
